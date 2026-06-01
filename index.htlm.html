@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVSTRAVEL · CRM v3</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B2A4A;--blue:#185FA5;--teal:#0F9E7A;--amber:#E8A020;--coral:#D85A30;--purple:#6B4ECC;--light:#F4F7FB;--white:#fff;--bdr:rgba(11,42,74,0.10);--bdr2:rgba(11,42,74,0.20);--muted:#5A7A99;--hint:#99B0C5;--r:12px;--rs:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--light);color:var(--navy);font-size:14px}
+/* LAYOUT */
+.app{display:grid;grid-template-columns:230px 1fr;height:100vh;overflow:hidden}
+.sidebar{background:var(--navy);display:flex;flex-direction:column;overflow-y:auto}
+.main{display:flex;flex-direction:column;overflow:hidden}
+/* SIDEBAR */
+.brand{padding:18px 14px 14px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px}
+.brand-icon{width:34px;height:34px;background:var(--blue);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:16px;color:#fff}
+.brand-sub{font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em}
+.nav-group{padding:12px 8px 2px}
+.nav-lbl{font-size:9px;color:rgba(255,255,255,0.28);letter-spacing:0.1em;text-transform:uppercase;padding:0 8px;margin-bottom:4px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--rs);cursor:pointer;color:rgba(255,255,255,0.5);font-size:12.5px;margin-bottom:1px;transition:all 0.15s;user-select:none}
+.nav-item:hover{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.85)}
+.nav-item.active{background:var(--blue);color:#fff;font-weight:500}
+.nav-item.admin-only{border-left:2px solid var(--amber)}
+/* TOPBAR */
+.topbar{background:var(--white);border-bottom:1px solid var(--bdr);padding:0 22px;height:54px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.page-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--navy)}
+.db-dot{width:7px;height:7px;border-radius:50%;background:#ccc;display:inline-block}
+.db-dot.on{background:var(--teal);box-shadow:0 0 0 2px rgba(15,158,122,0.25)}
+.db-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);padding:3px 10px;border-radius:20px;background:var(--light);border:1px solid var(--bdr)}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--rs);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--bdr2);background:var(--white);color:var(--navy);transition:all 0.15s}
+.btn:hover{background:var(--light)}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-primary:hover{background:#0C447C}
+.btn-teal{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn-coral{background:var(--coral);color:#fff;border-color:var(--coral)}
+.btn-purple{background:var(--purple);color:#fff;border-color:var(--purple)}
+.btn-sm{padding:5px 11px;font-size:12px}
+.btn-lg{padding:12px 24px;font-size:14px}
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:18px 22px}
+.view{display:none}.view.active{display:block}
+/* STAT CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:18px}
+.stat-card{background:var(--white);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue)}
+.stat-card.t::before{background:var(--teal)}.stat-card.a::before{background:var(--amber)}.stat-card.c::before{background:var(--coral)}.stat-card.p::before{background:var(--purple)}
+.stat-icon{font-size:20px;margin-bottom:8px}
+.stat-lbl{font-size:11px;color:var(--muted);margin-bottom:2px;font-weight:500}
+.stat-val{font-size:24px;font-weight:700;color:var(--navy);line-height:1}
+.stat-sub{font-size:10px;color:var(--hint);margin-top:3px}
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--bdr);border-radius:var(--r);padding:16px}
+.card-title{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;padding:8px 11px;color:var(--muted);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--bdr);background:var(--light)}
+td{padding:10px 11px;color:var(--navy);border-bottom:1px solid var(--bdr)}
+tr:last-child td{border-bottom:none}
+tbody tr{cursor:pointer;transition:background 0.1s}
+tbody tr:hover td{background:rgba(24,95,165,0.03)}
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%}
+.b-gray{background:#F1EFE8;color:#5F5E5A}.b-gray::before{background:#888}
+.b-blue{background:#E6F1FB;color:#185FA5}.b-blue::before{background:#185FA5}
+.b-amber{background:#FFF3D6;color:#854F0B}.b-amber::before{background:#E8A020}
+.b-teal{background:#E3F5EF;color:#0B6E4F}.b-teal::before{background:#0F9E7A}
+.b-red{background:#FEE9E9;color:#9B2525}.b-red::before{background:#D84242}
+.b-navy{background:#E8EEF5;color:#0B2A4A}.b-navy::before{background:#185FA5}
+.b-purple{background:#F0EDFE;color:#4A35A0}.b-purple::before{background:#6B4ECC}
+/* FORMS */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group.full{grid-column:1/-1}
+.form-lbl{font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:0.04em;text-transform:uppercase}
+.required-star{color:var(--coral)}
+.fi,.fs,.ft{padding:8px 10px;border:1.5px solid var(--bdr2);border-radius:var(--rs);font-family:inherit;font-size:13px;background:var(--white);color:var(--navy);outline:none;transition:border-color 0.15s;width:100%}
+.fi:focus,.fs:focus,.ft:focus{border-color:var(--blue)}
+.fi.required:invalid,.fi.req-empty{border-color:var(--coral)!important;background:#FFF8F7}
+.fi.req-ok{border-color:var(--teal)!important}
+.ft{resize:vertical;min-height:68px;line-height:1.5}
+.sec-div{font-size:10.5px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.08em;padding:8px 0 6px;border-bottom:1px solid var(--bdr);margin-bottom:8px;grid-column:1/-1;display:flex;align-items:center;gap:6px}
+.req-badge{background:#FEE9E9;color:#9B2525;font-size:9px;padding:1px 6px;border-radius:20px;font-weight:700;text-transform:uppercase}
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(11,42,74,0.55);z-index:200;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;backdrop-filter:blur(2px)}
+.overlay.open{display:flex}
+.modal{background:var(--white);border-radius:var(--r);width:660px;max-width:100%;box-shadow:0 8px 40px rgba(11,42,74,0.18);animation:mIn 0.2s ease}
+.modal-lg{width:800px}
+.modal-sm{width:440px}
+@keyframes mIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.mhdr{padding:16px 20px 12px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
+.mtitle{font-family:'DM Serif Display',serif;font-size:18px;color:var(--navy)}
+.mbody{padding:16px 20px}
+.mfoot{padding:12px 20px;border-top:1px solid var(--bdr);display:flex;justify-content:flex-end;gap:8px}
+.xbtn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;padding:4px;border-radius:6px}
+.xbtn:hover{background:var(--light)}
+/* TIMELINE */
+.timeline{list-style:none;padding-left:16px;position:relative}
+.timeline::before{content:'';position:absolute;left:5px;top:4px;bottom:4px;width:1.5px;background:var(--bdr2)}
+.tl-item{position:relative;margin-bottom:12px}
+.tl-dot{position:absolute;left:-13px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--blue);border:2px solid var(--white)}
+.tl-date{font-size:10px;color:var(--hint)}
+.tl-text{font-size:12.5px;color:var(--navy);line-height:1.4;margin-top:1px}
+.tl-type{display:inline-block;font-size:9.5px;font-weight:700;color:var(--blue);background:rgba(24,95,165,0.08);padding:1px 7px;border-radius:20px;margin-top:3px;text-transform:uppercase}
+/* TOAST */
+.toast-c{position:fixed;bottom:18px;right:18px;z-index:999;display:flex;flex-direction:column;gap:5px}
+.toast{background:var(--navy);color:#fff;padding:10px 14px;border-radius:var(--rs);font-size:12.5px;font-weight:500;box-shadow:0 4px 20px rgba(11,42,74,0.2);animation:tIn 0.2s ease;border-left:3px solid var(--teal)}
+.toast.err{border-left-color:var(--coral)}
+.toast.warn{border-left-color:var(--amber)}
+@keyframes tIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+/* LOGIN SCREEN */
+.login-screen{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:500}
+.login-box{background:var(--white);border-radius:var(--r);padding:32px;width:360px;box-shadow:0 8px 40px rgba(0,0,0,0.3)}
+.login-logo{text-align:center;margin-bottom:24px}
+.login-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--navy)}
+.login-sub{font-size:12px;color:var(--muted);margin-top:4px}
+/* CLOCK WIDGET */
+.clock-widget{background:var(--navy);border-radius:var(--r);padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.clock-time{font-size:28px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:0.02em}
+.clock-date{font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px}
+.clock-status{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.session-timer{font-size:22px;font-weight:700;color:var(--teal);font-variant-numeric:tabular-nums}
+.session-lbl{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.05em}
+/* PRESENCE INDICATOR */
+.presence-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:5px}
+.p-online{background:var(--teal);box-shadow:0 0 0 2px rgba(15,158,122,0.3);animation:pulse 2s infinite}
+.p-away{background:var(--amber)}
+.p-offline{background:#ccc}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+/* AGENDA */
+.agenda-item{background:var(--white);border:1px solid var(--bdr);border-left:4px solid var(--blue);border-radius:var(--rs);padding:10px 12px;margin-bottom:7px;cursor:pointer;transition:all 0.15s}
+.agenda-item:hover{box-shadow:0 2px 10px rgba(11,42,74,0.08)}
+.agenda-item.urgente{border-left-color:var(--coral)}
+.agenda-item.hoy{border-left-color:var(--teal);background:rgba(15,158,122,0.04)}
+.agenda-time{font-size:11px;font-weight:700;color:var(--blue)}
+.agenda-title{font-size:13px;font-weight:600;color:var(--navy);margin:2px 0}
+.agenda-client{font-size:11px;color:var(--muted)}
+/* ADMIN PANEL */
+.asesor-row-live{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--white);border:1px solid var(--bdr);border-radius:var(--rs);margin-bottom:6px;transition:all 0.3s}
+.asesor-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.asesor-info{flex:1}
+.asesor-name{font-size:13px;font-weight:600;color:var(--navy)}
+.asesor-meta{font-size:11px;color:var(--muted)}
+.asesor-time{text-align:right}
+.asesor-elapsed{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+.asesor-elapsed.online{color:var(--teal)}
+.asesor-elapsed.away{color:var(--amber)}
+.asesor-elapsed.offline{color:var(--hint)}
+/* REPORTS */
+.report-card{background:var(--white);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.report-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--bdr)}
+.report-title{font-size:14px;font-weight:700;color:var(--navy)}
+.report-period{font-size:11px;color:var(--muted);background:var(--light);padding:3px 10px;border-radius:20px;border:1px solid var(--bdr)}
+.report-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.report-metric{background:var(--light);border-radius:var(--rs);padding:10px;text-align:center}
+.report-metric-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:3px}
+.report-metric-val{font-size:20px;font-weight:700;color:var(--navy)}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:80px;margin-top:8px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar-fill{width:100%;border-radius:3px 3px 0 0;background:var(--blue);min-height:4px;transition:height 0.4s}
+.bar-lbl{font-size:9px;color:var(--muted);text-align:center;white-space:nowrap}
+/* PIPELINE */
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.pipe-col{background:var(--light);border-radius:var(--r);padding:9px;min-height:160px}
+.pipe-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.pipe-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+.pipe-cnt{background:var(--white);color:var(--muted);font-size:10px;font-weight:600;padding:1px 7px;border-radius:20px;border:1px solid var(--bdr)}
+.pipe-card{background:var(--white);border:1px solid var(--bdr);border-left:3px solid var(--blue);border-radius:var(--rs);padding:8px;margin-bottom:5px;cursor:pointer;transition:all 0.15s;font-size:11.5px}
+.pipe-card:hover{transform:translateY(-1px);box-shadow:0 2px 10px rgba(11,42,74,0.08)}
+/* MIN DATA PROGRESS */
+.min-data-bar{display:flex;gap:4px;margin-top:6px}
+.min-data-dot{width:28px;height:6px;border-radius:3px;background:var(--bdr2);transition:background 0.3s}
+.min-data-dot.filled{background:var(--teal)}
+.min-data-dot.partial{background:var(--amber)}
+/* SEARCH */
+.srch-wrap{position:relative;flex:1;min-width:160px}
+.srch-wrap::before{content:'🔍';position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:11px;pointer-events:none}
+.srch{padding:7px 10px 7px 28px;border:1.5px solid var(--bdr2);border-radius:var(--rs);font-family:inherit;font-size:12.5px;width:100%;background:var(--white);color:var(--navy);outline:none}
+.srch:focus{border-color:var(--blue)}
+.empty{text-align:center;padding:36px 20px;color:var(--hint)}
+.empty-icon{font-size:30px;margin-bottom:8px;opacity:0.5}
+.empty-title{font-size:13.5px;font-weight:600;color:var(--muted)}
+/* PRESENCE SIDEBAR */
+.presence-footer{margin-top:auto;padding:12px 10px;border-top:1px solid rgba(255,255,255,0.08)}
+.checkin-btn{width:100%;padding:10px;border-radius:var(--rs);border:none;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.checkin-btn.entrada{background:var(--teal);color:#fff}
+.checkin-btn.salida{background:var(--coral);color:#fff}
+.checkin-btn.ausente{background:var(--amber);color:#fff}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div style="font-size:32px;margin-bottom:8px">✈</div>
+      <div class="login-title">AVSTRAVEL</div>
+      <div class="login-sub">CRM · Agencia de Viajes</div>
+    </div>
+    <div class="form-group" style="margin-bottom:10px">
+      <label class="form-lbl">Selecciona tu perfil</label>
+      <div id="login-pass-wrap" style="display:none;margin-bottom:10px">
+        <input type="password" class="fi" id="login-pass" placeholder="Contraseña de administrador" style="width:100%">
+      </div>
+      <select class="fs" id="login-perfil">
+        <option value="">- Seleccionar -</option>
+        <option value="admin">👑 Administrador</option>
+      </select>
+      <div id="login-asesores-wrap" style="display:none;margin-top:8px">
+        <select class="fs" id="login-asesor"><option value="">- Seleccionar asesor -</option></select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px">
+      <label class="form-lbl">Sede</label>
+      <select class="fs" id="login-sede">
+        <option>Sede Principal</option><option>Hotel Cosmos</option><option>Hotel Torre Mar</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="doLogin()" style="width:100%;justify-content:center;padding:11px">Ingresar al CRM</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app" style="display:none">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">✈</div>
+      <div><div class="brand-name">AVSTRAVEL</div><div class="brand-sub">CRM v3.0</div></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-lbl">Principal</div>
+      <div class="nav-item active" onclick="nav('dashboard',this)">◉ Dashboard</div>
+      <div class="nav-item" onclick="nav('clientes',this)">👥 Clientes</div>
+      <div class="nav-item" onclick="nav('pipeline',this)">⇒ Pipeline</div>
+      <div class="nav-item" onclick="nav('agenda',this)">📅 Agenda</div>
+      <div class="nav-item" onclick="nav('cotizaciones',this)">📋 Cotizaciones</div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-lbl">Operaciones</div>
+      <div class="nav-item" onclick="nav('informe',this)">📝 Informe diario</div>
+      <div class="nav-item" onclick="nav('posventa',this)">⭐ Pos-venta</div>
+      <div class="nav-item" onclick="nav('exportar',this)">⬇️ Exportar datos</div>
+    </div>
+    <div class="nav-group" id="admin-nav" style="display:none">
+      <div class="nav-lbl">Administración</div>
+      <div class="nav-item admin-only" onclick="nav('admin-live',this)">🟢 En vivo</div>
+      <div class="nav-item admin-only" onclick="nav('admin-reportes',this)">📊 Reportes</div>
+      <div class="nav-item admin-only" onclick="nav('admin-asesores',this)">🧑‍💼 Asesores</div>
+      <div class="nav-item admin-only" onclick="nav('consolidadoras',this)">✈️ Consolidadoras</div>
+    </div>
+    <div class="presence-footer">
+      <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:7px;text-transform:uppercase;letter-spacing:0.05em" id="sb-session-lbl">Sesión activa</div>
+      <div style="font-size:20px;font-weight:700;color:var(--teal);font-variant-numeric:tabular-nums;margin-bottom:8px" id="sb-timer">00:00:00</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:10px" id="sb-user-name">—</div>
+      <button class="checkin-btn salida" id="btn-salida" onclick="marcarSalida()">⏹ Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="page-title" id="page-title">Dashboard</div>
+        <span style="background:var(--light);color:var(--muted);font-size:11px;padding:2px 9px;border-radius:20px;border:1px solid var(--bdr)" id="page-badge">Vista general</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="db-status"><div class="db-dot" id="db-dot"></div><span id="db-lbl">Conectando...</span></div>
+        <button class="btn btn-primary" id="main-btn" onclick="handleMainBtn()" style="display:none">+ Nuevo cliente</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="view active" id="v-dashboard">
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-lbl">Total clientes</div><div class="stat-val" id="s1">0</div><div class="stat-sub">en base de datos</div></div>
+          <div class="stat-card t"><div class="stat-icon">📋</div><div class="stat-lbl">Negocios activos</div><div class="stat-val" id="s2">0</div><div class="stat-sub">en seguimiento</div></div>
+          <div class="stat-card a"><div class="stat-icon">📅</div><div class="stat-lbl">Citas hoy</div><div class="stat-val" id="s3">0</div><div class="stat-sub">agendadas</div></div>
+          <div class="stat-card c"><div class="stat-icon">⏰</div><div class="stat-lbl">Cots. pendientes</div><div class="stat-val" id="s4">0</div><div class="stat-sub">responder ≤48h</div></div>
+        </div>
+        <div class="two-col">
+          <div class="card"><div class="card-title">Actividad reciente</div><div id="dash-act"><div class="empty"><div class="empty-icon">📭</div><div class="empty-title">Sin actividad</div></div></div></div>
+          <div class="card"><div class="card-title">Próximas citas 📅</div><div id="dash-agenda"><div class="empty"><div class="empty-icon">📅</div><div class="empty-title">Sin citas agendadas</div></div></div></div>
+        </div>
+      </div>
+
+      <!-- CLIENTES -->
+      <div class="view" id="v-clientes">
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <div class="srch-wrap"><input type="text" class="srch" id="srch" placeholder="Buscar nombre, teléfono, destino..." oninput="renderClientes()"></div>
+          <select class="fi" id="fil-l" onchange="renderClientes()" style="width:auto;font-size:12px">
+            <option value="">Todas las líneas</option><option>Nacional</option><option>Internacional</option><option>Pacífico</option><option>Especiales</option>
+          </select>
+          <select class="fi" id="fil-e" onchange="renderClientes()" style="width:auto;font-size:12px">
+            <option value="">Todos los estados</option><option>Prospecto</option><option>En cotización</option><option>Pre-reserva</option><option>Reservado</option><option>Viajó</option><option>No conforme</option>
+          </select>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <table><thead><tr><th>Datos mínimos</th><th>Cliente</th><th>Teléfono</th><th>Destino</th><th>Fecha viaje</th><th>Presupuesto</th><th>Estado</th><th>Asesor</th></tr></thead>
+          <tbody id="cl-tb"></tbody></table>
+          <div id="cl-empty" class="empty" style="display:none"><div class="empty-icon">👤</div><div class="empty-title">Sin clientes</div></div>
+        </div>
+      </div>
+
+      <!-- PIPELINE -->
+      <div class="view" id="v-pipeline">
+        <div class="pipeline">
+          <div class="pipe-col"><div class="pipe-hdr"><span class="pipe-title">Prospecto</span><span class="pipe-cnt" id="pc0">0</span></div><div id="p0"></div></div>
+          <div class="pipe-col"><div class="pipe-hdr"><span class="pipe-title">En cotización</span><span class="pipe-cnt" id="pc1">0</span></div><div id="p1"></div></div>
+          <div class="pipe-col"><div class="pipe-hdr"><span class="pipe-title">Pre-reserva</span><span class="pipe-cnt" id="pc2">0</span></div><div id="p2"></div></div>
+          <div class="pipe-col"><div class="pipe-hdr"><span class="pipe-title">Reservado</span><span class="pipe-cnt" id="pc3">0</span></div><div id="p3"></div></div>
+          <div class="pipe-col"><div class="pipe-hdr"><span class="pipe-title">Viajó</span><span class="pipe-cnt" id="pc4">0</span></div><div id="p4"></div></div>
+        </div>
+      </div>
+
+      <!-- AGENDA -->
+      <div class="view" id="v-agenda">
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Nueva cita / reunión</div>
+            <div class="form-grid">
+              <div class="form-group"><label class="form-lbl">Cliente *</label><select class="fs" id="ag-cliente"><option value="">Seleccionar cliente...</option></select></div>
+              <div class="form-group"><label class="form-lbl">Asesor responsable</label><select class="fs" id="ag-asesor"><option value="">Seleccionar...</option></select></div>
+              <div class="form-group"><label class="form-lbl">Fecha *</label><input type="date" class="fi" id="ag-fecha"></div>
+              <div class="form-group"><label class="form-lbl">Hora *</label><input type="time" class="fi" id="ag-hora"></div>
+              <div class="form-group"><label class="form-lbl">Tipo de cita</label>
+                <select class="fs" id="ag-tipo">
+                  <option>Llamada de seguimiento</option><option>Reunión presencial</option><option>Envío de cotización</option><option>Confirmación de reserva</option><option>Llamada de cierre</option><option>Recordatorio de pago</option><option>Check-in pos-venta</option><option>Otro</option>
+                </select>
+              </div>
+              <div class="form-group"><label class="form-lbl">Prioridad</label>
+                <select class="fs" id="ag-prio"><option value="normal">Normal</option><option value="urgente">Urgente</option></select>
+              </div>
+              <div class="form-group full"><label class="form-lbl">Notas de la cita</label><textarea class="ft" id="ag-notas" placeholder="¿Qué se hablará en esta reunión?"></textarea></div>
+            </div>
+            <button class="btn btn-primary" onclick="guardarCita()" style="width:100%;justify-content:center;margin-top:8px">📅 Agendar cita</button>
+          </div>
+          <div class="card">
+            <div class="card-title">
+              Citas agendadas
+              <div style="display:flex;gap:6px">
+                <select class="fi" id="ag-filtro" onchange="renderAgenda()" style="width:auto;font-size:11px;padding:4px 8px">
+                  <option value="todas">Todas</option><option value="hoy">Hoy</option><option value="semana">Esta semana</option>
+                </select>
+              </div>
+            </div>
+            <div id="agenda-lista"><div class="empty"><div class="empty-icon">📅</div><div class="empty-title">Sin citas agendadas</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COTIZACIONES -->
+      <div class="view" id="v-cotizaciones">
+        <div id="cots-lista"><div class="empty"><div class="empty-icon">📋</div><div class="empty-title">Sin cotizaciones</div><div class="empty-desc" style="font-size:12px;color:var(--hint);margin-top:4px">Créalas desde el detalle de cada cliente</div></div></div>
+      </div>
+
+      <!-- INFORME DIARIO -->
+      <div class="view" id="v-informe">
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Informe del día</div>
+            <div class="form-grid">
+              <div class="form-group"><label class="form-lbl">Fecha</label><input type="date" class="fi" id="inf-f"></div>
+              <div class="form-group"><label class="form-lbl">Asesor</label><select class="fs" id="inf-a"><option value="">Seleccionar...</option></select></div>
+              <div class="form-group"><label class="form-lbl">Sede</label><select class="fs" id="inf-s"><option>Sede Principal</option><option>Hotel Cosmos</option><option>Hotel Torre Mar</option></select></div>
+              <div class="form-group"><label class="form-lbl">Jornada</label><input type="text" class="fi" id="inf-j" placeholder="09:00 — 18:00"></div>
+              <div class="form-group"><label class="form-lbl">Clientes atendidos</label><input type="number" class="fi" id="inf-at" value="0" min="0"></div>
+              <div class="form-group"><label class="form-lbl">Cotizaciones</label><input type="number" class="fi" id="inf-c" value="0" min="0"></div>
+              <div class="form-group"><label class="form-lbl">Ventas cerradas</label><input type="number" class="fi" id="inf-v" value="0" min="0"></div>
+              <div class="form-group"><label class="form-lbl">Llamadas</label><input type="number" class="fi" id="inf-ll" value="0" min="0"></div>
+              <div class="form-group full"><label class="form-lbl">Actividades</label><textarea class="ft" id="inf-act" placeholder="Resumen del día..."></textarea></div>
+              <div class="form-group full"><label class="form-lbl">Observaciones</label><textarea class="ft" id="inf-obs" placeholder="Novedades, pendientes..."></textarea></div>
+            </div>
+            <button class="btn btn-primary" onclick="guardarInforme()" style="width:100%;justify-content:center;margin-top:10px">📤 Enviar informe</button>
+          </div>
+          <div class="card"><div class="card-title">Historial</div><div id="inf-hist"><div class="empty"><div class="empty-icon">📝</div><div class="empty-title">Sin informes</div></div></div></div>
+        </div>
+      </div>
+
+      <!-- POS-VENTA -->
+      <div class="view" id="v-posventa">
+        <div class="card" style="padding:0;overflow:hidden">
+          <table><thead><tr><th>Cliente</th><th>Destino</th><th>Fecha viaje</th><th>Check-in</th><th>Llamada</th><th>Feedback</th><th>Estado</th></tr></thead>
+          <tbody id="pv-tb"></tbody></table>
+          <div id="pv-empty" class="empty" style="display:none"><div class="empty-icon">⭐</div><div class="empty-title">Sin clientes en pos-venta</div></div>
+        </div>
+      </div>
+
+      <!-- ADMIN: EN VIVO -->
+      <div class="view" id="v-admin-live">
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-title">🟢 Asesores en tiempo real — <span id="live-hora" style="color:var(--muted);font-weight:400;font-size:12px"></span></div>
+          <div id="live-asesores"><div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Ningún asesor ha iniciado sesión hoy</div></div></div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Resumen del día</div>
+            <div id="live-resumen"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Ausencias registradas hoy</div>
+            <div id="live-ausencias"><div class="empty" style="padding:20px"><div class="empty-title">Sin ausencias</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN: REPORTES -->
+      <div class="view" id="v-admin-reportes">
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+          <select class="fi" id="rep-periodo" onchange="generarReporte()" style="width:auto">
+            <option value="semana">Esta semana</option>
+            <option value="quincena">Esta quincena</option>
+            <option value="mes">Este mes</option>
+            <option value="trimestre">Este trimestre</option>
+          </select>
+          <select class="fi" id="rep-asesor" onchange="generarReporte()" style="width:auto">
+            <option value="">Todos los asesores</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="generarReporte()">📊 Generar</button>
+        </div>
+        <div id="reporte-contenido"></div>
+      </div>
+
+      <!-- ADMIN: ASESORES -->
+      <div class="view" id="v-admin-asesores">
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Registrar asesor</div>
+            <div class="form-grid">
+              <div class="form-group"><label class="form-lbl">Nombre *</label><input type="text" class="fi" id="as-nombre" placeholder="Nombre completo"></div>
+              <div class="form-group"><label class="form-lbl">Sede *</label><select class="fs" id="as-sede"><option>Sede Principal</option><option>Hotel Cosmos</option><option>Hotel Torre Mar</option></select></div>
+              <div class="form-group"><label class="form-lbl">Línea</label><select class="fs" id="as-linea"><option>Nacional</option><option>Internacional</option><option>Pacífico</option><option>Especiales</option><option>Todas</option></select></div>
+              <div class="form-group"><label class="form-lbl">Cargo</label><input type="text" class="fi" id="as-cargo" placeholder="Asesor, Administrador..."></div>
+              <div class="form-group"><label class="form-lbl">Teléfono</label><input type="text" class="fi" id="as-tel"></div>
+              <div class="form-group"><label class="form-lbl">Correo</label><input type="email" class="fi" id="as-email"></div>
+            </div>
+            <button class="btn btn-primary" onclick="guardarAsesor()" style="width:100%;justify-content:center;margin-top:8px">+ Registrar asesor</button>
+          </div>
+          <div class="card"><div class="card-title">Equipo AVSTRAVEL</div><div id="asesores-lista"><div class="empty"><div class="empty-icon">🧑‍💼</div><div class="empty-title">Sin asesores</div></div></div></div>
+        </div>
+      </div>
+
+      <!-- VISTA CONSOLIDADORAS -->
+      <div class="view" id="v-consolidadoras">
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-title">✈️ Consolidadoras vinculadas</div>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Empresas consolidadoras para consulta y compra de vuelos y paquetes turísticos.</p>
+          <div id="lista-consolidadoras">
+            <div style="border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:14px">
+              <div style="font-size:2rem">🌐</div>
+              <div style="flex:1"><strong style="color:var(--navy)">Despegar.com</strong><div style="font-size:11px;color:var(--muted)">Vuelos + Paquetes · Plataforma líder en Latinoamérica</div></div>
+              <a href="https://www.despegar.com.co" target="_blank" class="btn btn-primary btn-sm">Visitar →</a>
+            </div>
+            <div style="border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:14px">
+              <div style="font-size:2rem">✈️</div>
+              <div style="flex:1"><strong style="color:var(--navy)">Avianca Negocios</strong><div style="font-size:11px;color:var(--muted)">Vuelos nacionales e internacionales · Consolidadora oficial para agencias</div></div>
+              <a href="https://www.avianca.com" target="_blank" class="btn btn-primary btn-sm">Visitar →</a>
+            </div>
+            <div style="border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:14px">
+              <div style="font-size:2rem">🏝</div>
+              <div style="flex:1"><strong style="color:var(--navy)">Viajes Falabella</strong><div style="font-size:11px;color:var(--muted)">Paquetes turísticos nacionales e internacionales</div></div>
+              <a href="https://www.viajesfalabella.com.co" target="_blank" class="btn btn-primary btn-sm">Visitar →</a>
+            </div>
+          </div>
+          <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--bdr)">
+            <div class="card-title" style="margin-bottom:12px">Vincular nueva consolidadora</div>
+            <div class="form-grid">
+              <div class="form-group"><label class="form-lbl">Nombre</label><input type="text" class="fi" id="con-nombre" placeholder="Nombre de la empresa"></div>
+              <div class="form-group"><label class="form-lbl">Sitio web</label><input type="url" class="fi" id="con-url" placeholder="https://..."></div>
+              <div class="form-group"><label class="form-lbl">Tipo de servicio</label><select class="fs" id="con-tipo"><option>Vuelos nacionales</option><option>Vuelos internacionales</option><option>Paquetes turísticos</option><option>Vuelos + Paquetes</option></select></div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="vincularConsolidadora()" style="margin-top:6px">📨 Vincular</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA EXPORTAR -->
+      <div class="view" id="v-exportar">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px">
+          <div class="card" style="text-align:center;padding:24px">
+            <div style="font-size:2rem;margin-bottom:8px">👥</div>
+            <div class="card-title" style="margin-bottom:6px">Clientes</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:14px">Base de datos completa de clientes</div>
+            <button class="btn btn-amber btn-sm" onclick="exportarClientes()">⬇️ Exportar Excel</button>
+          </div>
+          <div class="card" style="text-align:center;padding:24px">
+            <div style="font-size:2rem;margin-bottom:8px">📋</div>
+            <div class="card-title" style="margin-bottom:6px">Cotizaciones</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:14px">Historial de cotizaciones generadas</div>
+            <button class="btn btn-amber btn-sm" onclick="exportarCotizaciones()">⬇️ Exportar Excel</button>
+          </div>
+          <div class="card" style="text-align:center;padding:24px">
+            <div style="font-size:2rem;margin-bottom:8px">📝</div>
+            <div class="card-title" style="margin-bottom:6px">Informes diarios</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:14px">Registro de actividades por asesor</div>
+            <button class="btn btn-amber btn-sm" onclick="exportarInformes()">⬇️ Exportar Excel</button>
+          </div>
+          <div class="card" style="text-align:center;padding:24px">
+            <div style="font-size:2rem;margin-bottom:8px">📊</div>
+            <div class="card-title" style="margin-bottom:6px">Pipeline</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:14px">Estado actual de negocios</div>
+            <button class="btn btn-amber btn-sm" onclick="exportarPipeline()">⬇️ Exportar Excel</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVO CLIENTE -->
+<div class="overlay" id="m-nc">
+  <div class="modal modal-lg">
+    <div class="mhdr">
+      <div>
+        <div class="mtitle">Registrar nuevo cliente</div>
+        <div style="margin-top:4px;font-size:11px;color:var(--muted)">Completa los datos mínimos para activar el seguimiento</div>
+      </div>
+      <button class="xbtn" onclick="closeM('m-nc')">✕</button>
+    </div>
+    <div class="mbody">
+      <div style="background:#FFF8F7;border:1px solid rgba(216,90,48,0.2);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--coral)">
+        <strong>⚠ Datos mínimos obligatorios:</strong> Nombre · Teléfono · Destino · Fecha ida · Fecha regreso · Presupuesto
+        <div class="min-data-bar" id="min-data-bar" style="margin-top:6px"></div>
+      </div>
+      <div class="form-grid">
+        <div class="sec-div">Datos obligatorios <span class="req-badge">requeridos</span></div>
+        <div class="form-group"><label class="form-lbl">Nombre completo <span class="required-star">*</span></label><input type="text" class="fi" id="fn" oninput="checkMinData()" placeholder="Nombre y apellidos"></div>
+        <div class="form-group"><label class="form-lbl">Teléfono / WhatsApp <span class="required-star">*</span></label><input type="text" class="fi" id="ft2" oninput="checkMinData()" placeholder="315 XXX XXXX"></div>
+        <div class="form-group"><label class="form-lbl">Destino de viaje <span class="required-star">*</span></label><input type="text" class="fi" id="fd2" oninput="checkMinData()" placeholder="Cartagena, Cancún, Ballenas..."></div>
+        <div class="form-group"><label class="form-lbl">Presupuesto aprox. (COP) <span class="required-star">*</span></label><input type="text" class="fi" id="fp2" oninput="checkMinData()" placeholder="2.000.000"></div>
+        <div class="form-group"><label class="form-lbl">Fecha de ida <span class="required-star">*</span></label><input type="date" class="fi" id="ffida" oninput="checkMinData()"></div>
+        <div class="form-group"><label class="form-lbl">Fecha de regreso <span class="required-star">*</span></label><input type="date" class="fi" id="ffreg" oninput="checkMinData()"></div>
+        <div class="sec-div">Datos adicionales</div>
+        <div class="form-group"><label class="form-lbl">Correo electrónico</label><input type="email" class="fi" id="fe2" placeholder="opcional"></div>
+        <div class="form-group"><label class="form-lbl">Cédula / Documento</label><input type="text" class="fi" id="fdoc"></div>
+        <div class="form-group"><label class="form-lbl">Ciudad de origen</label><input type="text" class="fi" id="fci"></div>
+        <div class="form-group"><label class="form-lbl">N° de viajeros</label><input type="number" class="fi" id="fv2" value="1" min="1"></div>
+        <div class="form-group"><label class="form-lbl">¿Hay niños?</label><select class="fs" id="fni"><option>No</option><option>Sí</option></select></div>
+        <div class="form-group"><label class="form-lbl">Línea de servicio</label><select class="fs" id="fl2"><option>Nacional</option><option>Internacional</option><option>Pacífico</option><option>Especiales</option></select></div>
+        <div class="form-group"><label class="form-lbl">Sede</label><select class="fs" id="fsede"><option>Sede Principal</option><option>Hotel Cosmos</option><option>Hotel Torre Mar</option></select></div>
+        <div class="form-group"><label class="form-lbl">Asesor asignado</label><select class="fs" id="fas"><option value="">Seleccionar...</option></select></div>
+        <div class="form-group"><label class="form-lbl">Estado inicial</label><select class="fs" id="fes"><option>Prospecto</option><option>En cotización</option></select></div>
+        <div class="form-group full"><label class="form-lbl">Notas y requerimientos</label><textarea class="ft" id="fno" placeholder="Preferencias, necesidades especiales..."></textarea></div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <div id="min-data-status" style="font-size:11px;color:var(--muted);align-self:center;flex:1">Completa los 6 datos mínimos</div>
+      <button class="btn" onclick="closeM('m-nc')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-guardar-cliente" onclick="guardarCliente()">✓ Guardar cliente</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALLE CLIENTE -->
+<div class="overlay" id="m-det">
+  <div class="modal modal-lg">
+    <div class="mhdr">
+      <div><div class="mtitle" id="det-nom">—</div><div style="margin-top:5px" id="det-bdg"></div></div>
+      <button class="xbtn" onclick="closeM('m-det')">✕</button>
+    </div>
+    <div class="mbody">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--bdr)">Información</div>
+          <div id="det-info"></div>
+          <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.07em;margin:12px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--bdr)">Actualizar estado</div>
+          <div style="display:flex;gap:7px;margin-bottom:12px">
+            <select class="fs" id="det-est" style="flex:1;font-size:12px"><option>Prospecto</option><option>En cotización</option><option>Pre-reserva</option><option>Reservado</option><option>Viajó</option><option>No conforme</option></select>
+            <button class="btn btn-primary btn-sm" onclick="actEstado()">Actualizar</button>
+          </div>
+          <div style="font-size:10px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--bdr)">💬 Comentarios de visita</div>
+          <div id="det-comments" style="max-height:140px;overflow-y:auto"></div>
+          <div style="margin-top:8px">
+            <select class="fs" id="com-asesor" style="margin-bottom:6px;font-size:12px"><option value="">Seleccionar asesor...</option></select>
+            <textarea class="ft" id="com-texto" placeholder="¿Qué necesita el cliente? ¿Cómo fue la visita?" style="min-height:54px;font-size:12px"></textarea>
+            <button class="btn btn-teal btn-sm" onclick="addComment()" style="width:100%;justify-content:center;margin-top:5px">+ Agregar comentario</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--bdr)">📋 Cotizaciones</div>
+          <div id="det-cots-lista" style="max-height:120px;overflow-y:auto"></div>
+          <button class="btn btn-purple btn-sm" onclick="openNewCot()" style="width:100%;justify-content:center;margin-top:6px;background:var(--purple);color:#fff;border-color:var(--purple)">+ Nueva cotización</button>
+          <div style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.07em;margin:12px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--bdr)">📅 Próximas citas</div>
+          <div id="det-citas" style="max-height:80px;overflow-y:auto"></div>
+          <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.07em;margin:12px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--bdr)">Historial</div>
+          <ul class="timeline" id="det-tl" style="max-height:120px;overflow-y:auto"></ul>
+          <div style="margin-top:8px">
+            <select class="fs" id="int-tipo" style="margin-bottom:5px;width:100%;font-size:12px"><option>Llamada</option><option>WhatsApp</option><option>Cotización enviada</option><option>Visita presencial</option><option>Reserva confirmada</option><option>Check-in enviado</option><option>Llamada recordatorio</option><option>Feedback recibido</option><option>Nota interna</option></select>
+            <textarea class="ft" id="int-nota" placeholder="Descripción..." style="min-height:44px;width:100%;font-size:12px;margin-bottom:5px"></textarea>
+            <button class="btn btn-teal btn-sm" onclick="addInt()" style="width:100%;justify-content:center">+ Agregar interacción</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVA COTIZACIÓN -->
+<div class="overlay" id="m-cot">
+  <div class="modal modal-lg">
+    <div class="mhdr"><div class="mtitle">Nueva cotización</div><button class="xbtn" onclick="closeM('m-cot')">✕</button></div>
+    <div class="mbody">
+      <div class="form-grid" style="margin-bottom:12px">
+        <div class="form-group"><label class="form-lbl">Destino *</label><input type="text" class="fi" id="cot-dest"></div>
+        <div class="form-group"><label class="form-lbl">Tipo de servicio</label><select class="fs" id="cot-tipo"><option>Paquete turístico aéreo</option><option>Paquete terrestre</option><option>Pasadía</option><option>Tiquete nacional</option><option>Tiquete internacional</option><option>Avistamiento ballenas</option><option>Crucero Pacífico</option><option>Boda / XV años</option><option>Excursión</option></select></div>
+        <div class="form-group"><label class="form-lbl">Fecha de ida</label><input type="date" class="fi" id="cot-fida"></div>
+        <div class="form-group"><label class="form-lbl">Fecha de regreso</label><input type="date" class="fi" id="cot-freg"></div>
+        <div class="form-group"><label class="form-lbl">N° viajeros</label><input type="number" class="fi" id="cot-viaj" value="1" min="1"></div>
+        <div class="form-group"><label class="form-lbl">Válida hasta (48h)</label><input type="date" class="fi" id="cot-valida"></div>
+      </div>
+      <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:7px;text-transform:uppercase;letter-spacing:0.04em">Servicios incluidos</div>
+      <div id="serv-lista" style="margin-bottom:8px"></div>
+      <div style="display:flex;gap:7px;margin-bottom:12px">
+        <input type="text" class="fi" id="serv-nom" placeholder="Servicio (ej: Tiquetes aéreos)" style="flex:2">
+        <input type="text" class="fi" id="serv-precio" placeholder="Valor COP" style="flex:1">
+        <button class="btn btn-sm" onclick="addServicio()">+ Agregar</button>
+      </div>
+      <div class="form-group" style="margin-bottom:10px"><label class="form-lbl">Observaciones</label><textarea class="ft" id="cot-obs" placeholder="Incluye... No incluye..."></textarea></div>
+      <div style="background:rgba(15,158,122,0.06);border:1px solid rgba(15,158,122,0.2);border-radius:var(--rs);padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:12px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.05em">Total cotización</span>
+        <span style="font-size:20px;font-weight:700;color:var(--teal)" id="cot-total-val">$0</span>
+      </div>
+    </div>
+    <div class="mfoot"><button class="btn" onclick="closeM('m-cot')">Cancelar</button><button class="btn btn-primary" onclick="guardarCot()">✓ Guardar cotización</button></div>
+  </div>
+</div>
+
+<div class="toast-c" id="toast-c"></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getDatabase, ref, push, set, onValue, update, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+const cfg = {
+  apiKey:"AIzaSyCSiwt0zFr8g6jVctNfbD5kr1KAM_YFeGc",
+  authDomain:"avstravel-crm.firebaseapp.com",
+  databaseURL:"https://avstravel-crm-default-rtdb.firebaseio.com",
+  projectId:"avstravel-crm",
+  storageBucket:"avstravel-crm.firebasestorage.app",
+  messagingSenderId:"1048247230256",
+  appId:"1:1048247230256:web:885aa4026f8f93bce2b2f5"
+};
+try {
+  const app = initializeApp(cfg);
+  const db = getDatabase(app);
+  onValue(ref(db,'.info/connected'), s => {
+    const c = s.val();
+    document.getElementById('db-dot').className='db-dot'+(c?' on':'');
+    document.getElementById('db-lbl').textContent=c?'Base de datos activa':'Sin conexión';
+  });
+  onValue(ref(db,'clientes'), s => { clientes={}; if(s.exists()) s.forEach(c=>{clientes[c.key]={id:c.key,...c.val()}}); renderAll(); });
+  onValue(ref(db,'informes'), s => { informes=[]; if(s.exists()) s.forEach(c=>informes.push({id:c.key,...c.val()})); informes.sort((a,b)=>b.timestamp-a.timestamp); renderInformes(); });
+  onValue(ref(db,'asesores'), s => { asesores={}; if(s.exists()) s.forEach(c=>{asesores[c.key]={id:c.key,...c.val()}}); renderAsesores(); poblarSelects(); });
+  onValue(ref(db,'agenda'), s => { agenda=[]; if(s.exists()) s.forEach(c=>agenda.push({id:c.key,...c.val()})); renderAgenda(); renderDash(); });
+  onValue(ref(db,'sesiones'), s => { sesiones={}; if(s.exists()) s.forEach(c=>{sesiones[c.key]={id:c.key,...c.val()}}); renderLive(); });
+  window._db=db; window._ref=ref; window._push=push; window._set=set; window._upd=update; window._sts=serverTimestamp;
+} catch(e) {
+  document.getElementById('db-dot').className='db-dot';
+  document.getElementById('db-lbl').textContent='Modo local';
+  loadLocal(); renderAll(); renderInformes(); renderAsesores(); poblarSelects();
+}
+</script>
+
+<script>
+// -- STATE --
+let clientes={}, informes=[], asesores={}, agenda=[], sesiones={};
+let curId=null, cotServs=[], cotClienteId=null;
+let currentUser=null, sessionStart=null, sessionId=null, timerInt=null, clockInt=null;
+const ec={'Prospecto':'b-gray','En cotizacion':'b-blue','Pre-reserva':'b-amber','Reservado':'b-teal','Viajo':'b-teal','No conforme':'b-red'};
+const avatarColors=['#185FA5','#0F9E7A','#D85A30','#E8A020','#6B4ECC','#C73060'];
+
+// -- UTILS --
+function arr(){return Object.values(clientes)}
+function aArr(){return Object.values(asesores)}
+function today(){return new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric'})}
+function todayISO(){return new Date().toISOString().split('T')[0]}
+function ts(){return Date.now()}
+function fmt(n){return '$'+(parseFloat(n)||0).toLocaleString('es-CO')}
+function initials(n){return (n||'').split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()}
+function fmtSecs(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`}
+function getColor(name){const i=name.charCodeAt(0)%avatarColors.length;return avatarColors[i]}
+
+// -- LOGIN --
+document.getElementById('login-perfil').addEventListener('change',function(){
+  const isAsesor = this.value==='asesor';
+  const isAdmin  = this.value==='admin';
+  document.getElementById('login-asesores-wrap').style.display = isAsesor?'block':'none';
+  document.getElementById('login-pass-wrap').style.display    = isAdmin?'block':'none';
+  if(isAsesor) poblarLoginAsesores();
+});
+
+function poblarLoginAsesores(){
+  const sel = document.getElementById('login-asesor');
+  sel.innerHTML='<option value="">- Seleccionar asesor -</option>'+aArr().map(a=>`<option value="${a.id}">${a.nombre} - ${a.sede}</option>`).join('');
+}
+
+function doLogin(){
+  const perfil = document.getElementById('login-perfil').value;
+  const sede = document.getElementById('login-sede').value;
+  if(!perfil){toast('Selecciona un perfil','err');return;}
+  if(perfil==='admin'){
+    const passInput = document.getElementById('login-pass').value;
+    if(passInput !== 'avstravel2026'){toast('Contrasena incorrecta','err');return;}
+    currentUser={type:'admin',nombre:'Administrador',sede};
+    document.getElementById('admin-nav').style.display='block';
+    document.getElementById('main-btn').style.display='inline-flex';
+  } else {
+    const asId = document.getElementById('login-asesor').value;
+    if(!asId){toast('Selecciona un asesor','err');return;}
+    const as = asesores[asId];
+    if(!as){toast('Asesor no encontrado','err');return;}
+    currentUser={type:'asesor',id:asId,nombre:as.nombre,sede:as.sede,linea:as.linea};
+    document.getElementById('main-btn').style.display='inline-flex';
+  }
+  document.getElementById('sb-user-name').textContent=currentUser.nombre+' . '+currentUser.sede;
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='grid';
+  iniciarSesion();
+  iniciarReloj();
+  poblarSelects();
+  renderAll();
+}
+window.doLogin=doLogin;
+
+// -- SESION / PRESENCIA --
+function iniciarSesion(){
+  sessionStart=Date.now();
+  const sesion={
+    asesor: currentUser.nombre,
+    sede: currentUser.sede,
+    tipo: currentUser.type,
+    inicio: new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}),
+    inicioTs: sessionStart,
+    fecha: todayISO(),
+    estado:'online',
+    ausencias:[],
+    finTs:null
+  };
+  if(window._db){
+    const r=window._push(window._ref(window._db,'sesiones'));
+    sessionId=r.key;
+    window._set(r,sesion);
+  } else {
+    sessionId='s'+ts();
+    sesiones[sessionId]={id:sessionId,...sesion};
+  }
+  timerInt=setInterval(tickTimer,1000);
+}
+
+function tickTimer(){
+  if(!sessionStart) return;
+  const elapsed=Math.floor((Date.now()-sessionStart)/1000);
+  document.getElementById('sb-timer').textContent=fmtSecs(elapsed);
+  if(window._db && sessionId){
+    window._upd(window._ref(window._db,'sesiones/'+sessionId),{elapsedSecs:elapsed});
+  }
+}
+
+function marcarSalida(){
+  if(!confirm('?Cerrar sesion?')) return;
+  if(timerInt) clearInterval(timerInt);
+  if(clockInt) clearInterval(clockInt);
+  const fin=new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+  const elapsed=Math.floor((Date.now()-sessionStart)/1000);
+  if(window._db && sessionId){
+    window._upd(window._ref(window._db,'sesiones/'+sessionId),{estado:'offline',fin,finTs:Date.now(),elapsedSecs:elapsed});
+  }
+  setTimeout(()=>{ document.getElementById('app').style.display='none'; document.getElementById('login-screen').style.display='flex'; currentUser=null; sessionStart=null; sessionId=null; },300);
+}
+window.marcarSalida=marcarSalida;
+
+function iniciarReloj(){
+  clockInt=setInterval(()=>{
+    document.getElementById('live-hora').textContent=new Date().toLocaleTimeString('es-CO');
+  },1000);
+}
+
+// -- NAVIGATION --
+const pm={
+  dashboard:{t:'Dashboard',b:'Vista general',btn:true},
+  clientes:{t:'Clientes',b:'Base de datos',btn:true},
+  pipeline:{t:'Pipeline',b:'Embudo de negocio',btn:true},
+  agenda:{t:'Agenda',b:'Citas y reuniones',btn:false},
+  cotizaciones:{t:'Cotizaciones',b:'Historial completo',btn:false},
+  informe:{t:'Informe diario',b:'Operaciones',btn:false},
+  posventa:{t:'Pos-venta',b:'Seguimiento',btn:false},
+  'admin-live':{t:'Asesores en vivo',b:'Administracion',btn:false},
+  'admin-reportes':{t:'Reportes',b:'Analisis de gestion',btn:false},
+  'admin-asesores':{t:'Gestion de asesores',b:'Equipo',btn:false}
+};
+function nav(v,el){
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  document.getElementById('v-'+v).classList.add('active');
+  if(el) el.classList.add('active');
+  const m=pm[v]||{};
+  document.getElementById('page-title').textContent=m.t||v;
+  document.getElementById('page-badge').textContent=m.b||'';
+  document.getElementById('main-btn').style.display=m.btn?'inline-flex':'none';
+  if(v==='clientes') renderClientes();
+  if(v==='pipeline') renderPipeline();
+  if(v==='agenda'){renderAgenda();poblarSelects();}
+  if(v==='cotizaciones') renderCotizaciones();
+  if(v==='consolidadoras') renderConsolidadoras();
+  if(v==='exportar') {};
+  if(v==='posventa') renderPV();
+  if(v==='dashboard') renderDash();
+  if(v==='informe'){document.getElementById('inf-f').valueAsDate=new Date();poblarSelects();}
+  if(v==='admin-live') renderLive();
+  if(v==='admin-reportes'){generarReporte();poblarRepAsesor();}
+  if(v==='admin-asesores') renderAsesores();
+}
+window.nav=nav;
+
+function handleMainBtn(){openModal('m-nc');poblarSelects();checkMinData();}
+window.handleMainBtn=handleMainBtn;
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeM(id){document.getElementById(id).classList.remove('open')}
+window.closeM=closeM;
+
+// -- DATOS MINIMOS --
+const MIN_FIELDS=['fn','ft2','fd2','fp2','ffida','ffreg'];
+function checkMinData(){
+  const vals=MIN_FIELDS.map(id=>document.getElementById(id)?.value?.trim()||'');
+  const filled=vals.filter(v=>v!=='').length;
+  const bar=document.getElementById('min-data-bar');
+  if(bar){
+    bar.innerHTML=MIN_FIELDS.map((_,i)=>`<div class="min-data-dot ${i<filled?(filled===6?'filled':'partial'):''}"></div>`).join('');
+  }
+  const st=document.getElementById('min-data-status');
+  if(st){
+    if(filled===6){st.textContent='v Datos minimos completos';st.style.color='var(--teal)';}
+    else{st.textContent=`${filled}/6 datos completados`;st.style.color='var(--muted)';}
+  }
+}
+window.checkMinData=checkMinData;
+
+// -- ASESORES --
+function poblarSelects(){
+  const a=aArr();
+  ['fas','inf-a','ag-asesor','com-asesor'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    const cur=el.value;
+    el.innerHTML='<option value="">Seleccionar...</option>'+a.map(x=>`<option value="${x.nombre}">${x.nombre} - ${x.sede}</option>`).join('');
+    if(cur) el.value=cur;
+  });
+  const agCl=document.getElementById('ag-cliente');
+  if(agCl){
+    const cur=agCl.value;
+    agCl.innerHTML='<option value="">Seleccionar cliente...</option>'+arr().sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('');
+    if(cur) agCl.value=cur;
+  }
+  poblarLoginAsesores();
+}
+
+function guardarAsesor(){
+  const nombre=document.getElementById('as-nombre').value.trim();
+  if(!nombre){toast('El nombre es obligatorio','err');return;}
+  const a={nombre,sede:document.getElementById('as-sede').value,linea:document.getElementById('as-linea').value,cargo:document.getElementById('as-cargo').value,tel:document.getElementById('as-tel').value,email:document.getElementById('as-email').value,createdAt:ts()};
+  if(window._db){const r=window._push(window._ref(window._db,'asesores'));window._set(r,a).then(()=>toast('v Asesor registrado'));}
+  else{const id='a'+ts();asesores[id]={id,...a};saveLocal();renderAsesores();poblarSelects();toast('v Asesor registrado');}
+  ['as-nombre','as-cargo','as-tel','as-email'].forEach(i=>document.getElementById(i).value='');
+}
+window.guardarAsesor=guardarAsesor;
+
+function renderAsesores(){
+  const el=document.getElementById('asesores-lista');
+  if(!el) return;
+  const a=aArr();
+  if(!a.length){el.innerHTML='<div class="empty"><div class="empty-icon"></div><div class="empty-title">Sin asesores</div></div>';return;}
+  el.innerHTML=['Sede Principal','Hotel Cosmos','Hotel Torre Mar'].map(s=>{
+    const sa=a.filter(x=>x.sede===s);
+    if(!sa.length) return '';
+    return `<div style="margin-bottom:12px"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">${s}</div>
+    ${sa.map(x=>`<div style="display:flex;align-items:center;gap:9px;padding:8px;background:var(--light);border-radius:var(--rs);margin-bottom:4px;border:1px solid var(--bdr)">
+      <div style="width:30px;height:30px;border-radius:50%;background:${getColor(x.nombre)};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">${initials(x.nombre)}</div>
+      <div style="flex:1"><div style="font-size:12.5px;font-weight:600">${x.nombre}</div><div style="font-size:10.5px;color:var(--muted)">${x.cargo||'Asesor'} . ${x.linea}</div></div>
+      <span class="badge b-navy" style="font-size:10px">${x.sede}</span>
+    </div>`).join('')}</div>`;
+  }).join('');
+}
+
+// -- CLIENTES --
+function guardarCliente(){
+  const nombre=document.getElementById('fn').value.trim();
+  const tel=document.getElementById('ft2').value.trim();
+  const destino=document.getElementById('fd2').value.trim();
+  const presupuesto=document.getElementById('fp2').value.trim();
+  const fida=document.getElementById('ffida').value;
+  const freg=document.getElementById('ffreg').value;
+  if(!nombre||!tel||!destino||!presupuesto||!fida||!freg){toast('Completa los 6 datos minimos obligatorios','err');return;}
+  const c={
+    nombre,tel,destino,presupuesto,fechaIda:fida,fechaRegreso:freg,
+    email:document.getElementById('fe2').value,doc:document.getElementById('fdoc').value,
+    ciudad:document.getElementById('fci').value,viajeros:parseInt(document.getElementById('fv2').value)||1,
+    ninos:document.getElementById('fni').value,linea:document.getElementById('fl2').value,
+    sede:document.getElementById('fsede').value,asesor:document.getElementById('fas').value,
+    estado:document.getElementById('fes').value,notas:document.getElementById('fno').value,
+    interacciones:[{tipo:'Registro',nota:'Cliente registrado en CRM AVSTRAVEL.',fecha:today(),ts:ts()}],
+    comentarios:[],cotizaciones:[],createdAt:ts()
+  };
+  if(window._db){const r=window._push(window._ref(window._db,'clientes'));window._set(r,c).then(()=>toast('v Cliente guardado'));}
+  else{const id='c'+ts();clientes[id]={id,...c};saveLocal();renderAll();toast('v Cliente guardado');}
+  closeM('m-nc');
+  ['fn','ft2','fe2','fdoc','fci','fd2','fp2','fno','ffida','ffreg'].forEach(i=>document.getElementById(i).value='');
+}
+window.guardarCliente=guardarCliente;
+
+function renderClientes(){
+  const q=(document.getElementById('srch')?.value||'').toLowerCase();
+  const fl=document.getElementById('fil-l')?.value||'';
+  const fe=document.getElementById('fil-e')?.value||'';
+  const a=arr().filter(c=>{
+    const m=!q||(c.nombre+c.tel+(c.email||'')+(c.destino||'')).toLowerCase().includes(q);
+    return m&&(!fl||c.linea===fl)&&(!fe||c.estado===fe);
+  }).sort((a,b)=>b.createdAt-a.createdAt);
+  const tb=document.getElementById('cl-tb'),em=document.getElementById('cl-empty');
+  if(!a.length){if(tb)tb.innerHTML='';if(em)em.style.display='block';return;}
+  if(em)em.style.display='none';
+  const MIN=['nombre','tel','destino','presupuesto','fechaIda','fechaRegreso'];
+  if(tb)tb.innerHTML=a.map(c=>{
+    const filled=MIN.filter(k=>c[k]).length;
+    const pct=Math.round((filled/6)*100);
+    const col=filled===6?'var(--teal)':filled>=3?'var(--amber)':'var(--coral)';
+    return `<tr onclick="openDet('${c.id}')">
+      <td><div style="display:flex;align-items:center;gap:5px"><div style="width:36px;height:5px;background:var(--bdr2);border-radius:3px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${col}"></div></div><span style="font-size:10px;color:${col};font-weight:700">${filled}/6</span></div></td>
+      <td style="font-weight:600">${c.nombre}</td>
+      <td style="color:var(--muted);font-size:12px">${c.tel}</td>
+      <td>${c.destino||'-'}</td>
+      <td style="font-size:11px">${c.fechaIda||'-'} -> ${c.fechaRegreso||'-'}</td>
+      <td style="color:var(--teal);font-weight:600">${c.presupuesto?'$'+c.presupuesto:'-'}</td>
+      <td><span class="badge ${ec[c.estado]||'b-gray'}">${c.estado}</span></td>
+      <td style="font-size:11px;color:var(--muted)">${c.asesor||'-'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// -- DETALLE --
+function openDet(id){
+  curId=id;const c=clientes[id];if(!c) return;
+  document.getElementById('det-nom').textContent=c.nombre;
+  document.getElementById('det-bdg').innerHTML=`<span class="badge ${ec[c.estado]||'b-gray'}">${c.estado}</span> <span class="badge b-navy" style="margin-left:5px">${c.linea}</span>`;
+  document.getElementById('det-est').value=c.estado;
+  document.getElementById('det-info').innerHTML=[
+    ['Telefono',c.tel],['Correo',c.email||'-'],['Destino',c.destino||'-'],
+    ['Fecha ida',c.fechaIda||'-'],['Fecha regreso',c.fechaRegreso||'-'],
+    ['Presupuesto',c.presupuesto?'$'+c.presupuesto:'-'],
+    ['Viajeros',c.viajeros],['Sede',c.sede||'-'],['Asesor',c.asesor||'-']
+  ].map(([k,v])=>`<div style="display:flex;padding:5px 0;border-bottom:1px solid var(--bdr);font-size:12px"><span style="color:var(--muted);min-width:110px;font-weight:500">${k}</span><span style="font-weight:500">${v}</span></div>`).join('');
+  renderTL(c);renderComments(c);renderDetCots(c);renderDetCitas(c);
+  poblarSelects();
+  document.getElementById('int-nota').value='';
+  document.getElementById('com-texto').value='';
+  openModal('m-det');
+}
+window.openDet=openDet;
+
+function renderTL(c){
+  const tl=document.getElementById('det-tl');
+  const ints=c.interacciones||[];
+  tl.innerHTML=ints.length?[...ints].reverse().map(i=>`<li class="tl-item"><div class="tl-dot"></div><div class="tl-date">${i.fecha}</div><div class="tl-text">${i.nota}</div><span class="tl-type">${i.tipo}</span></li>`).join(''):'<li style="font-size:12px;color:var(--hint)">Sin interacciones</li>';
+}
+
+function renderComments(c){
+  const el=document.getElementById('det-comments');
+  const coms=c.comentarios||[];
+  el.innerHTML=coms.length?[...coms].reverse().map(cm=>`
+    <div style="background:var(--light);border-radius:var(--rs);padding:8px 10px;margin-bottom:5px;border-left:3px solid var(--teal)">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+        <span style="font-size:10.5px;font-weight:700;color:var(--teal)">${cm.asesor}</span>
+        <span style="font-size:10px;color:var(--hint)">${cm.fecha}</span>
+        ${cm.sede?`<span style="font-size:9px;background:rgba(11,42,74,0.06);padding:1px 6px;border-radius:20px;color:var(--muted)">${cm.sede}</span>`:''}
+      </div>
+      <div style="font-size:12px;color:var(--navy)">${cm.texto}</div>
+    </div>`).join(''):'<div style="font-size:11.5px;color:var(--hint);margin-bottom:6px">Sin comentarios aun</div>';
+}
+
+function renderDetCots(c){
+  const el=document.getElementById('det-cots-lista');
+  const cots=c.cotizaciones||[];
+  el.innerHTML=cots.length?[...cots].map((ct,i)=>`
+    <div style="background:var(--light);border-radius:var(--rs);padding:8px 10px;margin-bottom:5px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:12px;font-weight:600">${ct.destino}</span>
+        <span style="font-size:13px;font-weight:700;color:var(--teal)">${fmt(ct.total)}</span>
+      </div>
+      <div style="font-size:10.5px;color:var(--muted);margin-bottom:5px">${ct.tipo} . ${ct.viajeros} viajero(s)</div>
+      <button onclick="verCotPDF('${c.id}',${i})" style="padding:3px 10px;font-size:10px;background:var(--purple);color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:600"> Ver / Imprimir PDF</button>
+    </div>`).join(''):'<div style="font-size:11.5px;color:var(--hint);margin-bottom:5px">Sin cotizaciones</div>';
+}
+
+function renderDetCitas(c){
+  const el=document.getElementById('det-citas');
+  const citas=agenda.filter(a=>a.clienteId===c.id).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+  el.innerHTML=citas.length?citas.slice(0,3).map(ct=>`
+    <div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--bdr);font-size:11.5px">
+      <span style="color:var(--amber);font-weight:700">${ct.fecha}</span>
+      <span style="color:var(--muted)">${ct.hora}</span>
+      <span style="flex:1;color:var(--navy)">${ct.tipo}</span>
+    </div>`).join(''):'<div style="font-size:11px;color:var(--hint)">Sin citas agendadas</div>';
+}
+
+function addComment(){
+  if(!curId) return;
+  const texto=document.getElementById('com-texto').value.trim();
+  const asesorNom=document.getElementById('com-asesor').value;
+  if(!texto){toast('Escribe un comentario','err');return;}
+  if(!asesorNom){toast('Selecciona el asesor','err');return;}
+  const as=aArr().find(a=>a.nombre===asesorNom);
+  const com={asesor:asesorNom,sede:as?as.sede:'',texto,fecha:today(),ts:ts()};
+  const coms=[...(clientes[curId].comentarios||[]),com];
+  if(window._db){window._upd(window._ref(window._db,'clientes/'+curId),{comentarios:coms}).then(()=>toast('v Comentario agregado'));}
+  else{clientes[curId].comentarios=coms;saveLocal();renderComments(clientes[curId]);toast('v Comentario agregado');}
+  document.getElementById('com-texto').value='';
+}
+window.addComment=addComment;
+
+function addInt(){
+  if(!curId) return;
+  const nota=document.getElementById('int-nota').value.trim();
+  if(!nota){toast('Escribe una descripcion','err');return;}
+  const tipo=document.getElementById('int-tipo').value;
+  const ints=[...(clientes[curId].interacciones||[]),{tipo,nota,fecha:today(),ts:ts()}];
+  if(window._db){window._upd(window._ref(window._db,'clientes/'+curId),{interacciones:ints}).then(()=>toast('v Interaccion registrada'));}
+  else{clientes[curId].interacciones=ints;saveLocal();renderTL(clientes[curId]);renderAll();toast('v Interaccion registrada');}
+  document.getElementById('int-nota').value='';
+}
+window.addInt=addInt;
+
+function actEstado(){
+  if(!curId) return;
+  const nuevo=document.getElementById('det-est').value;
+  if(window._db){window._upd(window._ref(window._db,'clientes/'+curId),{estado:nuevo}).then(()=>{toast('v Estado: '+nuevo);closeM('m-det');});}
+  else{clientes[curId].estado=nuevo;saveLocal();renderAll();closeM('m-det');toast('v Estado: '+nuevo);}
+}
+window.actEstado=actEstado;
+
+// -- AGENDA --
+function guardarCita(){
+  const clienteId=document.getElementById('ag-cliente').value;
+  const fecha=document.getElementById('ag-fecha').value;
+  const hora=document.getElementById('ag-hora').value;
+  if(!clienteId||!fecha||!hora){toast('Cliente, fecha y hora son obligatorios','err');return;}
+  const c=clientes[clienteId];
+  const cita={clienteId,clienteNom:c?c.nombre:'-',asesor:document.getElementById('ag-asesor').value,fecha,hora,tipo:document.getElementById('ag-tipo').value,prioridad:document.getElementById('ag-prio').value,notas:document.getElementById('ag-notas').value,completada:false,createdAt:ts()};
+  if(window._db){const r=window._push(window._ref(window._db,'agenda'));window._set(r,cita).then(()=>toast('v Cita agendada'));}
+  else{const id='ag'+ts();agenda.push({id,...cita});saveLocal();renderAgenda();renderDash();toast('v Cita agendada');}
+  ['ag-notas'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('ag-fecha').value='';
+  document.getElementById('ag-hora').value='';
+}
+window.guardarCita=guardarCita;
+
+function renderAgenda(){
+  const el=document.getElementById('agenda-lista');
+  if(!el) return;
+  const filtro=document.getElementById('ag-filtro')?.value||'todas';
+  const hoy=todayISO();
+  const finSemana=new Date();finSemana.setDate(finSemana.getDate()+7);
+  const fws=finSemana.toISOString().split('T')[0];
+  let citas=[...agenda].sort((a,b)=>a.fecha.localeCompare(b.fecha)||a.hora.localeCompare(b.hora));
+  if(filtro==='hoy') citas=citas.filter(c=>c.fecha===hoy);
+  else if(filtro==='semana') citas=citas.filter(c=>c.fecha>=hoy&&c.fecha<=fws);
+  if(!citas.length){el.innerHTML='<div class="empty"><div class="empty-icon"></div><div class="empty-title">Sin citas</div></div>';return;}
+  el.innerHTML=citas.map(c=>{
+    const esHoy=c.fecha===hoy;
+    const esUrgente=c.prioridad==='urgente';
+    return `<div class="agenda-item ${esUrgente?'urgente':''} ${esHoy?'hoy':''}" onclick="openDet('${c.clienteId}')">
+      <div class="agenda-time">${c.hora} . ${c.fecha} ${esHoy?'<span style="color:var(--teal)">HOY</span>':''} ${esUrgente?'<span style="color:var(--coral)">URGENTE</span>':''}</div>
+      <div class="agenda-title">${c.tipo}</div>
+      <div class="agenda-client"> ${c.clienteNom} . ${c.asesor||'Sin asesor'}</div>
+      ${c.notas?`<div style="font-size:11px;color:var(--hint);margin-top:3px">${c.notas}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// -- COTIZACIONES --
+function openNewCot(){
+  cotServs=[];cotClienteId=curId;
+  const c=clientes[curId];
+  document.getElementById('cot-dest').value=c?.destino||'';
+  document.getElementById('cot-viaj').value=c?.viajeros||1;
+  document.getElementById('cot-fida').value=c?.fechaIda||'';
+  document.getElementById('cot-freg').value=c?.fechaRegreso||'';
+  ['cot-obs'].forEach(i=>document.getElementById(i).value='');
+  const v=new Date();v.setDate(v.getDate()+2);
+  document.getElementById('cot-valida').valueAsDate=v;
+  renderServLista();closeM('m-det');openModal('m-cot');
+}
+window.openNewCot=openNewCot;
+
+function addServicio(){
+  const nom=document.getElementById('serv-nom').value.trim();
+  if(!nom){toast('Escribe el nombre del servicio','err');return;}
+  const precio=parseFloat(document.getElementById('serv-precio').value.replace(/\./g,'').replace(/,/g,'.'))||0;
+  cotServs.push({nom,precio});
+  document.getElementById('serv-nom').value='';
+  document.getElementById('serv-precio').value='';
+  renderServLista();
+}
+window.addServicio=addServicio;
+
+function delServicio(i){cotServs.splice(i,1);renderServLista();}
+window.delServicio=delServicio;
+
+function renderServLista(){
+  const el=document.getElementById('serv-lista');
+  const total=cotServs.reduce((s,x)=>s+x.precio,0);
+  el.innerHTML=cotServs.length?cotServs.map((s,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bdr)"><span style="flex:1;font-size:13px">${s.nom}</span><span style="font-size:13px;font-weight:600">${fmt(s.precio)}</span><button onclick="delServicio(${i})" style="background:none;border:none;cursor:pointer;color:var(--coral);font-size:15px">x</button></div>`).join(''):'<div style="font-size:12px;color:var(--hint);padding:5px 0">Agrega los servicios incluidos</div>';
+  document.getElementById('cot-total-val').textContent=fmt(total);
+}
+
+function guardarCot(){
+  const dest=document.getElementById('cot-dest').value.trim();
+  if(!dest){toast('Escribe el destino','err');return;}
+  const cot={destino:dest,tipo:document.getElementById('cot-tipo').value,fida:document.getElementById('cot-fida').value,freg:document.getElementById('cot-freg').value,viajeros:parseInt(document.getElementById('cot-viaj').value)||1,valida:document.getElementById('cot-valida').value,obs:document.getElementById('cot-obs').value,servicios:cotServs,total:cotServs.reduce((s,x)=>s+x.precio,0),fecha:today(),ts:ts()};
+  const c=clientes[cotClienteId];if(!c) return;
+  const cots=[...(c.cotizaciones||[]),cot];
+  if(window._db){window._upd(window._ref(window._db,'clientes/'+cotClienteId),{cotizaciones:cots,estado:'En cotizacion'}).then(()=>{toast('v Cotizacion guardada');closeM('m-cot');openDet(cotClienteId);});}
+  else{clientes[cotClienteId].cotizaciones=cots;clientes[cotClienteId].estado='En cotizacion';saveLocal();renderAll();closeM('m-cot');toast('v Cotizacion guardada');}
+}
+window.guardarCot=guardarCot;
+
+function renderCotizaciones(){
+  const el=document.getElementById('cots-lista');
+  const todas=[];
+  arr().forEach(c=>(c.cotizaciones||[]).forEach(ct=>todas.push({...ct,clienteNom:c.nombre,clienteId:c.id,asesor:c.asesor,sede:c.sede,presupuesto:c.presupuesto,telefono:c.telefono,email:c.email})));
+  todas.sort((a,b)=>b.ts-a.ts);
+  if(!todas.length){el.innerHTML='<div class="empty"><div class="empty-icon"></div><div class="empty-title">Sin cotizaciones</div></div>';return;}
+  // Add PDF buttons to cotizaciones
+  el.innerHTML=todas.map((ct,i)=>`
+    <div style="background:var(--white);border:1px solid var(--bdr);border-radius:var(--r);padding:14px;margin-bottom:10px;cursor:pointer" onclick="openDet('${ct.clienteId}')">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
+        <div><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em">Cotizacion #${todas.length-i} . ${ct.fecha}</div>
+        <div style="font-size:15px;font-weight:600;color:var(--navy);margin-top:2px">${ct.clienteNom}</div></div>
+        <div style="text-align:right"><span style="font-size:11px;background:rgba(24,95,165,0.08);color:var(--blue);padding:2px 9px;border-radius:20px;font-weight:600">${ct.asesor||'-'}</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px">
+        ${[['Destino',ct.destino],['Servicio',ct.tipo],['Viajeros',ct.viajeros],['Ida',ct.fida||'-'],['Regreso',ct.freg||'-'],['Valida',ct.valida||'-']].map(([k,v])=>`<div style="background:var(--light);border-radius:var(--rs);padding:7px 9px"><div style="font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px">${k}</div><div style="font-size:12.5px;font-weight:500">${v}</div></div>`).join('')}
+      </div>
+      ${ct.servicios?.length?`<div style="margin-bottom:8px">${ct.servicios.map(s=>`<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--bdr)"><span>${s.nom}</span><span style="font-weight:600">${fmt(s.precio)}</span></div>`).join('')}</div>`:''}
+      <div style="background:rgba(15,158,122,0.06);border:1px solid rgba(15,158,122,0.2);border-radius:var(--rs);padding:8px 12px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase">Total</span>
+        <span style="font-size:18px;font-weight:700;color:var(--teal)">${fmt(ct.total)}</span>
+      </div>
+    </div>`).join('');
+}
+
+// -- PIPELINE --
+function renderPipeline(){
+  ['Prospecto','En cotizacion','Pre-reserva','Reservado','Viajo'].forEach((s,i)=>{
+    const cards=arr().filter(c=>c.estado===s);
+    const el=document.getElementById('p'+i),cnt=document.getElementById('pc'+i);
+    if(cnt) cnt.textContent=cards.length;
+    if(el) el.innerHTML=cards.length?cards.map(c=>`<div class="pipe-card" onclick="openDet('${c.id}')"><div style="font-weight:600;font-size:12px;margin-bottom:2px">${c.nombre}</div><div style="font-size:11px;color:var(--muted)">${c.destino||'-'}</div><div style="font-size:11.5px;font-weight:600;color:var(--teal);margin-top:3px">${c.presupuesto?'$'+c.presupuesto:''}</div></div>`).join(''):'<div style="font-size:11px;color:var(--hint);text-align:center;padding:10px">Sin clientes</div>';
+  });
+}
+
+// -- POS-VENTA --
+function renderPV(){
+  const a=arr().filter(c=>['Reservado','Viajo'].includes(c.estado));
+  const tb=document.getElementById('pv-tb'),em=document.getElementById('pv-empty');
+  if(!a.length){if(tb)tb.innerHTML='';if(em)em.style.display='block';return;}
+  if(em)em.style.display='none';
+  if(tb)tb.innerHTML=a.map(c=>{
+    const ints=c.interacciones||[];
+    const ch=ints.some(i=>i.tipo==='Check-in enviado')?'<span class="badge b-teal">Hecho</span>':'<span class="badge b-gray">Pendiente</span>';
+    const ll=ints.some(i=>i.tipo==='Llamada recordatorio')?'<span class="badge b-teal">Hecha</span>':'<span class="badge b-gray">Pendiente</span>';
+    const fb=ints.some(i=>i.tipo==='Feedback recibido')?'<span class="badge b-teal">Recibido</span>':'<span class="badge b-amber">Pendiente</span>';
+    return `<tr onclick="openDet('${c.id}')"><td style="font-weight:600">${c.nombre}</td><td>${c.destino||'-'}</td><td style="font-size:11px">${c.fechaIda||'-'}</td><td>${ch}</td><td>${ll}</td><td>${fb}</td><td><span class="badge ${ec[c.estado]||'b-gray'}">${c.estado}</span></td></tr>`;
+  }).join('');
+}
+
+// -- DASHBOARD --
+function renderDash(){
+  const a=arr();
+  document.getElementById('s1').textContent=a.length;
+  document.getElementById('s2').textContent=a.filter(c=>['En cotizacion','Pre-reserva','Reservado'].includes(c.estado)).length;
+  const hoy=todayISO();
+  document.getElementById('s3').textContent=agenda.filter(c=>c.fecha===hoy).length;
+  document.getElementById('s4').textContent=a.filter(c=>c.estado==='En cotizacion').length;
+  const rec=[...a].sort((a,b)=>b.createdAt-a.createdAt).slice(0,5);
+  document.getElementById('dash-act').innerHTML=rec.length?rec.map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bdr);cursor:pointer" onclick="openDet('${c.id}')">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:26px;height:26px;border-radius:50%;background:${getColor(c.nombre)};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">${initials(c.nombre)}</div>
+      <div><div style="font-size:12.5px;font-weight:600">${c.nombre}</div><div style="font-size:10.5px;color:var(--muted)">${c.destino||'-'}</div></div>
+    </div>
+    <span class="badge ${ec[c.estado]||'b-gray'}">${c.estado}</span>
+  </div>`).join(''):'<div class="empty" style="padding:20px"><div class="empty-title">Sin actividad</div></div>';
+  const proxCitas=agenda.filter(c=>c.fecha>=hoy).sort((a,b)=>a.fecha.localeCompare(b.fecha)||a.hora.localeCompare(b.hora)).slice(0,4);
+  document.getElementById('dash-agenda').innerHTML=proxCitas.length?proxCitas.map(c=>`<div class="agenda-item ${c.prioridad==='urgente'?'urgente':''} ${c.fecha===hoy?'hoy':''}" style="margin-bottom:6px" onclick="nav('agenda',null)">
+    <div class="agenda-time">${c.hora} . ${c.fecha} ${c.fecha===hoy?'<strong style="color:var(--teal)">HOY</strong>':''}</div>
+    <div class="agenda-title">${c.tipo}</div>
+    <div class="agenda-client"> ${c.clienteNom}</div>
+  </div>`).join(''):'<div class="empty" style="padding:20px"><div class="empty-title">Sin citas proximas</div></div>';
+}
+
+// -- INFORME --
+function guardarInforme(){
+  const asesor=document.getElementById('inf-a').value;
+  if(!asesor){toast('Selecciona el asesor','err');return;}
+  const inf={fecha:document.getElementById('inf-f').value,asesor,sede:document.getElementById('inf-s').value,jornada:document.getElementById('inf-j').value,atendidos:parseInt(document.getElementById('inf-at').value)||0,cotizaciones:parseInt(document.getElementById('inf-c').value)||0,ventas:parseInt(document.getElementById('inf-v').value)||0,llamadas:parseInt(document.getElementById('inf-ll').value)||0,actividades:document.getElementById('inf-act').value,observaciones:document.getElementById('inf-obs').value,timestamp:ts()};
+  if(window._db){const r=window._push(window._ref(window._db,'informes'));window._set(r,inf).then(()=>toast('v Informe enviado'));}
+  else{informes.unshift({id:'i'+ts(),...inf});saveLocal();renderInformes();toast('v Informe guardado');}
+  ['inf-act','inf-obs','inf-j'].forEach(i=>document.getElementById(i).value='');
+  ['inf-at','inf-c','inf-v','inf-ll'].forEach(i=>document.getElementById(i).value='0');
+}
+window.guardarInforme=guardarInforme;
+
+function renderInformes(){
+  const el=document.getElementById('inf-hist');if(!el) return;
+  if(!informes.length){el.innerHTML='<div class="empty"><div class="empty-icon"></div><div class="empty-title">Sin informes</div></div>';return;}
+  el.innerHTML=informes.slice(0,6).map(inf=>`<div style="padding:10px;border:1px solid var(--bdr);border-radius:var(--rs);margin-bottom:7px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="font-weight:600;font-size:12.5px">${inf.asesor} . ${inf.sede}</span><span style="font-size:10.5px;color:var(--hint)">${inf.fecha}</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">${[['Atendidos',inf.atendidos],['Cot.',inf.cotizaciones],['Ventas',inf.ventas],['Llamadas',inf.llamadas]].map(([k,v])=>`<div style="background:var(--light);border-radius:5px;padding:5px;text-align:center"><div style="font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase">${k}</div><div style="font-size:16px;font-weight:700;color:var(--navy)">${v}</div></div>`).join('')}</div>
+  </div>`).join('');
+}
+
+// -- ADMIN: EN VIVO --
+function renderLive(){
+  const el=document.getElementById('live-asesores');if(!el) return;
+  const hoy=todayISO();
+  const sesHoy=Object.values(sesiones).filter(s=>s.fecha===hoy);
+  if(!sesHoy.length){el.innerHTML='<div class="empty"><div class="empty-icon"></div><div class="empty-title">Ningun asesor ha iniciado sesion hoy</div></div>';return;}
+  el.innerHTML=sesHoy.map(s=>{
+    const online=s.estado==='online';
+    const elapsed=s.elapsedSecs||0;
+    const col=online?getColor(s.asesor):'#aaa';
+    return `<div class="asesor-row-live">
+      <div class="asesor-avatar" style="background:${col}">${initials(s.asesor)}</div>
+      <div class="asesor-info">
+        <div class="asesor-name">${s.asesor}</div>
+        <div class="asesor-meta"><span class="presence-dot ${online?'p-online':'p-offline'}"></span>${s.sede} . Entro: ${s.inicio}${s.fin?' . Salio: '+s.fin:''}</div>
+      </div>
+      <div class="asesor-time">
+        <div class="asesor-elapsed ${online?'online':'offline'}">${fmtSecs(elapsed)}</div>
+        <div style="font-size:10px;color:var(--hint)">${online?'En sesion':'Fuera'}</div>
+      </div>
+      <span class="badge ${online?'b-teal':'b-gray'}" style="margin-left:8px">${online?'Online':'Offline'}</span>
+    </div>`;
+  }).join('');
+
+  const resEl=document.getElementById('live-resumen');
+  if(resEl){
+    const online=sesHoy.filter(s=>s.estado==='online').length;
+    const totalTiempo=sesHoy.reduce((s,x)=>s+(x.elapsedSecs||0),0);
+    resEl.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      ${[['Online ahora',online,'var(--teal)'],['Total sesiones',sesHoy.length,'var(--blue)'],['Tiempo total',fmtSecs(totalTiempo),'var(--navy)'],['Offline',sesHoy.filter(s=>s.estado!=='online').length,'var(--muted)']].map(([k,v,c])=>`<div style="background:var(--light);border-radius:var(--rs);padding:10px;text-align:center"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:3px">${k}</div><div style="font-size:18px;font-weight:700;color:${c}">${v}</div></div>`).join('')}
+    </div>`;
+  }
+}
+
+// -- REPORTES --
+function poblarRepAsesor(){
+  const el=document.getElementById('rep-asesor');if(!el) return;
+  el.innerHTML='<option value="">Todos los asesores</option>'+aArr().map(a=>`<option value="${a.nombre}">${a.nombre}</option>`).join('');
+}
+
+function generarReporte(){
+  const el=document.getElementById('reporte-contenido');if(!el) return;
+  const periodo=document.getElementById('rep-periodo')?.value||'mes';
+  const filtroAsesor=document.getElementById('rep-asesor')?.value||'';
+  const ahora=new Date();
+  let desde=new Date(),label='';
+  if(periodo==='semana'){desde.setDate(ahora.getDate()-7);label='Ultima semana';}
+  else if(periodo==='quincena'){desde.setDate(ahora.getDate()-15);label='Ultima quincena';}
+  else if(periodo==='mes'){desde.setMonth(ahora.getMonth()-1);label='Ultimo mes';}
+  else{desde.setMonth(ahora.getMonth()-3);label='Ultimo trimestre';}
+  const desdeISO=desde.toISOString().split('T')[0];
+
+  const infsF=informes.filter(i=>i.fecha>=desdeISO&&(!filtroAsesor||i.asesor===filtroAsesor));
+  const sesF=Object.values(sesiones).filter(s=>s.fecha>=desdeISO&&(!filtroAsesor||s.asesor===filtroAsesor));
+  const clF=arr().filter(c=>new Date(c.createdAt)>=desde&&(!filtroAsesor||c.asesor===filtroAsesor));
+
+  const totAt=infsF.reduce((s,i)=>s+i.atendidos,0);
+  const totCots=infsF.reduce((s,i)=>s+i.cotizaciones,0);
+  const totVentas=infsF.reduce((s,i)=>s+i.ventas,0);
+  const totLlamadas=infsF.reduce((s,i)=>s+i.llamadas,0);
+  const totTiempo=sesF.reduce((s,x)=>s+(x.elapsedSecs||0),0);
+  const viajaron=clF.filter(c=>c.estado==='Viajo').length;
+  const tCierre=clF.length>0?Math.round((viajaron/clF.length)*100):0;
+
+  el.innerHTML=`<div class="report-card">
+    <div class="report-header">
+      <div class="report-title"> Reporte de gestion${filtroAsesor?' - '+filtroAsesor:''}</div>
+      <div class="report-period">${label} . Desde ${desdeISO}</div>
+    </div>
+    <div class="report-grid">
+      ${[['Clientes atendidos',totAt,''],['Cotizaciones',totCots,''],['Ventas cerradas',totVentas,'v'],['Llamadas',totLlamadas,''],['Nuevos clientes',clF.length,'+'],['Tiempo en sesion',fmtSecs(totTiempo),''],['Tasa de cierre',tCierre+'%',''],['Informes enviados',infsF.length,'']].map(([k,v,i])=>`<div class="report-metric"><div class="report-metric-lbl">${i} ${k}</div><div class="report-metric-val">${v}</div></div>`).join('')}
+    </div>
+    ${infsF.length?`<div style="margin-top:12px"><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Clientes atendidos por dia</div>
+    <div class="bar-chart">${infsF.slice(-7).map(inf=>{const mx=Math.max(...infsF.map(i=>i.atendidos),1);return`<div class="bar-wrap"><div class="bar-fill" style="height:${Math.round((inf.atendidos/mx)*72)+4}px"></div><div class="bar-lbl">${inf.fecha.slice(5)}</div></div>`}).join('')}</div></div>`:''}
+    ${sesF.length?`<div style="margin-top:14px"><div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Detalle de sesiones - Control de tiempo</div>
+    <table><thead><tr><th>Asesor</th><th>Sede</th><th>Fecha</th><th>Entrada</th><th>Salida</th><th>Tiempo activo</th><th>Estado</th></tr></thead>
+    <tbody>${sesF.sort((a,b)=>b.inicioTs-a.inicioTs).slice(0,20).map(s=>`<tr><td style="font-weight:600">${s.asesor}</td><td>${s.sede}</td><td>${s.fecha}</td><td>${s.inicio}</td><td>${s.fin||'-'}</td><td style="font-weight:600;color:var(--teal);font-variant-numeric:tabular-nums">${fmtSecs(s.elapsedSecs||0)}</td><td><span class="badge ${s.estado==='online'?'b-teal':'b-gray'}">${s.estado}</span></td></tr>`).join('')}</tbody>
+    </table></div>`:''}
+  </div>`;
+}
+window.generarReporte=generarReporte;
+
+// -- RENDER ALL --
+function renderAll(){renderDash();renderClientes();renderPipeline();renderCotizaciones();renderPV();renderAgenda();}
+
+// -- LOCAL STORAGE --
+function saveLocal(){try{localStorage.setItem('avs_cl',JSON.stringify(clientes));localStorage.setItem('avs_inf',JSON.stringify(informes));localStorage.setItem('avs_as',JSON.stringify(asesores));localStorage.setItem('avs_ag',JSON.stringify(agenda));localStorage.setItem('avs_ses',JSON.stringify(sesiones));}catch(e){}}
+function loadLocal(){try{
+  const cl=localStorage.getItem('avs_cl');if(cl)clientes=JSON.parse(cl);
+  const inf=localStorage.getItem('avs_inf');if(inf)informes=JSON.parse(inf);
+  const as=localStorage.getItem('avs_as');if(as)asesores=JSON.parse(as);
+  const ag=localStorage.getItem('avs_ag');if(ag)agenda=JSON.parse(ag);
+  const ses=localStorage.getItem('avs_ses');if(ses)sesiones=JSON.parse(ses);
+}catch(e){}}
+
+// -- TOAST --
+function toast(msg,type=''){
+  const c=document.getElementById('toast-c');
+  const t=document.createElement('div');
+  t.className='toast'+(type?' '+type:'');
+  t.textContent=msg;
+  c.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},3000);
+}
+
+// -- INIT --
+document.getElementById('inf-f').valueAsDate=new Date();
+
+// -- CONSOLIDADORAS --
+function renderConsolidadoras(){} // Las consolidadoras base estan en el HTML
+window.vincularConsolidadora=function(){
+  const nombre=document.getElementById('con-nombre').value.trim();
+  const url=document.getElementById('con-url').value.trim();
+  const tipo=document.getElementById('con-tipo').value;
+  if(!nombre){toast('Ingresa el nombre de la consolidadora','err');return;}
+  const li=document.getElementById('lista-consolidadoras');
+  li.innerHTML+=`<div style="border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:14px">
+    <div style="font-size:2rem"></div>
+    <div style="flex:1"><strong style="color:var(--navy)">${nombre}</strong><div style="font-size:11px;color:var(--muted)">${tipo}</div></div>
+    ${url?`<a href="${url}" target="_blank" class="btn btn-primary btn-sm">Visitar -></a>`:''}
+  </div>`;
+  document.getElementById('con-nombre').value='';
+  document.getElementById('con-url').value='';
+  toast('v Consolidadora vinculada');
+};
+
+// -- EXPORTAR --
+function toXLS(rows, nombre){
+  if(!rows.length){toast('Sin datos para exportar','err');return;}
+  const sep=',';
+  const headers=Object.keys(rows[0]);
+  const csv=[headers.join(sep),...rows.map(r=>headers.map(h=>{const v=r[h]||'';return '"'+String(v).replace(/"/g,'""')+'"';}).join(sep))].join('\n');
+  const blob=new Blob(['\u00EF\u00BB\u00BF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=nombre+'_AVSTRAVEL.csv';a.click();
+  toast('v Archivo descargado: '+nombre);
+}
+
+window.exportarClientes=function(){
+  const rows=arr().map(c=>({'Nombre':c.nombre||'','Telefono':c.telefono||'','Email':c.email||'','Documento':c.cedula||'','Destino':c.destino||'','Presupuesto':c.presupuesto||'','Estado':c.estado||'','Linea':c.linea||'','Sede':c.sede||'','Asesor':c.asesor||'','Fecha registro':c.createdAt?new Date(c.createdAt).toLocaleDateString('es-CO'):''}));
+  toXLS(rows,'Clientes');
+};
+
+window.exportarCotizaciones=function(){
+  const todas=[];
+  arr().forEach(c=>(c.cotizaciones||[]).forEach(ct=>{todas.push({'N Cot':ct.id||'','Cliente':c.nombre||'','Telefono':c.telefono||'','Destino':ct.destino||'','Total':ct.total||0,'Tipo':ct.tipo||'','Fecha ida':ct.fechaIda||'','Fecha regreso':ct.fechaReg||'','Viajeros':ct.viajeros||1,'Asesor':c.asesor||'','Sede':c.sede||''});}));
+  toXLS(todas,'Cotizaciones');
+};
+
+window.exportarInformes=function(){
+  const rows=informes.map(i=>({'Fecha':i.fecha||'','Asesor':i.asesor||'','Sede':i.sede||'','Atendidos':i.atendidos||0,'Cotizaciones':i.cotizaciones||0,'Ventas':i.ventas||0,'Llamadas':i.llamadas||0,'Observaciones':i.observaciones||''}));
+  toXLS(rows,'Informes_Diarios');
+};
+
+window.exportarPipeline=function(){
+  const rows=arr().map(c=>({'Cliente':c.nombre||'','Estado':c.estado||'','Destino':c.destino||'','Presupuesto':c.presupuesto||'','Fecha ida':c.fechaIda||'','Asesor':c.asesor||'','Sede':c.sede||'','Linea':c.linea||''}));
+  toXLS(rows,'Pipeline');
+};
+
+// -- PDF COTIZACION --
+window.verCotPDF=function(clienteId, cotIdx){
+  const c=clientes[clienteId]; if(!c) return;
+  const cot=(c.cotizaciones||[])[cotIdx]; if(!cot) return;
+  const servicios=cot.servicios||[];
+  const w=window.open('','_blank','width=820,height=700');
+  w.document.write(`<!DOCTYPE html><html><head><title>Cotizacion ${cot.id||''}</title>
+  <style>body{font-family:Arial,sans-serif;padding:28px;max-width:740px;margin:0 auto;color:#0B2A4A}
+  h1{color:#0B2A4A;font-size:1.5rem;margin:0}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:14px}
+  th{background:#E6F1FB;padding:8px 12px;text-align:left;color:#185FA5}
+  td{padding:8px 12px;border-bottom:1px solid #eee}
+  .total{text-align:right;font-size:1.1rem;font-weight:700;color:#0F9E7A;margin-top:8px}
+  .footer{margin-top:24px;border-top:1px solid #eee;padding-top:12px;font-size:.75rem;color:#999;text-align:center}
+  .header{display:flex;justify-content:space-between;border-bottom:3px solid #185FA5;padding-bottom:14px;margin-bottom:20px}
+  .badge{display:inline-block;padding:3px 10px;border-radius:20px;background:#E6F1FB;color:#185FA5;font-size:.78rem;font-weight:700}
+  @media print{.noprint{display:none}}</style></head><body>
+  <div class="noprint" style="margin-bottom:16px;display:flex;gap:10px">
+    <button onclick="window.print()" style="padding:9px 20px;background:#185FA5;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer"> Imprimir / Guardar PDF</button>
+    <button onclick="window.close()" style="padding:9px 20px;background:#f4f7fb;border:1px solid #ddd;border-radius:8px;font-weight:700;cursor:pointer">Cerrar</button>
+  </div>
+  <div class="header">
+    <div><h1>AVSTRAVEL</h1><p style="color:#5A7A99;margin:2px 0;font-size:.85rem">Agencia de Viajes . Buenaventura, Colombia</p><p style="color:#5A7A99;font-size:.82rem"> +57 315 394 5461 . +57 315 685 0066</p></div>
+    <div style="text-align:right"><div style="font-size:.82rem;color:#666">Cotizacion</div>
+    <div style="font-size:1.2rem;font-weight:700;color:#0B2A4A">${cot.id||'COT-001'}</div>
+    <div style="font-size:.8rem;color:#666">Valida hasta: ${cot.validaHasta||'48 horas'}</div></div>
+  </div>
+  <h3 style="color:#185FA5;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:10px">Datos del Cliente</h3>
+  <table><tr><th>Nombre</th><td>${c.nombre||'-'}</td><th>Telefono</th><td>${c.telefono||'-'}</td></tr>
+  <tr><th>Email</th><td>${c.email||'-'}</td><th>Documento</th><td>${c.cedula||'-'}</td></tr></table>
+  <h3 style="color:#185FA5;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:10px">Detalle del Viaje</h3>
+  <table><tr><th>Destino</th><td>${cot.destino||'-'}</td><th>Tipo</th><td>${cot.tipo||'-'}</td></tr>
+  <tr><th>Fecha ida</th><td>${cot.fechaIda||'-'}</td><th>Fecha regreso</th><td>${cot.fechaReg||'-'}</td></tr>
+  <tr><th>Viajeros</th><td>${cot.viajeros||1}</td><th>Asesor</th><td>${c.asesor||'-'}</td></tr></table>
+  <h3 style="color:#185FA5;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:10px">Servicios Incluidos</h3>
+  <table><thead><tr><th>Servicio</th><th style="text-align:right">Valor (COP)</th></tr></thead><tbody>
+  '+servicios.map(function(s){return '<tr><td>'+(s.nombre||s)+'</td><td style="text-align:right">'+(typeof s==='object'?('$'+(parseFloat(s.precio)||0).toLocaleString('es-CO')):'-')+'</td></tr>';}).join('')+'
+  </tbody></table>
+  <div class="total">Total: <span style="font-size:1.3rem">$${(parseFloat(cot.total)||0).toLocaleString('es-CO')} COP</span></div>
+  '+(cot.obs?'<div style="margin-top:14px;padding:10px;background:#f4f7fb;border-radius:8px;font-size:.85rem"><strong>Observaciones:</strong> '+cot.obs+'</div>':'')+'
+  <div class="footer">Cotizacion valida por 48 horas sujeta a disponibilidad . AVSTRAVEL . RNT vigente . ${new Date().toLocaleDateString('es-CO')}</div>
+  </body></html>`);
+  w.document.close();
+};
+</script>
+</body>
+</html>
