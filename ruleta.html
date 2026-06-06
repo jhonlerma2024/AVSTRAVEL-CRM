@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AVSTRAVEL · Tu premio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0D1B2A;--ocean:#0A4A6E;--sky:#1B7FA6;--reef:#00A878;
+  --sun:#F2A922;--coral:#E05C3A;--cream:#FDFAF5;--white:#fff;
+  --gold:#C8922A;--mist:#7A9AAD;--ease:cubic-bezier(.25,.46,.45,.94);
+}
+html,body{min-height:100vh;font-family:'Jost',sans-serif;background:#051525;color:var(--ink);overflow-x:hidden}
+
+/* BG */
+.bg{position:fixed;inset:0;z-index:0;background:linear-gradient(160deg,#051525 0%,#082540 45%,#0A3D5F 100%);overflow:hidden}
+.star-bg{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite var(--dl,0s)}
+@keyframes twinkle{0%,100%{opacity:.12;transform:scale(1)}50%{opacity:.55;transform:scale(1.5)}}
+.glow{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none}
+.g1{width:550px;height:550px;background:radial-gradient(circle,rgba(0,168,120,.18),transparent 70%);top:-120px;left:-120px;animation:dg1 14s ease-in-out infinite alternate}
+.g2{width:450px;height:450px;background:radial-gradient(circle,rgba(242,169,34,.13),transparent 70%);bottom:-100px;right:-100px;animation:dg2 17s ease-in-out infinite alternate}
+@keyframes dg1{to{transform:translate(90px,70px)}}
+@keyframes dg2{to{transform:translate(-70px,-90px)}}
+
+/* ESTRELLAS CELEBRACIÓN */
+.star-particle{
+  position:fixed;pointer-events:none;z-index:200;
+  font-size:var(--fs,20px);
+  animation:starFly var(--dur,1.5s) ease-out var(--dl,0s) both;
+}
+@keyframes starFly{
+  0%{transform:translate(0,0) scale(0) rotate(0deg);opacity:1}
+  50%{opacity:1;transform:translate(var(--tx,0px),var(--ty,-120px)) scale(1.2) rotate(180deg)}
+  100%{transform:translate(var(--tx2,20px),var(--ty2,-200px)) scale(0) rotate(360deg);opacity:0}
+}
+
+/* WRAP */
+.wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:28px 20px 60px}
+
+/* HEADER */
+.brand{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,8vw,48px);font-weight:400;color:#fff;letter-spacing:-1px;text-align:center;margin-bottom:3px}
+.brand em{font-style:italic;color:var(--sun)}
+.hdr-sub{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);text-align:center;margin-bottom:18px}
+
+/* SEGUIR BANNER — CTA principal antes de girar */
+.seguir-banner{
+  width:100%;max-width:420px;
+  background:linear-gradient(135deg,rgba(225,48,108,.15),rgba(247,119,55,.12));
+  border:1.5px solid rgba(225,48,108,.35);
+  border-radius:16px;padding:14px 16px;margin-bottom:16px;
+  display:flex;align-items:center;gap:12px;
+}
+.sb-icon{font-size:26px;flex-shrink:0}
+.sb-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+.sb-desc{font-size:11px;color:rgba(255,255,255,.5);line-height:1.4}
+.sb-btns{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.sb-btn{
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  padding:7px 14px;border-radius:30px;border:none;cursor:pointer;
+  font-family:'Jost',sans-serif;font-size:11.5px;font-weight:700;
+  color:#fff;text-decoration:none;transition:all .2s;white-space:nowrap;
+  touch-action:manipulation;
+}
+.sb-ig{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}
+.sb-fb{background:#1877F2}
+.sb-btn:hover{opacity:.85;transform:scale(1.03)}
+
+/* TEASER */
+.teaser{text-align:center;margin-bottom:16px}
+.teaser-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 16px;border-radius:50px;background:rgba(242,169,34,.12);border:1px solid rgba(242,169,34,.3);font-size:11px;font-weight:700;color:var(--sun);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
+.teaser-title{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,5vw,28px);color:#fff;font-weight:400;line-height:1.25;margin-bottom:5px}
+.teaser-title em{font-style:italic;color:var(--sun)}
+.teaser-sub{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.6}
+
+/* RULETA */
+.wheel-section{display:flex;flex-direction:column;align-items:center;margin-bottom:16px}
+.wheel-outer{position:relative;width:min(300px,78vw);height:min(300px,78vw)}
+.wheel-glow{position:absolute;inset:-8px;border-radius:50%;animation:wGlow 2s ease-in-out infinite}
+@keyframes wGlow{0%,100%{box-shadow:0 0 30px rgba(242,169,34,.2),0 0 60px rgba(242,169,34,.1)}50%{box-shadow:0 0 50px rgba(242,169,34,.4),0 0 100px rgba(242,169,34,.2)}}
+.wheel-pin{position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:26px solid var(--sun);filter:drop-shadow(0 4px 8px rgba(0,0,0,.5));z-index:10}
+.wheel-pin::after{content:'';position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:var(--sun);box-shadow:0 0 14px rgba(242,169,34,.9)}
+.wheel-canvas{width:100%;height:100%;border-radius:50%;display:block}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#fff,#E8E0D0);box-shadow:0 4px 18px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:18px;z-index:5;border:3px solid rgba(255,255,255,.5)}
+
+/* BOTÓN GIRAR */
+.spin-btn{
+  margin-top:18px;padding:15px 44px;border-radius:50px;border:none;
+  background:linear-gradient(135deg,var(--sun),var(--gold));
+  color:var(--ink);font-family:'Jost',sans-serif;font-size:15px;font-weight:800;
+  cursor:pointer;letter-spacing:.04em;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;transition:all .25s var(--ease);
+  animation:spinPulse 2s ease-in-out infinite;
+}
+.spin-btn:hover:not(:disabled){transform:translateY(-3px) scale(1.05);box-shadow:0 14px 44px rgba(242,169,34,.6)}
+.spin-btn:active:not(:disabled){transform:scale(.96)}
+.spin-btn:disabled{opacity:.45;cursor:not-allowed;animation:none;transform:none}
+@keyframes spinPulse{0%,100%{box-shadow:0 6px 28px rgba(242,169,34,.45)}50%{box-shadow:0 6px 50px rgba(242,169,34,.7)}}
+.spin-info{font-size:11px;color:rgba(255,255,255,.3);margin-top:8px;text-align:center}
+.intentos-bar{display:flex;gap:7px;justify-content:center;margin-top:6px}
+.idot{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.18);transition:all .3s}
+.idot.activo{background:var(--sun);box-shadow:0 0 10px rgba(242,169,34,.7)}
+.idot.usado{background:rgba(255,255,255,.08)}
+
+/* RESULTADO OVERLAY */
+.overlay{position:fixed;inset:0;z-index:150;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(4,15,28,.88);backdrop-filter:blur(10px)}
+.overlay.show{display:flex}
+.rcard{background:linear-gradient(160deg,#0D2A40,#0A3D5F);border-radius:22px;padding:30px 24px;max-width:400px;width:100%;text-align:center;border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 80px rgba(0,0,0,.6);animation:cardPop .5s var(--ease) both;position:relative;overflow:hidden;max-height:90vh;overflow-y:auto}
+@keyframes cardPop{from{opacity:0;transform:scale(.75) translateY(40px)}70%{transform:scale(1.04)}to{opacity:1;transform:none}}
+.rcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.rcard.premio::before{background:linear-gradient(90deg,var(--reef),var(--sun),var(--gold))}
+.rcard.redes::before{background:linear-gradient(90deg,#E1306C,#F77737,#FCAF45)}
+.rcard.reintento::before{background:linear-gradient(90deg,var(--sky),var(--ocean))}
+
+/* CONFETTI DENTRO DEL CARD */
+.conf-area{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.cp{position:absolute;width:8px;height:8px;border-radius:2px;animation:cpFall var(--cd,2.5s) ease-in var(--cdl,0s) both}
+@keyframes cpFall{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(350px) rotate(720deg);opacity:0}}
+
+.res-emoji{font-size:52px;margin-bottom:12px;display:block;animation:ePop .4s var(--ease) .15s both}
+@keyframes ePop{from{transform:scale(0) rotate(-20deg)}70%{transform:scale(1.25)}to{transform:scale(1)}}
+.res-title{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,6vw,30px);color:#fff;font-weight:400;line-height:1.2;margin-bottom:7px}
+.res-desc{font-size:13px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:18px}
+
+/* PRIZE BOX */
+.prize-box{background:rgba(242,169,34,.1);border:1.5px solid rgba(242,169,34,.28);border-radius:12px;padding:14px;margin-bottom:18px}
+.prize-lbl{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,169,34,.7);font-weight:700;margin-bottom:5px}
+.prize-val{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--sun);margin-bottom:4px}
+.prize-code{font-size:11.5px;color:rgba(255,255,255,.38)}
+.prize-code strong{color:var(--sun)}
+
+/* SEGUIR BOX */
+.seguir-box{background:rgba(225,48,108,.08);border:1.5px solid rgba(225,48,108,.25);border-radius:12px;padding:13px;margin-bottom:18px}
+.seguir-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px}
+.seguir-desc{font-size:11.5px;color:rgba(255,255,255,.5);margin-bottom:12px;line-height:1.5}
+.seguir-btns{display:flex;flex-direction:column;gap:8px}
+
+/* REFERIDO BOX */
+.ref-box{background:rgba(0,168,120,.07);border:1.5px solid rgba(0,168,120,.25);border-radius:12px;padding:14px;margin-bottom:16px;text-align:left}
+.ref-title{font-size:12px;font-weight:700;color:var(--reef);margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.ref-desc{font-size:11.5px;color:rgba(255,255,255,.45);margin-bottom:12px;line-height:1.5}
+.ref-form{display:flex;flex-direction:column;gap:8px}
+.ref-input{width:100%;padding:10px 13px;border:1.5px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(255,255,255,.06);color:#fff;font-family:'Jost',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.ref-input::placeholder{color:rgba(255,255,255,.3)}
+.ref-input:focus{border-color:var(--reef)}
+.ref-send{width:100%;padding:11px;border-radius:30px;border:none;background:var(--reef);color:#fff;font-family:'Jost',sans-serif;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;transition:all .2s}
+.ref-send:hover{background:#008060}
+.ref-sent{text-align:center;font-size:12px;color:var(--reef);font-weight:600;padding:8px;display:none}
+
+/* BOTONES RESULTADO */
+.res-btns{display:flex;flex-direction:column;gap:9px;margin-bottom:10px}
+.rbtn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;border-radius:50px;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:13.5px;font-weight:700;text-decoration:none;transition:all .22s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;letter-spacing:.02em;color:#fff}
+.rbtn-ig{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}
+.rbtn-fb{background:linear-gradient(135deg,#1877F2,#0d5bc4)}
+.rbtn-wa{background:#25D366}
+.rbtn-spin{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2)}
+.rbtn-spin-gold{background:linear-gradient(135deg,var(--sun),var(--gold));color:var(--ink)}
+.rbtn:hover{transform:translateY(-2px);opacity:.9}
+.rbtn:active{transform:scale(.96)}
+.res-small{font-size:11px;color:rgba(255,255,255,.25);line-height:1.6;margin-top:6px}
+</style>
+</head>
+<body>
+
+<div class="bg" id="bg">
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+</div>
+
+<div class="wrap">
+
+  <div class="brand">AVS<em>TRAVEL</em></div>
+  <div class="hdr-sub">Agencia de Viajes · Buenaventura</div>
+
+  <!-- BANNER SEGUIR — siempre visible -->
+  <div class="seguir-banner">
+    <div class="sb-icon">🔔</div>
+    <div style="flex:1">
+      <div class="sb-title">¡Síguenos para más descuentos!</div>
+      <div class="sb-desc">Ofertas exclusivas, sorteos y promos solo para seguidores de AVSTRAVEL</div>
+    </div>
+    <div class="sb-btns">
+      <a class="sb-btn sb-ig" href="https://www.instagram.com/avstravelpacifico" target="_blank">
+        📸 Instagram
+      </a>
+      <a class="sb-btn sb-fb" href="https://www.facebook.com/avstravelpacifico" target="_blank">
+        📘 Facebook
+      </a>
+    </div>
+  </div>
+
+  <div class="teaser">
+    <div class="teaser-tag">🎰 ¡Gira y gana!</div>
+    <div class="teaser-title" id="teaser-title">¡Gracias por registrarte!<br>Tienes <em>3 oportunidades</em></div>
+    <div class="teaser-sub">Gira la ruleta y descubre tu premio. ¡Seguirnos en redes te da más giros!</div>
+  </div>
+
+  <div class="wheel-section">
+    <div class="wheel-outer">
+      <div class="wheel-glow"></div>
+      <div class="wheel-pin"></div>
+      <canvas class="wheel-canvas" id="wheel" width="300" height="300"></canvas>
+      <div class="wheel-center">✈️</div>
+    </div>
+    <button class="spin-btn" id="spin-btn" onclick="girar()">¡GIRAR AHORA!</button>
+    <div class="spin-info">Tienes <span id="intentos-txt">3</span> giro(s) disponibles</div>
+    <div class="intentos-bar">
+      <div class="idot activo" id="dot0"></div>
+      <div class="idot activo" id="dot1"></div>
+      <div class="idot activo" id="dot2"></div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<!-- OVERLAY RESULTADO -->
+<div class="overlay" id="overlay">
+  <div class="rcard" id="rcard">
+    <div class="conf-area" id="conf-area"></div>
+    <span class="res-emoji" id="res-emoji">🎁</span>
+    <div class="res-title" id="res-title">Título</div>
+    <div class="res-desc" id="res-desc">Descripción</div>
+    <div id="res-prize"></div>
+    <div id="res-seguir"></div>
+    <div id="res-referido"></div>
+    <div class="res-btns" id="res-btns"></div>
+    <div class="res-small" id="res-small"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════
+//  NOMBRE CLIENTE
+// ══════════════════════
+const params = new URLSearchParams(window.location.search);
+const nombre = params.get('nombre') || '';
+if(nombre){
+  document.getElementById('teaser-title').innerHTML =
+    `¡Hola <em>${nombre}</em>!<br>Tienes <em>3 oportunidades</em>`;
+}
+
+// ══════════════════════
+//  ESTRELLAS BG
+// ══════════════════════
+const bgEl = document.getElementById('bg');
+for(let i=0;i<55;i++){
+  const s=document.createElement('div');
+  s.className='star-bg';
+  const sz=Math.random()*2.5+1;
+  s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${Math.random()*5}s`;
+  bgEl.appendChild(s);
+}
+
+// ══════════════════════
+//  RULETA CONFIG
+// ══════════════════════
+const SEGS = [
+  { label:'10% DESC',      emoji:'🎁', tipo:'premio',    color:'#00A878', peso:7  },
+  { label:'¡Síguenos!',    emoji:'📸', tipo:'redes',     color:'#E1306C', peso:22 },
+  { label:'¡Casi!',        emoji:'🔄', tipo:'reintento', color:'#1B7FA6', peso:18 },
+  { label:'Check-in\nGratis',emoji:'✅',tipo:'premio',   color:'#C8922A', peso:5  },
+  { label:'¡Síguenos!',    emoji:'📘', tipo:'redes',     color:'#1877F2', peso:22 },
+  { label:'¡Casi!',        emoji:'🔄', tipo:'reintento', color:'#0A4A6E', peso:14 },
+  { label:'Upgrade\nVIP',  emoji:'⭐', tipo:'premio',    color:'#9B59B6', peso:2  },
+  { label:'¡Síguenos!',    emoji:'📸', tipo:'redes',     color:'#E05C3A', peso:10 },
+];
+
+const PREMIOS = {
+  0: { val:'10% de descuento', code:'AVS10',   desc:'En tu próxima reserva. Muéstraselo a tu asesor al reservar.' },
+  3: { val:'Check-in gratuito', code:'AVSCHK', desc:'Te hacemos el check-in sin costo adicional en tu viaje.' },
+  6: { val:'Upgrade VIP',       code:'AVSVIP', desc:'Mejora de habitación o servicio sin costo extra.' },
+};
+
+const canvas=document.getElementById('wheel');
+const ctx=canvas.getContext('2d');
+const cx=canvas.width/2, cy=canvas.height/2, r=cx-5;
+const N=SEGS.length, arc=(2*Math.PI)/N;
+let rotation=0, girando=false, intentos=3, yaPremio=false;
+
+// ══════════════════════
+//  DIBUJAR
+// ══════════════════════
+function draw(rot){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  SEGS.forEach((s,i)=>{
+    const st=rot+i*arc-Math.PI/2, en=st+arc;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,st,en); ctx.closePath();
+    ctx.fillStyle=s.color; ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.2)'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.save(); ctx.translate(cx,cy); ctx.rotate(st+arc/2); ctx.textAlign='right';
+    ctx.shadowColor='rgba(0,0,0,.6)'; ctx.shadowBlur=4;
+    ctx.font=`${Math.floor(r*.13)}px sans-serif`;
+    ctx.fillStyle='#fff'; ctx.fillText(s.emoji, r*.8, 5);
+    const lines=s.label.split('\n');
+    ctx.font=`700 ${Math.floor(r*.087)}px Jost,sans-serif`;
+    if(lines.length>1){ctx.fillText(lines[0],r*.69,-4);ctx.fillText(lines[1],r*.69,12);}
+    else ctx.fillText(lines[0],r*.69,5);
+    ctx.restore();
+  });
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,2*Math.PI);
+  ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.lineWidth=3; ctx.stroke();
+}
+draw(rotation);
+
+// ══════════════════════
+//  DOTS
+// ══════════════════════
+function updDots(){
+  for(let i=0;i<3;i++){
+    const d=document.getElementById('dot'+i);
+    d.className='idot '+(i<intentos?'activo':'usado');
+  }
+  document.getElementById('intentos-txt').textContent=intentos;
+  if(intentos<=0){ document.getElementById('spin-btn').disabled=true; document.getElementById('spin-btn').textContent='Sin giros'; }
+}
+
+// ══════════════════════
+//  ELEGIR SEGMENTO
+// ══════════════════════
+function elegir(){
+  if(intentos===1&&!yaPremio){
+    // Último giro sin premio → forzar redes
+    const redes=[1,4,7]; return redes[Math.floor(Math.random()*redes.length)];
+  }
+  const total=SEGS.reduce((a,s)=>a+s.peso,0);
+  let rand=Math.random()*total;
+  for(let i=0;i<SEGS.length;i++){ rand-=SEGS[i].peso; if(rand<=0)return i; }
+  return 0;
+}
+
+// ══════════════════════
+//  CELEBRACIÓN ESTRELLAS
+// ══════════════════════
+function lanzarEstrellas(tipo){
+  const emojis = tipo==='premio'
+    ? ['⭐','🌟','✨','🎉','🎊','💫','🏆','🎁']
+    : ['✨','💫','🌟','⭐','🎶','💃','🎯'];
+  const count = tipo==='premio' ? 30 : 18;
+  for(let i=0;i<count;i++){
+    const el=document.createElement('div');
+    el.className='star-particle';
+    const startX=20+Math.random()*60; // % horizontal
+    const tx=(Math.random()-0.5)*200;
+    const ty=-(80+Math.random()*180);
+    const tx2=tx+(Math.random()-0.5)*80;
+    const ty2=ty-(40+Math.random()*100);
+    const fs=14+Math.random()*20;
+    el.style.cssText=`
+      left:${startX}vw;top:50vh;
+      --tx:${tx}px;--ty:${ty}px;--tx2:${tx2}px;--ty2:${ty2}px;
+      --dur:${1.2+Math.random()*.8}s;--dl:${Math.random()*.5}s;
+      --fs:${fs}px;
+    `;
+    el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 3000);
+  }
+}
+
+// ══════════════════════
+//  CONFETTI EN CARD
+// ══════════════════════
+function lanzarConfetti(){
+  const area=document.getElementById('conf-area');
+  area.innerHTML='';
+  const colors=['#F2A922','#00A878','#E05C3A','#1B7FA6','#fff','#9B59B6','#E1306C','#FCAF45'];
+  for(let i=0;i<50;i++){
+    const p=document.createElement('div'); p.className='cp';
+    p.style.cssText=`left:${Math.random()*100}%;background:${colors[i%colors.length]};--cd:${1.5+Math.random()*2}s;--cdl:${Math.random()*.8}s;transform:rotate(${Math.random()*360}deg);border-radius:${Math.random()>.5?'50%':'2px'}`;
+    area.appendChild(p);
+  }
+}
+
+// ══════════════════════
+//  GIRAR
+// ══════════════════════
+function girar(){
+  if(girando||intentos<=0)return;
+  girando=true;
+  document.getElementById('spin-btn').disabled=true;
+  const segIdx=elegir();
+  intentos--; updDots();
+  const segCenter=segIdx*arc+arc/2;
+  const vueltas=(5+Math.floor(Math.random()*4))*2*Math.PI;
+  const target=vueltas+(2*Math.PI-segCenter)-(rotation%(2*Math.PI));
+  const dur=4200+Math.random()*1500;
+  const t0=performance.now(), r0=rotation;
+  function ease(t){return 1-Math.pow(1-t,4)}
+  function step(now){
+    const t=Math.min((now-t0)/dur,1);
+    rotation=r0+target*ease(t);
+    draw(rotation);
+    if(t<1)requestAnimationFrame(step);
+    else{
+      girando=false;
+      // CELEBRACIÓN al parar
+      const tipo=SEGS[segIdx].tipo;
+      lanzarEstrellas(tipo);
+      setTimeout(()=>mostrarResultado(segIdx),500);
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+// ══════════════════════
+//  RESULTADO
+// ══════════════════════
+function mostrarResultado(idx){
+  const seg=SEGS[idx];
+  const card=document.getElementById('rcard');
+  card.className='rcard '+seg.tipo;
+  document.getElementById('res-emoji').textContent=seg.emoji;
+
+  // Limpiar
+  document.getElementById('res-prize').innerHTML='';
+  document.getElementById('res-seguir').innerHTML='';
+  document.getElementById('res-referido').innerHTML='';
+  document.getElementById('res-btns').innerHTML='';
+  document.getElementById('res-small').textContent='';
+
+  if(seg.tipo==='premio'){
+    yaPremio=true;
+    const p=PREMIOS[idx]||PREMIOS[0];
+    document.getElementById('res-title').textContent='¡Ganaste!';
+    document.getElementById('res-desc').textContent=p.desc;
+
+    // Premio box
+    document.getElementById('res-prize').innerHTML=`
+      <div class="prize-box">
+        <div class="prize-lbl">Tu premio exclusivo</div>
+        <div class="prize-val">${p.val}</div>
+        <div class="prize-code">Código: <strong>${p.code}</strong> · Muéstralo a tu asesor</div>
+      </div>`;
+
+    // Seguir box
+    document.getElementById('res-seguir').innerHTML=`
+      <div class="seguir-box">
+        <div class="seguir-title">📣 ¡Síguenos y obtén más beneficios!</div>
+        <div class="seguir-desc">Nuestros seguidores son los primeros en recibir promos exclusivas, sorteos y descuentos especiales.</div>
+        <div class="seguir-btns">
+          <a class="rbtn rbtn-ig" href="https://www.instagram.com/avstravelpacifico" target="_blank">📸 Seguir en Instagram · @avstravelpacifico</a>
+          <a class="rbtn rbtn-fb" href="https://www.facebook.com/avstravelpacifico" target="_blank">📘 Seguir en Facebook · avstravel pacifico</a>
+        </div>
+      </div>`;
+
+    // Referido
+    document.getElementById('res-referido').innerHTML=referidoHTML('premio');
+
+    document.getElementById('res-btns').innerHTML=`
+      <a class="rbtn rbtn-wa" href="https://wa.me/573153945461?text=Hola AVSTRAVEL, tengo el código ${p.code} y quiero saber más sobre mi premio!" target="_blank">💬 Reclamar con mi asesor</a>`;
+    document.getElementById('res-small').textContent='Premio válido 30 días · Presenta el código al momento de reservar';
+    lanzarConfetti();
+
+  } else if(seg.tipo==='redes'){
+    document.getElementById('res-title').textContent='¡Síguenosy gana!';
+    document.getElementById('res-desc').textContent='Nuestros seguidores reciben descuentos exclusivos, acceso anticipado a promos y participan en sorteos. ¡No te lo pierdas!';
+
+    document.getElementById('res-seguir').innerHTML=`
+      <div class="seguir-box">
+        <div class="seguir-title">🎯 Beneficios por seguirnos</div>
+        <div class="seguir-desc">✅ Descuentos exclusivos para seguidores<br>✅ Primero en enterarte de ofertas<br>✅ Participas en sorteos y rifas<br>✅ Contenido de destinos y viajes</div>
+        <div class="seguir-btns">
+          <a class="rbtn rbtn-ig" href="https://www.instagram.com/avstravelpacifico" target="_blank">📸 Seguir en Instagram · @avstravelpacifico</a>
+          <a class="rbtn rbtn-fb" href="https://www.facebook.com/avstravelpacifico" target="_blank">📘 Seguir en Facebook · avstravel pacifico</a>
+        </div>
+      </div>`;
+
+    document.getElementById('res-referido').innerHTML=referidoHTML('redes');
+
+    const btnsHtml = intentos>0
+      ? `<button class="rbtn rbtn-spin-gold" onclick="cerrarYGirar()">🎰 ¡Seguí y ahora gira de nuevo! (${intentos} giro${intentos!==1?'s':''})</button>`
+      : `<a class="rbtn rbtn-wa" href="https://wa.me/573153945461" target="_blank">💬 Hablar con mi asesor</a>`;
+    document.getElementById('res-btns').innerHTML=btnsHtml;
+    document.getElementById('res-small').textContent=intentos>0?'¡Síguenos y vuelve a girar para ganar tu premio!':'Tu asesor te contactará pronto.';
+
+  } else { // reintento
+    document.getElementById('res-title').textContent=intentos>0?'¡Casi lo logras!':'¡Gracias por participar!';
+    document.getElementById('res-desc').textContent=intentos>0
+      ?`¡La ruleta no para aquí! Tienes ${intentos} giro${intentos!==1?'s':''} más. ¡Sigue intentando!`
+      :'Estuviste muy cerca. ¡Síguenos para participar en nuestros próximos sorteos!';
+
+    document.getElementById('res-seguir').innerHTML=`
+      <div class="seguir-box">
+        <div class="seguir-title">🔔 ¡No te pierdas las próximas promos!</div>
+        <div class="seguir-desc">Síguenos y sé el primero en enterarte de ofertas, descuentos y sorteos exclusivos de AVSTRAVEL.</div>
+        <div class="seguir-btns">
+          <a class="rbtn rbtn-ig" href="https://www.instagram.com/avstravelpacifico" target="_blank">📸 Instagram · @avstravelpacifico</a>
+          <a class="rbtn rbtn-fb" href="https://www.facebook.com/avstravelpacifico" target="_blank">📘 Facebook · avstravel pacifico</a>
+        </div>
+      </div>`;
+
+    document.getElementById('res-referido').innerHTML=referidoHTML('reintento');
+
+    if(intentos>0){
+      document.getElementById('res-btns').innerHTML=`
+        <button class="rbtn rbtn-spin-gold" onclick="cerrarYGirar()">🎰 ¡Volver a girar! (${intentos} disponible${intentos!==1?'s':''})</button>`;
+      document.getElementById('res-small').textContent='¡No te rindas! ¡El premio puede ser tuyo!';
+    } else {
+      document.getElementById('res-btns').innerHTML=`
+        <a class="rbtn rbtn-wa" href="https://wa.me/573153945461" target="_blank">💬 Hablar con mi asesor</a>`;
+      document.getElementById('res-small').textContent='Tu asesor ya tiene tu solicitud y te contactará en breve.';
+    }
+  }
+
+  document.getElementById('overlay').classList.add('show');
+  // Scroll al top del card en móvil
+  setTimeout(()=>document.getElementById('rcard').scrollTop=0, 100);
+}
+
+// ══════════════════════
+//  FORMULARIO REFERIDO
+// ══════════════════════
+function referidoHTML(ctx){
+  const extra = ctx==='premio' ? 'adicional al que ya ganaste' : 'especial en tu próxima reserva';
+  return `
+    <div class="ref-box">
+      <div class="ref-title">🤝 ¿Conoces a alguien que quiera viajar?</div>
+      <div class="ref-desc">Refiere un amigo o familiar y obtén un <strong style="color:var(--reef)">descuento ${extra}</strong>. Solo déjanos su nombre y teléfono.</div>
+      <div class="ref-form" id="ref-form-${ctx}">
+        <input class="ref-input" id="ref-nombre-${ctx}" type="text" placeholder="Nombre del amigo o familiar">
+        <input class="ref-input" id="ref-tel-${ctx}" type="tel" placeholder="Teléfono / WhatsApp">
+        <button class="ref-send" onclick="enviarReferido('${ctx}')">🎁 Enviar y ganar descuento extra</button>
+      </div>
+      <div class="ref-sent" id="ref-sent-${ctx}">✅ ¡Referido registrado! Tu asesor lo contactará. El descuento extra ya está reservado para ti.</div>
+    </div>`;
+}
+
+function enviarReferido(ctx){
+  const nombre=document.getElementById('ref-nombre-'+ctx).value.trim();
+  const tel=document.getElementById('ref-tel-'+ctx).value.trim();
+  if(!nombre||!tel){ alert('Por favor completa nombre y teléfono del referido'); return; }
+
+  // Guardar en Firebase si está disponible
+  if(window._guardarReferido){
+    window._guardarReferido({ nombre, telefono:tel, referidoPor: window._clienteNombre||'Web', fecha: new Date().toLocaleDateString('es-CO'), ts: Date.now(), origen:'ruleta-referido', estado:'Prospecto' });
+  }
+
+  // Fallback: abrir WhatsApp con la info
+  const msg=`Hola AVSTRAVEL, quiero referir a *${nombre}* (${tel}) para que los contacten sobre un viaje. Fui referido por su cliente.`;
+  window.open(`https://wa.me/573153945461?text=${encodeURIComponent(msg)}`,'_blank');
+
+  document.getElementById('ref-form-'+ctx).style.display='none';
+  document.getElementById('ref-sent-'+ctx).style.display='block';
+}
+window._clienteNombre = nombre;
+
+// Firebase para referidos
+const FIREBASE_URL='https://avstravel-crm-default-rtdb.firebaseio.com/clientes.json';
+window._guardarReferido = async function(datos){
+  try{
+    await fetch(FIREBASE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)});
+  }catch(e){ console.warn('Firebase referido error:',e); }
+};
+
+function cerrarYGirar(){
+  document.getElementById('overlay').classList.remove('show');
+  if(intentos>0){
+    document.getElementById('spin-btn').disabled=false;
+    setTimeout(()=>girar(),400);
+  }
+}
+
+updDots();
+</script>
+</body>
+</html>
