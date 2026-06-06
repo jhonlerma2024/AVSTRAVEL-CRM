@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AVSTRAVEL · Solicita tu viaje</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0D1B2A;--ocean:#0A4A6E;--sky:#1B7FA6;--reef:#00A878;
+  --sun:#F2A922;--sand:#F7F1E8;--cream:#FDFAF5;--white:#fff;
+  --gold:#C8922A;--coral:#E05C3A;--mist:#7A9AAD;--light:#EEF4F8;
+  --ease:cubic-bezier(.25,.46,.45,.94);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;min-height:100vh}
+
+.header{
+  background:linear-gradient(160deg,#051525 0%,#082540 50%,#0A3D5F 100%);
+  padding:28px 20px 44px;text-align:center;position:relative;overflow:hidden;
+}
+.header::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:40px;background:var(--cream);clip-path:ellipse(60% 100% at 50% 100%)}
+.hglow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,168,120,.18) 0%,transparent 70%);top:-150px;left:50%;transform:translateX(-50%);pointer-events:none}
+.brand{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,9vw,62px);font-weight:400;color:#fff;letter-spacing:-2px;line-height:1}
+.brand em{font-style:italic;color:var(--sun)}
+.brand-sub{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:clamp(17px,3.5vw,24px);font-weight:300;color:rgba(255,255,255,.7);margin-top:16px;font-style:italic}
+.header-sub{font-size:13px;color:rgba(255,255,255,.38);margin-top:5px}
+
+/* PROGRESS */
+.prog-wrap{max-width:540px;margin:24px auto 0;padding:0 20px;position:relative}
+.prog-bar{height:2px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;margin-bottom:13px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--reef),var(--sky));border-radius:2px;transition:width .5s var(--ease)}
+.steps-row{display:flex;justify-content:space-between}
+.sdot{display:flex;flex-direction:column;align-items:center;gap:4px}
+.sc{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.18);color:rgba(255,255,255,.35);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:all .35s var(--ease)}
+.sc.active{background:var(--reef);border-color:var(--reef);color:#fff;box-shadow:0 0 16px rgba(0,168,120,.4)}
+.sc.done{background:var(--sky);border-color:var(--sky);color:#fff}
+.sl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.28);transition:color .3s}
+.sl.active{color:rgba(255,255,255,.7)}
+
+/* MAIN */
+.main{max-width:600px;margin:0 auto;padding:30px 18px 80px}
+
+/* PANELS */
+.panel{display:none;animation:panelIn .4s var(--ease) both}
+.panel.active{display:block}
+@keyframes panelIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+.panel-tag{display:inline-block;padding:3px 12px;border-radius:20px;background:rgba(10,74,110,.08);color:var(--sky);font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px}
+.panel-title{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,5vw,30px);font-weight:400;color:var(--ocean);margin-bottom:4px;line-height:1.15}
+.panel-title em{font-style:italic;color:var(--reef)}
+.panel-sub{font-size:13.5px;color:var(--mist);margin-bottom:24px;line-height:1.6}
+
+/* FIELDS */
+.f{margin-bottom:16px}
+.fl{display:block;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ocean);margin-bottom:6px}
+.req{color:var(--coral)}
+.fi,.fs,.ft{width:100%;padding:12px 15px;border:1.5px solid rgba(10,74,110,.14);border-radius:11px;font-family:'Jost',sans-serif;font-size:14px;color:var(--ink);background:var(--white);outline:none;transition:border-color .22s,box-shadow .22s;appearance:none;-webkit-appearance:none}
+.fi:focus,.fs:focus,.ft:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(27,127,166,.09)}
+.fi.err,.fs.err,.ft.err{border-color:var(--coral);box-shadow:0 0 0 3px rgba(224,92,58,.09)}
+.fi::placeholder,.ft::placeholder{color:var(--mist)}
+.ft{resize:vertical;min-height:74px;line-height:1.6}
+.fs{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A9AAD' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:38px}
+.fhint{font-size:11px;color:var(--mist);margin-top:4px;line-height:1.5}
+.ferr{font-size:11px;color:var(--coral);margin-top:4px;display:none}
+.f.has-err .ferr{display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:460px){.g2{grid-template-columns:1fr}}
+
+/* LINEA OPTIONS */
+.lineas-g{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:420px){.lineas-g{grid-template-columns:1fr}}
+.lopt{border:2px solid rgba(10,74,110,.1);border-radius:13px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .22s var(--ease);background:var(--white);position:relative;overflow:hidden}
+.lopt:hover{border-color:var(--sky);transform:translateY(-2px);box-shadow:0 5px 20px rgba(10,74,110,.09)}
+.lopt.sel{border-color:var(--reef);background:rgba(0,168,120,.04);box-shadow:0 0 0 3px rgba(0,168,120,.13)}
+.lopt.sel::after{content:'✓';position:absolute;top:8px;right:10px;font-size:11px;font-weight:700;color:var(--reef)}
+.lopt-icon{font-size:26px;margin-bottom:7px;display:block}
+.lopt-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.lopt-desc{font-size:10.5px;color:var(--mist);line-height:1.4}
+
+/* DEST CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.dchip{padding:5px 12px;border-radius:28px;border:1.5px solid rgba(10,74,110,.1);background:var(--white);font-size:12px;color:var(--ocean);cursor:pointer;transition:all .18s;font-weight:500}
+.dchip:hover{background:var(--ocean);color:#fff;border-color:var(--ocean)}
+.chips-lbl{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--mist);font-weight:600;margin-top:14px;margin-bottom:7px}
+
+/* COUNTERS */
+.ctr-row{display:flex;flex-wrap:wrap;gap:16px}
+.ctr-g{display:flex;flex-direction:column;gap:5px}
+.ctr-lbl{font-size:10.5px;font-weight:600;color:var(--ocean);letter-spacing:.07em;text-transform:uppercase}
+.ctr-sub{font-size:10px;color:var(--mist)}
+.ctr-wrap{display:flex;align-items:center;gap:0;border:1.5px solid rgba(10,74,110,.13);border-radius:11px;overflow:hidden;width:130px}
+.ctr-btn{width:40px;height:44px;border:none;background:var(--light);font-size:18px;cursor:pointer;color:var(--ocean);font-weight:300;transition:background .18s;display:flex;align-items:center;justify-content:center;flex-shrink:0;user-select:none}
+.ctr-btn:hover{background:rgba(10,74,110,.1)}
+.ctr-val{flex:1;text-align:center;font-size:15px;font-weight:600;color:var(--ink);border:none;outline:none;font-family:'Jost',sans-serif;background:var(--white)}
+
+/* PRESUPUESTO */
+.presup-g{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+@media(max-width:420px){.presup-g{grid-template-columns:1fr}}
+.popt{border:2px solid rgba(10,74,110,.09);border-radius:11px;padding:13px 14px;cursor:pointer;transition:all .2s;background:var(--white)}
+.popt:hover{border-color:var(--sky)}
+.popt.sel{border-color:var(--reef);background:rgba(0,168,120,.04)}
+.popt-rng{font-size:13px;font-weight:600;color:var(--ink)}
+.popt-lbl{font-size:11px;color:var(--mist);margin-top:2px}
+
+/* ASESOR REVEAL */
+.asesor-card{background:linear-gradient(135deg,var(--ocean),#0b3d5c);border-radius:18px;padding:22px;color:#fff;margin-top:18px;position:relative;overflow:hidden;animation:panelIn .5s var(--ease) both}
+.asesor-card::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(27,127,166,.3) 0%,transparent 70%)}
+.asesor-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,var(--reef),var(--sky),var(--gold))}
+.ac-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:10px;font-weight:600}
+.ac-row{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.ac-av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;border:2px solid rgba(255,255,255,.22);flex-shrink:0}
+.ac-name{font-size:16px;font-weight:600;line-height:1.2}
+.ac-cargo{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}
+.ac-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:20px;background:rgba(255,255,255,.1);font-size:11px;color:rgba(255,255,255,.75);font-weight:500;margin-bottom:10px}
+.ac-desc{font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.65}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;border-radius:50px;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:13.5px;font-weight:500;letter-spacing:.04em;transition:all .28s var(--ease);text-decoration:none}
+.btn-primary{background:var(--ocean);color:#fff;flex:1}
+.btn-primary:hover{background:#0b3d5c;transform:translateY(-2px);box-shadow:0 10px 28px rgba(10,74,110,.28)}
+.btn-primary:disabled{background:var(--mist);cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:transparent;color:var(--mist);border:1.5px solid rgba(10,74,110,.14)}
+.btn-ghost:hover{border-color:var(--sky);color:var(--ocean)}
+.btn-reef{background:var(--reef);color:#fff;width:100%;margin-top:14px}
+.btn-reef:hover{background:#008060;transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,168,120,.3)}
+
+/* CONFIRMACION */
+.conf-hero{text-align:center;padding:36px 20px 24px;animation:panelIn .5s var(--ease) both}
+.conf-icon{width:72px;height:72px;border-radius:50%;background:rgba(0,168,120,.1);border:2px solid rgba(0,168,120,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:32px;animation:popIn .5s var(--ease) both}
+@keyframes popIn{from{transform:scale(.5);opacity:0}70%{transform:scale(1.1)}to{transform:scale(1);opacity:1}}
+.conf-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,5vw,36px);font-weight:400;color:var(--reef);margin-bottom:6px}
+.conf-sub{font-size:14px;color:var(--mist);line-height:1.7;max-width:420px;margin:0 auto}
+
+/* RESUMEN */
+.res-card{background:var(--white);border-radius:16px;border:1.5px solid rgba(10,74,110,.09);overflow:hidden;margin:20px 0}
+.res-hdr{background:var(--ocean);padding:14px 18px;display:flex;align-items:center;gap:10px}
+.res-hdr-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:#fff}
+.res-hdr-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+.res-body{padding:18px}
+.res-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(10,74,110,.06);font-size:13px}
+.res-row:last-child{border-bottom:none}
+.res-k{color:var(--mist);flex-shrink:0;margin-right:12px}
+.res-v{color:var(--ink);font-weight:600;text-align:right;word-break:break-word}
+.res-asesor{background:rgba(0,168,120,.06);border:1.5px solid rgba(0,168,120,.18);border-radius:11px;padding:13px 15px;margin-top:12px;display:flex;align-items:center;gap:11px}
+.ra-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.ra-name{font-size:13.5px;font-weight:600;color:var(--ink)}
+.ra-cargo{font-size:11px;color:var(--mist)}
+
+/* CRM STATUS */
+.crm-status{padding:14px 16px;border-radius:12px;font-size:13px;line-height:1.6;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px}
+.crm-ok{background:rgba(0,168,120,.07);border:1px solid rgba(0,168,120,.2);color:#005a40}
+.crm-pend{background:rgba(27,127,166,.07);border:1px solid rgba(27,127,166,.2);color:var(--ocean)}
+.crm-err{background:rgba(224,92,58,.07);border:1px solid rgba(224,92,58,.2);color:#8b2a10}
+.crm-status-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;padding:11px 18px;border-radius:11px;font-size:13px;font-weight:500;box-shadow:0 8px 28px rgba(0,0,0,.2);border-left:3px solid var(--reef);opacity:0;transform:translateY(8px);transition:all .28s var(--ease);pointer-events:none;z-index:999;max-width:300px}
+.toast.show{opacity:1;transform:none}
+.toast.err{border-left-color:var(--coral)}
+
+/* LOADING */
+.loading-overlay{position:fixed;inset:0;background:rgba(13,27,42,.75);display:none;align-items:center;justify-content:center;z-index:500;backdrop-filter:blur(4px)}
+.loading-overlay.show{display:flex}
+.loading-box{background:var(--white);border-radius:20px;padding:36px 40px;text-align:center;max-width:300px}
+.spinner{width:44px;height:44px;border:3px solid rgba(10,74,110,.1);border-top-color:var(--sky);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-txt{font-size:14px;color:var(--ocean);font-weight:500}
+.loading-sub{font-size:12px;color:var(--mist);margin-top:4px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="hglow"></div>
+  <div class="brand">AVS<em>TRAVEL</em></div>
+  <div class="brand-sub">Agencia de Viajes · Buenaventura</div>
+  <div class="header-title">Solicita tu viaje soñado</div>
+  <div class="header-sub">Completa el formulario — tu asesor te contactará de inmediato</div>
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog" style="width:20%"></div></div>
+    <div class="steps-row">
+      <div class="sdot"><div class="sc active" id="sc1">1</div><div class="sl active" id="sl1">Destino</div></div>
+      <div class="sdot"><div class="sc" id="sc2">2</div><div class="sl" id="sl2">Viaje</div></div>
+      <div class="sdot"><div class="sc" id="sc3">3</div><div class="sl" id="sl3">Viajeros</div></div>
+      <div class="sdot"><div class="sc" id="sc4">4</div><div class="sl" id="sl4">Contacto</div></div>
+      <div class="sdot"><div class="sc" id="sc5">5</div><div class="sl" id="sl5">Enviado</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- PASO 1 -->
+  <div class="panel active" id="p1">
+    <div class="panel-tag">Paso 1 de 4</div>
+    <h2 class="panel-title">¿A dónde quieres <em>viajar?</em></h2>
+    <p class="panel-sub">Selecciona la línea de viaje y tu destino soñado.</p>
+    <div class="f">
+      <label class="fl">Tipo de viaje <span class="req">*</span></label>
+      <div class="lineas-g">
+        <div class="lopt" onclick="selLinea('pacifico',this)">
+          <span class="lopt-icon">🌊</span>
+          <div class="lopt-name">Pacífico</div>
+          <div class="lopt-desc">Buenaventura, ballenas, playas, ríos</div>
+        </div>
+        <div class="lopt" onclick="selLinea('nacional',this)">
+          <span class="lopt-icon">🇨🇴</span>
+          <div class="lopt-name">Nacional</div>
+          <div class="lopt-desc">Cartagena, San Andrés, Guajira…</div>
+        </div>
+        <div class="lopt" onclick="selLinea('internacional',this)">
+          <span class="lopt-icon">🌎</span>
+          <div class="lopt-name">Internacional</div>
+          <div class="lopt-desc">Cancún, Europa, Punta Cana…</div>
+        </div>
+      </div>
+      <div class="ferr" id="linea-err">Selecciona una línea de viaje</div>
+    </div>
+    <div class="f" id="dest-suger" style="display:none">
+      <div class="chips-lbl">Destinos populares</div>
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="f">
+      <label class="fl" for="destino">Destino específico <span class="req">*</span></label>
+      <input type="text" class="fi" id="destino" placeholder="Ej: Juanchaco, Cartagena, Cancún...">
+      <div class="ferr">Indica el destino de tu viaje</div>
+    </div>
+    <div class="f">
+      <label class="fl" for="tipo-srv">Tipo de servicio</label>
+      <select class="fs" id="tipo-srv"><option value="">Seleccionar...</option></select>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="goTo(2)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- PASO 2 -->
+  <div class="panel" id="p2">
+    <div class="panel-tag">Paso 2 de 4</div>
+    <h2 class="panel-title">Detalles del <em>viaje</em></h2>
+    <p class="panel-sub">Fechas y presupuesto para encontrarte el mejor plan.</p>
+    <div class="g2">
+      <div class="f">
+        <label class="fl" for="fida">Fecha de ida <span class="req">*</span></label>
+        <input type="date" class="fi" id="fida">
+        <div class="ferr">Selecciona la fecha de ida</div>
+      </div>
+      <div class="f">
+        <label class="fl" for="freg">Fecha de regreso</label>
+        <input type="date" class="fi" id="freg">
+        <div class="fhint">Opcional para pasadías</div>
+      </div>
+    </div>
+    <div class="f">
+      <label class="fl">Presupuesto aproximado <span class="req">*</span></label>
+      <div class="presup-g" id="presup-g"></div>
+      <div class="ferr" id="presup-err" style="display:none">Selecciona un rango de presupuesto</div>
+    </div>
+    <div class="f">
+      <label class="fl" for="flex">¿Flexibilidad en fechas?</label>
+      <select class="fs" id="flex">
+        <option value="no">No, son fechas fijas</option>
+        <option value="poco">Puedo moverlas ±2 días</option>
+        <option value="si">Sí, tengo bastante flexibilidad</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goTo(1)">← Atrás</button>
+      <button class="btn btn-primary" onclick="goTo(3)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- PASO 3 -->
+  <div class="panel" id="p3">
+    <div class="panel-tag">Paso 3 de 4</div>
+    <h2 class="panel-title">¿Quiénes <em>viajan?</em></h2>
+    <p class="panel-sub">Indica cuántos viajeros van para calcular el plan ideal.</p>
+    <div class="f">
+      <label class="fl">Número de viajeros <span class="req">*</span></label>
+      <div class="ctr-row">
+        <div class="ctr-g">
+          <div class="ctr-lbl">Adultos</div><div class="ctr-sub">+12 años</div>
+          <div class="ctr-wrap">
+            <button class="ctr-btn" onclick="cc('adultos',-1)">−</button>
+            <input class="ctr-val" id="adultos" value="2" readonly>
+            <button class="ctr-btn" onclick="cc('adultos',1)">+</button>
+          </div>
+        </div>
+        <div class="ctr-g">
+          <div class="ctr-lbl">Niños</div><div class="ctr-sub">3–11 años</div>
+          <div class="ctr-wrap">
+            <button class="ctr-btn" onclick="cc('ninos',-1)">−</button>
+            <input class="ctr-val" id="ninos" value="0" readonly>
+            <button class="ctr-btn" onclick="cc('ninos',1)">+</button>
+          </div>
+        </div>
+        <div class="ctr-g">
+          <div class="ctr-lbl">Infantes</div><div class="ctr-sub">0–2 años</div>
+          <div class="ctr-wrap">
+            <button class="ctr-btn" onclick="cc('infantes',-1)">−</button>
+            <input class="ctr-val" id="infantes" value="0" readonly>
+            <button class="ctr-btn" onclick="cc('infantes',1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="f">
+      <label class="fl" for="notas">Algo que debamos saber</label>
+      <textarea class="ft" id="notas" placeholder="Ocasión especial (luna de miel, XV años, cumpleaños...), preferencias, restricciones alimenticias..."></textarea>
+    </div>
+    <div class="f">
+      <label class="fl" for="como-nos">¿Cómo nos encontraste?</label>
+      <select class="fs" id="como-nos">
+        <option value="">Seleccionar...</option>
+        <option>Instagram</option><option>Facebook</option><option>WhatsApp</option>
+        <option>Recomendación de un amigo</option><option>Google</option>
+        <option>Ya soy cliente AVSTRAVEL</option><option>Otro</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goTo(2)">← Atrás</button>
+      <button class="btn btn-primary" onclick="goTo(4)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- PASO 4 -->
+  <div class="panel" id="p4">
+    <div class="panel-tag">Paso 4 de 4</div>
+    <h2 class="panel-title">Tus datos de <em>contacto</em></h2>
+    <p class="panel-sub">Con esta información tu asesor asignado te contactará directamente.</p>
+    <div class="g2">
+      <div class="f">
+        <label class="fl" for="nombre">Nombre <span class="req">*</span></label>
+        <input type="text" class="fi" id="nombre" placeholder="Tu nombre">
+        <div class="ferr">El nombre es requerido</div>
+      </div>
+      <div class="f">
+        <label class="fl" for="apellido">Apellido <span class="req">*</span></label>
+        <input type="text" class="fi" id="apellido" placeholder="Tu apellido">
+        <div class="ferr">El apellido es requerido</div>
+      </div>
+    </div>
+    <div class="f">
+      <label class="fl" for="telefono">WhatsApp <span class="req">*</span></label>
+      <input type="tel" class="fi" id="telefono" placeholder="315 XXX XXXX" maxlength="14">
+      <div class="fhint">El asesor te contactará por aquí</div>
+      <div class="ferr">Ingresa un número de WhatsApp válido</div>
+    </div>
+    <div class="f">
+      <label class="fl" for="email">Correo electrónico</label>
+      <input type="email" class="fi" id="email" placeholder="tucorreo@gmail.com (opcional)">
+    </div>
+    <div class="f">
+      <label class="fl" for="ciudad-origen">Ciudad de origen</label>
+      <input type="text" class="fi" id="ciudad-origen" placeholder="¿Desde dónde sales?">
+    </div>
+    <div id="asesor-wrap"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goTo(3)">← Atrás</button>
+      <button class="btn btn-primary" id="btn-enviar" onclick="enviarCRM()">
+        Enviar solicitud al CRM
+      </button>
+    </div>
+  </div>
+
+  <!-- PASO 5: CONFIRMACIÓN -->
+  <div class="panel" id="p5">
+    <div class="conf-hero">
+      <div class="conf-icon">✅</div>
+      <h2 class="conf-title">¡Solicitud enviada!</h2>
+      <p class="conf-sub">Tu información ya está registrada en nuestro CRM. Tu asesor asignado la verá en tiempo real y te contactará a la brevedad.</p>
+    </div>
+
+    <div id="crm-status-box"></div>
+    <div class="res-card" id="res-card"></div>
+
+    <div style="background:var(--light);border-radius:12px;padding:16px;font-size:13px;color:var(--mist);line-height:1.7;margin-top:4px">
+      <strong style="color:var(--ocean)">¿Qué pasa ahora?</strong><br>
+      Tu asesor recibe una notificación en tiempo real en el CRM de AVSTRAVEL con toda tu información. Te contactará por WhatsApp en el menor tiempo posible para confirmar y enviarte tu cotización personalizada.
+    </div>
+
+    <button class="btn btn-ghost" onclick="reiniciar()" style="width:100%;justify-content:center;margin-top:16px">
+      Hacer otra solicitud
+    </button>
+  </div>
+
+</div><!-- /main -->
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <div class="loading-txt">Enviando al CRM...</div>
+    <div class="loading-sub">Registrando tu solicitud en AVSTRAVEL</div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getDatabase, ref, push, set, serverTimestamp }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+
+const cfg = {
+  apiKey:"AIzaSyCSiwt0zFr8g6jVctNfbD5kr1KAM_YFeGc",
+  authDomain:"avstravel-crm.firebaseapp.com",
+  databaseURL:"https://avstravel-crm-default-rtdb.firebaseio.com",
+  projectId:"avstravel-crm",
+  storageBucket:"avstravel-crm.firebasestorage.app",
+  messagingSenderId:"1048247230256",
+  appId:"1:1048247230256:web:885aa4026f8f93bce2b2f5"
+};
+
+let db = null;
+let fbOk = false;
+
+try {
+  const app = initializeApp(cfg);
+  db = getDatabase(app);
+  fbOk = true;
+  window._fbReady = true;
+  console.log('Firebase OK');
+} catch(e) {
+  console.warn('Firebase no disponible:', e);
+  window._fbReady = false;
+}
+
+// Exponer función global para enviar al CRM
+window._guardarEnCRM = async function(datos) {
+  if (!fbOk || !db) {
+    // Fallback: guardar en localStorage y abrir WhatsApp
+    return { ok: false, modo: 'local' };
+  }
+  try {
+    const clienteRef = push(ref(db, 'clientes'));
+    await set(clienteRef, {
+      ...datos,
+      id: clienteRef.key,
+      createdAt: Date.now(),
+      origen: 'formulario-web',
+      estado: 'Prospecto'
+    });
+    return { ok: true, id: clienteRef.key };
+  } catch(e) {
+    console.error('Error guardando:', e);
+    return { ok: false, error: e.message };
+  }
+};
+</script>
+
+<script>
+// ══════════════════════════════════════
+//  DATOS DE LÍNEAS Y ASESORES
+// ══════════════════════════════════════
+const LINEAS = {
+  pacifico: {
+    nombre: 'Pacífico', icono: '🌊',
+    destinos: ['Juanchaco','Ladrilleros','La Barra','Bahía Solano','Nuquí','Isla Palma','Cascadas La Sierpe','Buenaventura'],
+    servicios: ['Avistamiento de ballenas','Pasadía básico','Las Gigantescas del Pacífico','Beach Tours Pacífico','Ballenas al Cosmos','Crucero Pacífico 7D/6N','Ruta gastronómica','Ruta de los ríos','Tour islas y playas','Avistamiento de aves'],
+    presupuestos: [
+      { v:'100000-300000', r:'$100.000 – $300.000', l:'Pasadías y tours' },
+      { v:'300000-600000', r:'$300.000 – $600.000', l:'Paquetes 1-2 noches' },
+      { v:'600000-1200000', r:'$600.000 – $1.200.000', l:'Paquetes completos' },
+      { v:'1200000+', r:'Más de $1.200.000', l:'Experiencia premium' }
+    ]
+  },
+  nacional: {
+    nombre: 'Nacional', icono: '🇨🇴',
+    destinos: ['Cartagena','San Andrés','Santa Marta','La Guajira','Barranquilla','Eje Cafetero','Coveñas','Isla Múcura','Salento','Medellín'],
+    servicios: ['Paquete aéreo (5D/4N)','Paquete aéreo (4D/3N)','Pasadía terrestre','Excursión grupal','Tiquete nacional','Hotel + traslados','Ruta terrestre combinada','Receptivo'],
+    presupuestos: [
+      { v:'500000-1500000', r:'$500.000 – $1.500.000', l:'Pasadías y escapadas' },
+      { v:'1500000-3000000', r:'$1.500.000 – $3.000.000', l:'Paquetes 3-5 noches' },
+      { v:'3000000-6000000', r:'$3.000.000 – $6.000.000', l:'Paquetes completos' },
+      { v:'6000000+', r:'Más de $6.000.000', l:'Viaje especial / familiar' }
+    ]
+  },
+  internacional: {
+    nombre: 'Internacional', icono: '🌎',
+    destinos: ['Cancún','Punta Cana','Europa','Miami / USA','Panamá','Curazao','Aruba','Chile','Canadá','Crucero Caribe'],
+    servicios: ['Plan todo incluido','Tiquete internacional','Hotel + tiquete','Crucero desde Cartagena','Asistencia médica internacional','Asesoría de visas'],
+    presupuestos: [
+      { v:'3000000-6000000', r:'$3.000.000 – $6.000.000', l:'Paquetes básicos' },
+      { v:'6000000-12000000', r:'$6.000.000 – $12.000.000', l:'Paquetes intermedios' },
+      { v:'12000000-20000000', r:'$12.000.000 – $20.000.000', l:'Paquetes premium' },
+      { v:'20000000+', r:'Más de $20.000.000', l:'Experiencia de lujo' }
+    ]
+  }
+};
+
+const ASESORES = {
+  pacifico: { nombre:'Asesor Pacífico', cargo:'Especialista Línea Pacífico', tel:'3153945461', color:'#006EAF', ini:'AP', disp:'Lun–Sáb 8am–6pm' },
+  nacional:  { nombre:'Asesor Nacional',  cargo:'Especialista Línea Nacional',  tel:'3153945461', color:'#00A878', ini:'AN', disp:'Lun–Sáb 8am–7pm' },
+  internacional: { nombre:'Asesor Internacional', cargo:'Especialista Línea Internacional', tel:'3156850066', color:'#C8922A', ini:'AI', disp:'Lun–Vie 8am–6pm' }
+};
+
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
+let S = {
+  paso:1, linea:null, destino:'', tipoSrv:'',
+  fida:'', freg:'', presupuesto:'', presupuestoLabel:'', flex:'no',
+  adultos:2, ninos:0, infantes:0, notas:'', comoNos:'',
+  nombre:'', apellido:'', telefono:'', email:'', ciudadOrigen:'',
+  asesor:null
+};
+
+// ══════════════════════════════════════
+//  LINEA
+// ══════════════════════════════════════
+function selLinea(l, el) {
+  S.linea = l;
+  document.querySelectorAll('.lopt').forEach(x => x.classList.remove('sel'));
+  el.classList.add('sel');
+  const ld = LINEAS[l];
+  // Chips
+  document.getElementById('chips').innerHTML = ld.destinos.map(d =>
+    `<span class="dchip" onclick="elegirDest('${d}')">${d}</span>`).join('');
+  document.getElementById('dest-suger').style.display = 'block';
+  // Servicios
+  const sel = document.getElementById('tipo-srv');
+  sel.innerHTML = '<option value="">Seleccionar tipo de servicio...</option>' +
+    ld.servicios.map(s => `<option>${s}</option>`).join('');
+  // Presupuesto
+  renderPresup(ld.presupuestos);
+  // Asesor
+  S.asesor = ASESORES[l];
+  document.getElementById('linea-err').style.display = 'none';
+}
+
+function elegirDest(d) {
+  document.getElementById('destino').value = d;
+  document.getElementById('destino').classList.remove('err');
+}
+
+function renderPresup(lista) {
+  document.getElementById('presup-g').innerHTML = lista.map(p =>
+    `<div class="popt" onclick="selPresup('${p.v}','${p.r}',this)">
+       <div class="popt-rng">${p.r}</div>
+       <div class="popt-lbl">${p.l}</div>
+     </div>`).join('');
+}
+
+function selPresup(v, r, el) {
+  S.presupuesto = v; S.presupuestoLabel = r;
+  document.querySelectorAll('.popt').forEach(x => x.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('presup-err').style.display = 'none';
+}
+
+// ══════════════════════════════════════
+//  COUNTERS
+// ══════════════════════════════════════
+function cc(id, d) {
+  const el = document.getElementById(id);
+  const min = id === 'adultos' ? 1 : 0;
+  const max = id === 'adultos' ? 20 : (id === 'infantes' ? 5 : 10);
+  let v = parseInt(el.value) + d;
+  v = Math.min(Math.max(v, min), max);
+  el.value = v; S[id] = v;
+}
+
+// ══════════════════════════════════════
+//  PROGRESS
+// ══════════════════════════════════════
+function updProg(p) {
+  const pct = [0,20,40,60,80,100];
+  document.getElementById('prog').style.width = pct[p] + '%';
+  for (let i = 1; i <= 5; i++) {
+    const c = document.getElementById('sc'+i), l = document.getElementById('sl'+i);
+    c.className = 'sc' + (i < p ? ' done' : i === p ? ' active' : '');
+    l.className = 'sl' + (i === p ? ' active' : '');
+    c.textContent = i < p ? '✓' : i;
+  }
+}
+
+// ══════════════════════════════════════
+//  NAVEGACIÓN
+// ══════════════════════════════════════
+function goTo(n) {
+  if (n > S.paso && !validar(S.paso)) return;
+  recoger(S.paso);
+  document.getElementById('p'+S.paso).classList.remove('active');
+  S.paso = n;
+  document.getElementById('p'+S.paso).classList.add('active');
+  updProg(S.paso);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (S.paso === 4) mostrarAsesor();
+}
+
+function recoger(p) {
+  if (p === 1) { S.destino = document.getElementById('destino').value.trim(); S.tipoSrv = document.getElementById('tipo-srv').value; }
+  if (p === 2) { S.fida = document.getElementById('fida').value; S.freg = document.getElementById('freg').value; S.flex = document.getElementById('flex').value; }
+  if (p === 3) { S.adultos = parseInt(document.getElementById('adultos').value); S.ninos = parseInt(document.getElementById('ninos').value); S.infantes = parseInt(document.getElementById('infantes').value); S.notas = document.getElementById('notas').value.trim(); S.comoNos = document.getElementById('como-nos').value; }
+  if (p === 4) { S.nombre = document.getElementById('nombre').value.trim(); S.apellido = document.getElementById('apellido').value.trim(); S.telefono = document.getElementById('telefono').value.trim(); S.email = document.getElementById('email').value.trim(); S.ciudadOrigen = document.getElementById('ciudad-origen').value.trim(); }
+}
+
+// ══════════════════════════════════════
+//  VALIDACIÓN
+// ══════════════════════════════════════
+function validar(p) {
+  if (p === 1) {
+    let ok = true;
+    if (!S.linea) { document.getElementById('linea-err').style.display = 'block'; ok = false; }
+    const d = document.getElementById('destino').value.trim();
+    if (!d) { document.getElementById('destino').classList.add('err'); ok = false; }
+    else document.getElementById('destino').classList.remove('err');
+    if (!ok) { toast('Completa los campos obligatorios', 'err'); return false; }
+    return true;
+  }
+  if (p === 2) {
+    if (!document.getElementById('fida').value) {
+      document.getElementById('fida').classList.add('err');
+      toast('Selecciona la fecha de ida', 'err'); return false;
+    }
+    document.getElementById('fida').classList.remove('err');
+    if (!S.presupuesto) { document.getElementById('presup-err').style.display = 'block'; toast('Selecciona un presupuesto', 'err'); return false; }
+    return true;
+  }
+  if (p === 4) {
+    const n = document.getElementById('nombre').value.trim();
+    const a = document.getElementById('apellido').value.trim();
+    const t = document.getElementById('telefono').value.trim();
+    let ok = true;
+    if (!n) { document.getElementById('nombre').classList.add('err'); ok = false; } else document.getElementById('nombre').classList.remove('err');
+    if (!a) { document.getElementById('apellido').classList.add('err'); ok = false; } else document.getElementById('apellido').classList.remove('err');
+    if (!t || t.length < 7) { document.getElementById('telefono').classList.add('err'); ok = false; } else document.getElementById('telefono').classList.remove('err');
+    if (!ok) { toast('Completa los datos de contacto', 'err'); return false; }
+    return true;
+  }
+  return true;
+}
+
+// ══════════════════════════════════════
+//  ASESOR CARD
+// ══════════════════════════════════════
+function mostrarAsesor() {
+  if (!S.asesor) return;
+  const a = S.asesor; const l = LINEAS[S.linea];
+  document.getElementById('asesor-wrap').innerHTML = `
+    <div class="asesor-card">
+      <div class="ac-tag">Tu asesor asignado automáticamente</div>
+      <div class="ac-row">
+        <div class="ac-av" style="background:${a.color}">${a.ini}</div>
+        <div><div class="ac-name">${a.nombre}</div><div class="ac-cargo">${a.cargo}</div></div>
+      </div>
+      <div class="ac-badge">${l.icono} Especialista en ${l.nombre}</div>
+      <div class="ac-desc">
+        Recibirá tu solicitud <strong style="color:#fff">en tiempo real</strong> en el CRM de AVSTRAVEL con todos tus datos. Te contactará directamente por WhatsApp para confirmar y enviarte tu cotización.
+        <br><br>🕐 Disponibilidad: <strong style="color:rgba(255,255,255,.75)">${a.disp}</strong>
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════
+//  ENVIAR AL CRM
+// ══════════════════════════════════════
+async function enviarCRM() {
+  if (!validar(4)) return;
+  recoger(4);
+
+  const a = S.asesor; const l = LINEAS[S.linea];
+  const totalViaj = S.adultos + S.ninos + S.infantes;
+  const flexMap = { no:'Fechas fijas', poco:'±2 días', si:'Flexible' };
+
+  const datos = {
+    // Campos compatibles con el CRM v4
+    nombre: `${S.nombre} ${S.apellido}`,
+    telefono: S.telefono,
+    email: S.email || '',
+    destino: S.destino,
+    linea: l.nombre,
+    tipoServicio: S.tipoSrv || '',
+    fechaIda: S.fida,
+    fechaRegreso: S.freg || '',
+    presupuesto: S.presupuestoLabel,
+    flexibilidad: flexMap[S.flex],
+    viajeros: totalViaj,
+    adultos: S.adultos,
+    ninos: S.ninos,
+    infantes: S.infantes,
+    notas: S.notas || '',
+    comoNosEncontro: S.comoNos || '',
+    ciudad: S.ciudadOrigen || '',
+    asesor: a.nombre,
+    asesorTel: a.tel,
+    estado: 'Prospecto',
+    origen: 'Formulario Web',
+    interacciones: [{
+      tipo: 'Solicitud web',
+      nota: `Cliente registrado desde el formulario web. Destino: ${S.destino}. Presupuesto: ${S.presupuestoLabel}. Viajeros: ${totalViaj}.`,
+      fecha: new Date().toLocaleDateString('es-CO'),
+      ts: Date.now()
+    }],
+    cotizaciones: [],
+    comentarios: []
+  };
+
+  // Mostrar loading
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('btn-enviar').disabled = true;
+
+  // Esperar Firebase (puede tardar un poco en cargar el módulo)
+  let intentos = 0;
+  while (!window._guardarEnCRM && intentos < 20) {
+    await new Promise(r => setTimeout(r, 200));
+    intentos++;
+  }
+
+  let resultado = { ok: false, modo: 'local' };
+  if (window._guardarEnCRM) {
+    resultado = await window._guardarEnCRM(datos);
+  }
+
+  document.getElementById('loading').classList.remove('show');
+
+  if (resultado.ok) {
+    // Éxito — mostrar confirmación
+    goToConfirmacion(datos, resultado.id, 'crm');
+    toast('✅ Solicitud enviada al CRM correctamente');
+  } else {
+    // Fallback: guardar local + abrir WA
+    guardarLocal(datos);
+    goToConfirmacion(datos, null, 'local');
+    toast('Guardado localmente — sin conexión al CRM', 'err');
+  }
+}
+
+function guardarLocal(datos) {
+  try {
+    const arr = JSON.parse(localStorage.getItem('avs_solicitudes') || '[]');
+    arr.unshift({ ...datos, localId: 'loc_' + Date.now() });
+    localStorage.setItem('avs_solicitudes', JSON.stringify(arr.slice(0, 50)));
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════
+//  CONFIRMACION
+// ══════════════════════════════════════
+function goToConfirmacion(datos, crmId, modo) {
+  document.getElementById('p4').classList.remove('active');
+  S.paso = 5;
+  document.getElementById('p5').classList.add('active');
+  updProg(5);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const a = S.asesor;
+  const l = LINEAS[S.linea];
+
+  // Status box
+  const sb = document.getElementById('crm-status-box');
+  if (modo === 'crm') {
+    sb.innerHTML = `
+      <div class="crm-status crm-ok">
+        <div class="crm-status-icon">🟢</div>
+        <div>
+          <strong>Registrado en el CRM de AVSTRAVEL</strong><br>
+          Tu solicitud ya aparece en el sistema de ${a.nombre}. Recibirás contacto en el menor tiempo posible.
+          ${crmId ? `<br><span style="font-size:10.5px;opacity:.6">ID: ${crmId}</span>` : ''}
+        </div>
+      </div>`;
+  } else {
+    sb.innerHTML = `
+      <div class="crm-status crm-err">
+        <div class="crm-status-icon">⚠️</div>
+        <div>
+          <strong>Sin conexión al CRM</strong><br>
+          Tu solicitud fue guardada localmente. Por favor escríbenos directamente al WhatsApp para que tu asesor la procese.
+        </div>
+      </div>`;
+  }
+
+  // Resumen
+  const fmtF = f => { if(!f)return '—'; const[y,m,d]=f.split('-'); return `${d}/${m}/${y}`; };
+  const viajStr = `${datos.adultos} adulto${datos.adultos!==1?'s':''}${datos.ninos>0?', '+datos.ninos+' niño'+(datos.ninos!==1?'s':''):''}${datos.infantes>0?', '+datos.infantes+' infante'+(datos.infantes!==1?'s':''):''}`;
+
+  const rows = [
+    ['Línea',`${l.icono} ${l.nombre}`],
+    ['Destino',datos.destino],
+    ...(datos.tipoServicio?[['Servicio',datos.tipoServicio]]:[]),
+    ['Fecha ida',fmtF(datos.fechaIda)],
+    ...(datos.fechaRegreso?[['Regreso',fmtF(datos.fechaRegreso)]]:[]),
+    ['Presupuesto',datos.presupuesto],
+    ['Viajeros',viajStr],
+    ...(datos.ciudad?[['Ciudad origen',datos.ciudad]]:[]),
+    ...(datos.notas?[['Notas',datos.notas]]:[]),
+    ['WhatsApp',datos.telefono],
+  ];
+
+  document.getElementById('res-card').innerHTML = `
+    <div class="res-hdr">
+      <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0">${a.ini}</div>
+      <div>
+        <div class="res-hdr-title">Solicitud de ${datos.nombre.split(' ')[0]}</div>
+        <div class="res-hdr-sub">Asignada a ${a.nombre}</div>
+      </div>
+    </div>
+    <div class="res-body">
+      ${rows.map(([k,v])=>`<div class="res-row"><span class="res-k">${k}</span><span class="res-v">${v}</span></div>`).join('')}
+      <div class="res-asesor">
+        <div class="ra-av" style="background:${a.color}">${a.ini}</div>
+        <div>
+          <div class="ra-name">${a.nombre}</div>
+          <div class="ra-cargo">${a.cargo} · +57 ${a.tel}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════
+function toast(msg, t='ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'toast' + (t==='err'?' err':'');
+  el.classList.add('show'); setTimeout(()=>el.classList.remove('show'), 3200);
+}
+
+function reiniciar() {
+  S = { paso:1, linea:null, destino:'', tipoSrv:'', fida:'', freg:'', presupuesto:'', presupuestoLabel:'', flex:'no', adultos:2, ninos:0, infantes:0, notas:'', comoNos:'', nombre:'', apellido:'', telefono:'', email:'', ciudadOrigen:'', asesor:null };
+  document.getElementById('p5').classList.remove('active');
+  document.getElementById('p1').classList.add('active');
+  document.querySelectorAll('.lopt').forEach(x=>x.classList.remove('sel'));
+  document.getElementById('dest-suger').style.display='none';
+  document.getElementById('destino').value='';
+  document.getElementById('btn-enviar').disabled = false;
+  updProg(1);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Init
+document.getElementById('fida').min = new Date().toISOString().split('T')[0];
+document.getElementById('freg').min = new Date().toISOString().split('T')[0];
+document.getElementById('fida').addEventListener('change', function() {
+  document.getElementById('freg').min = this.value;
+});
+renderPresup(LINEAS.nacional.presupuestos);
+</script>
+</body>
+</html>
