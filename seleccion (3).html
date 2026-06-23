@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVSTRAVEL · Portal de Empleo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A2A4A;--ocean:#0A4A6E;--sky:#1B7FA6;--reef:#00A878;
+  --sun:#F2A922;--coral:#E05C3A;--green:#2D6A2D;--cream:#FDFAF5;
+  --white:#fff;--mist:#7A9AAD;--ink:#0D1B2A;--light:#EEF4F8;
+  --sand:#F7F1E8;--ease:cubic-bezier(.25,.46,.45,.94);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(160deg,#051525 0%,#082540 50%,#0A3D5F 100%);padding:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:58px;gap:12px}
+.brand{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:#fff;letter-spacing:-1px;text-decoration:none}
+.brand em{font-style:italic;color:var(--sun)}
+.header-btns{display:flex;gap:8px}
+.hbtn{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;letter-spacing:.03em}
+.hbtn-outline{background:transparent;color:rgba(255,255,255,.7);border:1.5px solid rgba(255,255,255,.2)}
+.hbtn-outline:hover{background:rgba(255,255,255,.1);color:#fff}
+.hbtn-solid{background:var(--reef);color:#fff}
+.hbtn-solid:hover{background:#008060}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(160deg,#051525 0%,#082540 50%,#0A3D5F 100%);padding:48px 20px 64px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:40px;background:var(--cream);clip-path:ellipse(55% 100% at 50% 100%)}
+.hero-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,168,120,.15) 0%,transparent 70%);top:-150px;left:50%;transform:translateX(-50%);pointer-events:none}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:30px;background:rgba(0,168,120,.12);border:1px solid rgba(0,168,120,.3);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,168,120,.9);margin-bottom:18px}
+.hero-dot{width:7px;height:7px;border-radius:50%;background:var(--reef);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,6vw,58px);font-weight:300;color:#fff;line-height:1.05;margin-bottom:10px;position:relative;z-index:2}
+.hero-title em{font-style:italic;color:var(--sun)}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:32px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:2}
+.vacantes-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;margin-bottom:28px}
+.vacante-pill{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:50px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:#fff}
+.vp-icon{font-size:20px}
+.vp-cargo{font-size:13px;font-weight:700}
+.vp-tipo{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:50px;background:var(--reef);color:#fff;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .25s;box-shadow:0 6px 24px rgba(0,168,120,.35);text-decoration:none}
+.hero-cta:hover{background:#008060;transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,168,120,.45)}
+
+/* ── MAIN ── */
+.main{max-width:1100px;margin:0 auto;padding:36px 20px 60px}
+
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:28px;border-bottom:2px solid rgba(10,74,110,.1);padding-bottom:0;overflow-x:auto}
+.tab{padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--mist);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:7px}
+.tab.active{color:var(--ocean);border-bottom-color:var(--ocean)}
+.tab:hover:not(.active){color:var(--ink)}
+.tab-badge{background:var(--coral);color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px}
+.tab-badge.green{background:var(--reef)}
+
+/* VISTA */
+.vista{display:none}
+.vista.active{display:block}
+
+/* ── FORMULARIO POSTULACIÓN ── */
+.form-card{background:var(--white);border-radius:20px;padding:28px;border:1px solid rgba(10,74,110,.08);margin-bottom:20px}
+.form-section-title{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ocean);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(10,74,110,.08)}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:600px){.fg2,.fg3{grid-template-columns:1fr}}
+.fl{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-bottom:5px}
+.fi,.fs,.ft{width:100%;padding:11px 13px;border:1.5px solid rgba(10,74,110,.13);border-radius:10px;font-family:'Jost',sans-serif;font-size:13.5px;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s;appearance:none}
+.fi:focus,.fs:focus,.ft:focus{border-color:var(--sky)}
+.fi.req-err{border-color:var(--coral)}
+.ft{resize:vertical;min-height:80px;line-height:1.6}
+.fi::placeholder,.ft::placeholder{color:var(--mist)}
+.fs{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A9AAD' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+/* Estrellas de experiencia */
+.skill-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(10,74,110,.06)}
+.skill-row:last-child{border-bottom:none}
+.skill-name{font-size:13px;color:var(--ink)}
+.skill-stars{display:flex;gap:4px}
+.star-btn{width:26px;height:26px;border:none;background:none;cursor:pointer;font-size:18px;color:#ddd;transition:color .15s;line-height:1;padding:0}
+.star-btn.active{color:#F2A922}
+/* CV upload */
+.cv-upload{border:2px dashed rgba(10,74,110,.2);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:all .2s;background:var(--light);position:relative;overflow:hidden}
+.cv-upload:hover{border-color:var(--sky);background:rgba(27,127,166,.04)}
+.cv-upload.has-file{border-color:var(--reef);background:rgba(0,168,120,.05)}
+.cv-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.cv-icon{font-size:28px;margin-bottom:6px;display:block;opacity:.5}
+.cv-text{font-size:13px;font-weight:600;color:var(--ocean)}
+.cv-sub{font-size:11px;color:var(--mist);margin-top:3px}
+.cv-nombre{font-size:12px;color:var(--reef);font-weight:600;margin-top:6px;display:none}
+/* Btn enviar */
+.btn-postular{width:100%;padding:14px;border-radius:50px;border:none;background:linear-gradient(135deg,var(--ocean),var(--sky));color:#fff;font-family:'Jost',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .25s;box-shadow:0 6px 24px rgba(10,74,110,.3)}
+.btn-postular:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(10,74,110,.4)}
+.btn-postular:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ── TABLA CANDIDATOS ── */
+.candidatos-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.candidatos-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--navy)}
+.candidatos-tools{display:flex;gap:8px;flex-wrap:wrap}
+.tool-btn{padding:7px 14px;border-radius:20px;border:1.5px solid rgba(10,74,110,.14);background:var(--white);font-size:12px;font-weight:600;cursor:pointer;color:var(--ocean);transition:all .2s}
+.tool-btn:hover{background:var(--ocean);color:#fff;border-color:var(--ocean)}
+.tool-btn.active{background:var(--ocean);color:#fff;border-color:var(--ocean)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}}
+.stat-card{background:var(--white);border-radius:14px;padding:16px;border:1px solid rgba(10,74,110,.07);text-align:center}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:600;color:var(--navy);line-height:1}
+.stat-lbl{font-size:11px;color:var(--mist);margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
+/* Tabla */
+.cand-table-wrap{background:var(--white);border-radius:16px;border:1px solid rgba(10,74,110,.07);overflow:hidden}
+.cand-table{width:100%;border-collapse:collapse}
+.cand-table th{background:var(--navy);color:#fff;padding:11px 14px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.cand-table td{padding:12px 14px;border-bottom:1px solid rgba(10,74,110,.06);font-size:13px;vertical-align:middle}
+.cand-table tr:last-child td{border-bottom:none}
+.cand-table tr:hover td{background:rgba(10,74,110,.02)}
+.cand-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.cand-nombre{font-weight:700;color:var(--ink)}
+.cand-cargo{font-size:11px;color:var(--mist)}
+/* Score badge */
+.score-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11.5px;font-weight:700}
+.score-alto{background:rgba(0,168,120,.12);color:#006644}
+.score-medio{background:rgba(242,169,34,.12);color:#8B5A00}
+.score-bajo{background:rgba(224,92,58,.12);color:#8B1A00}
+/* Estado select */
+.estado-sel{padding:5px 10px;border-radius:20px;border:1.5px solid rgba(10,74,110,.14);background:var(--light);font-family:'Jost',sans-serif;font-size:12px;font-weight:600;cursor:pointer;color:var(--ocean);outline:none}
+/* Acciones */
+.acc-btns{display:flex;gap:5px}
+.acc-btn{padding:5px 10px;border-radius:8px;border:none;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s}
+.acc-ver{background:var(--sky);color:#fff}
+.acc-ia{background:rgba(107,78,204,.12);color:#533AB4;border:1px solid rgba(107,78,204,.2)}
+.acc-agenda{background:rgba(0,168,120,.12);color:var(--reef);border:1px solid rgba(0,168,120,.2)}
+.acc-eliminar{background:rgba(224,92,58,.1);color:var(--coral);border:1px solid rgba(224,92,58,.2)}
+
+/* ── MODAL CANDIDATO ── */
+.overlay{position:fixed;inset:0;background:rgba(10,20,40,.78);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:20px;backdrop-filter:blur(6px);overflow-y:auto}
+.overlay.show{display:flex}
+.modal{background:var(--white);border-radius:22px;max-width:640px;width:100%;animation:mIn .35s var(--ease) both;margin:auto;overflow:hidden}
+@keyframes mIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+.modal-hdr{background:var(--navy);padding:18px 22px;display:flex;align-items:center;justify-content:space-between}
+.modal-hdr-title{font-size:15px;font-weight:700;color:#fff}
+.modal-close{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:22px;max-height:75vh;overflow-y:auto}
+.mrow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(10,74,110,.07);font-size:13px}
+.mrow:last-child{border-bottom:none}
+.mk{color:var(--mist)}
+.mv{font-weight:600;color:var(--ink);text-align:right;max-width:60%}
+/* IA análisis */
+.ia-box{background:linear-gradient(135deg,rgba(107,78,204,.08),rgba(27,127,166,.05));border:1.5px solid rgba(107,78,204,.2);border-radius:14px;padding:16px;margin-top:14px}
+.ia-box-title{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#533AB4;margin-bottom:10px}
+.ia-loading{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mist)}
+.ia-spinner{width:20px;height:20px;border:2.5px solid rgba(107,78,204,.15);border-top-color:#533AB4;border-radius:50%;animation:spin 1s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ia-resultado{font-size:13.5px;color:var(--ink);line-height:1.75;white-space:pre-wrap}
+/* Agenda entrevista */
+.agenda-box{background:rgba(0,168,120,.06);border:1.5px solid rgba(0,168,120,.2);border-radius:14px;padding:16px;margin-top:12px}
+.agenda-box-title{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--reef);margin-bottom:10px}
+.agenda-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-agendar{width:100%;padding:11px;border-radius:30px;border:none;background:var(--reef);color:#fff;font-family:'Jost',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;transition:all .2s}
+.btn-agendar:hover{background:#008060}
+.btn-analizar{width:100%;padding:11px;border-radius:30px;border:none;background:linear-gradient(135deg,#533AB4,#7B5FCC);color:#fff;font-family:'Jost',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;transition:all .2s}
+.btn-analizar:hover{opacity:.88}
+
+/* MODAL CAPACITACIÓN */
+.cap-overlay{position:fixed;inset:0;background:rgba(10,20,40,.85);z-index:300;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(8px)}
+.cap-overlay.show{display:flex}
+.cap-box{background:var(--white);border-radius:20px;max-width:540px;width:100%;overflow:hidden;animation:mIn .35s var(--ease) both}
+.cap-header{background:linear-gradient(135deg,#533AB4,#7B5FCC);padding:20px 22px;display:flex;align-items:center;justify-content:space-between}
+.cap-header-title{font-size:15px;font-weight:700;color:#fff}
+.cap-close{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.cap-body{padding:22px}
+.cap-preview{background:#F8F0FF;border:1.5px solid rgba(107,78,204,.2);border-radius:12px;padding:16px;margin:14px 0;font-size:13px;line-height:1.75;color:var(--ink);font-family:monospace,sans-serif;white-space:pre-wrap;max-height:220px;overflow-y:auto}
+.cap-btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.cap-btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:30px;border:none;background:#25D366;color:#fff;font-family:Jost,sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.cap-btn-wa:hover{background:#20bb58;transform:translateY(-1px)}
+.cap-btn-email{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:30px;border:none;background:var(--ocean);color:#fff;font-family:Jost,sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.cap-btn-email:hover{background:#0b3d5c;transform:translateY(-1px)}
+.cap-btn-copy{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;border-radius:30px;border:1.5px solid rgba(10,74,110,.15);background:transparent;color:var(--mist);font-family:Jost,sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
+.cap-btn-copy:hover{border-color:var(--sky);color:var(--ocean)}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;padding:11px 18px;border-radius:11px;font-size:13px;font-weight:500;box-shadow:0 8px 28px rgba(0,0,0,.25);border-left:3px solid var(--reef);opacity:0;transform:translateY(8px);transition:all .28s;pointer-events:none;z-index:999;max-width:300px}
+.toast.show{opacity:1;transform:none}
+.toast.err{border-left-color:var(--coral)}
+
+/* EMPTY */
+.empty{text-align:center;padding:48px 20px;color:var(--mist)}
+.empty-icon{font-size:48px;margin-bottom:12px;opacity:.4}
+.empty-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--ink);margin-bottom:6px}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .cand-table th:nth-child(4),.cand-table td:nth-child(4),
+  .cand-table th:nth-child(5),.cand-table td:nth-child(5){display:none}
+  .acc-ia,.acc-agenda{display:none}
+}
+@media(max-width:480px){
+  .stats-row{grid-template-columns:1fr 1fr}
+  .tabs{gap:2px}
+  .tab{padding:8px 12px;font-size:12px}
+  .modal-body{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <a class="brand" href="https://jhonlerma2024.github.io/AVSTRAVEL-CRM/" target="_blank">AVS<em>TRAVEL</em></a>
+    <div class="header-btns">
+      <button class="hbtn hbtn-outline" onclick="showTab('admin')">🔒 Panel Admin</button>
+      <a class="hbtn hbtn-solid" href="#postular">📋 Postularme</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero" id="inicio">
+  <div class="hero-glow"></div>
+  <div class="hero-tag"><div class="hero-dot"></div>Convocatoria activa · 2 cupos disponibles</div>
+  <h1 class="hero-title">Únete al equipo<br><em>AVSTRAVEL</em></h1>
+  <p class="hero-sub">Buenaventura · Valle del Cauca · Trabaja con la agencia de viajes líder del Pacífico colombiano</p>
+  <div class="vacantes-row">
+    <div class="vacante-pill">
+      <div class="vp-icon">🏢</div>
+      <div><div class="vp-cargo">Asesor Comercial</div><div class="vp-tipo">Trabajo en oficina · Comisión</div></div>
+    </div>
+    <div class="vacante-pill">
+      <div class="vp-icon">🚀</div>
+      <div><div class="vp-cargo">Vendedor Externo</div><div class="vp-tipo">Trabajo externo · Comisión</div></div>
+    </div>
+  </div>
+  <a class="hero-cta" href="#postular">📋 Postularme ahora →</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" id="tab-postular" onclick="showTab('postular')">📋 Postularme</button>
+    <button class="tab" id="tab-candidatos" onclick="showTab('candidatos')">👥 Candidatos <span class="tab-badge" id="badge-total">0</span></button>
+    <button class="tab" id="tab-seleccionados" onclick="showTab('seleccionados')">⭐ Seleccionados <span class="tab-badge green" id="badge-sel">0</span></button>
+    <button class="tab" id="tab-admin" onclick="showTab('admin')">⚙️ Admin</button>
+  </div>
+
+  <!-- VISTA: POSTULAR -->
+  <div class="vista active" id="v-postular" id-section="postular">
+    <div class="form-card" id="postular">
+      <div style="margin-bottom:20px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--navy);margin-bottom:4px">Formulario de <em style="font-style:italic;color:var(--reef)">postulación</em></div>
+        <div style="font-size:14px;color:var(--mist)">Completa todos los campos. Tu hoja de vida será evaluada por nuestro equipo.</div>
+      </div>
+
+      <!-- Datos personales -->
+      <div class="form-section-title">Datos personales</div>
+      <div class="fg2" style="margin-bottom:12px">
+        <div><label class="fl">Nombre completo *</label><input type="text" class="fi" id="f-nombre" placeholder="Nombre y apellidos"></div>
+        <div><label class="fl">Cédula *</label><input type="text" class="fi" id="f-cedula" placeholder="Número de cédula"></div>
+        <div><label class="fl">WhatsApp *</label><input type="tel" class="fi" id="f-tel" placeholder="315 XXX XXXX"></div>
+        <div><label class="fl">Correo electrónico *</label><input type="email" class="fi" id="f-email" placeholder="tucorreo@gmail.com"></div>
+        <div><label class="fl">Fecha de nacimiento</label><input type="date" class="fi" id="f-nacimiento"></div>
+        <div><label class="fl">Barrio / Dirección</label><input type="text" class="fi" id="f-barrio" placeholder="Barrio en Buenaventura"></div>
+      </div>
+
+      <!-- Cargo -->
+      <div class="form-section-title">Cargo al que aplica</div>
+      <div class="fg2" style="margin-bottom:12px">
+        <div>
+          <label class="fl">Cargo *</label>
+          <select class="fs" id="f-cargo">
+            <option value="">Seleccionar...</option>
+            <option value="Asesor Comercial">Asesor Comercial (oficina)</option>
+            <option value="Vendedor Externo">Vendedor Externo (campo)</option>
+            <option value="Ambos">Ambos cargos</option>
+          </select>
+        </div>
+        <div>
+          <label class="fl">Disponibilidad horaria</label>
+          <select class="fs" id="f-disponibilidad">
+            <option value="Tiempo completo">Tiempo completo</option>
+            <option value="Medio tiempo">Medio tiempo</option>
+            <option value="Fines de semana">Solo fines de semana</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Formación -->
+      <div class="form-section-title">Formación académica</div>
+      <div class="fg2" style="margin-bottom:12px">
+        <div>
+          <label class="fl">Nivel de estudios</label>
+          <select class="fs" id="f-estudios">
+            <option value="Bachiller">Bachiller</option>
+            <option value="Técnico">Técnico</option>
+            <option value="Tecnólogo">Tecnólogo</option>
+            <option value="Universitario">Universitario (en curso)</option>
+            <option value="Profesional">Profesional graduado</option>
+            <option value="Posgrado">Posgrado</option>
+          </select>
+        </div>
+        <div><label class="fl">Área o carrera</label><input type="text" class="fi" id="f-carrera" placeholder="Ej: Turismo, Administración..."></div>
+        <div><label class="fl">Institución educativa</label><input type="text" class="fi" id="f-institucion" placeholder="Nombre del colegio o universidad"></div>
+        <div>
+          <label class="fl">Estado</label>
+          <select class="fs" id="f-estado-estudio">
+            <option>Graduado</option>
+            <option>En curso</option>
+            <option>Incompleto</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Experiencia -->
+      <div class="form-section-title">Experiencia laboral</div>
+      <div class="fg2" style="margin-bottom:12px">
+        <div>
+          <label class="fl">Años de experiencia en ventas</label>
+          <select class="fs" id="f-experiencia">
+            <option value="0">Sin experiencia (estoy empezando)</option>
+            <option value="1">Menos de 1 año</option>
+            <option value="2">1 a 2 años</option>
+            <option value="3">2 a 4 años</option>
+            <option value="5">Más de 4 años</option>
+          </select>
+        </div>
+        <div>
+          <label class="fl">Experiencia en turismo</label>
+          <select class="fs" id="f-exp-turismo">
+            <option value="No">No tengo experiencia en turismo</option>
+            <option value="Poca">Poca (menos de 1 año)</option>
+            <option value="Media">Media (1-3 años)</option>
+            <option value="Alta">Alta (más de 3 años)</option>
+          </select>
+        </div>
+        <div style="grid-column:1/-1"><label class="fl">¿En qué empresas has trabajado? (últimos 2 empleos)</label><textarea class="ft" id="f-empleos" placeholder="Empresa, cargo y tiempo. Ej: Almacén X, vendedor, 1 año (2022-2023)"></textarea></div>
+      </div>
+
+      <!-- Habilidades calificadas con estrellas -->
+      <div class="form-section-title">Habilidades (califica del 1 al 5 ⭐)</div>
+      <div style="margin-bottom:16px">
+        <div class="skill-row"><span class="skill-name">Comunicación y atención al cliente</span><div class="skill-stars" id="stars-comunicacion"></div></div>
+        <div class="skill-row"><span class="skill-name">Habilidades digitales (WhatsApp, redes)</span><div class="skill-stars" id="stars-digital"></div></div>
+        <div class="skill-row"><span class="skill-name">Ventas y persuasión</span><div class="skill-stars" id="stars-ventas"></div></div>
+        <div class="skill-row"><span class="skill-name">Trabajo en equipo</span><div class="skill-stars" id="stars-equipo"></div></div>
+        <div class="skill-row"><span class="skill-name">Conocimiento de turismo / destinos</span><div class="skill-stars" id="stars-turismo"></div></div>
+      </div>
+
+      <!-- Preguntas clave -->
+      <div class="form-section-title">Preguntas clave</div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+        <div><label class="fl">¿Por qué quieres trabajar en AVSTRAVEL?</label><textarea class="ft" id="f-motivacion" placeholder="Cuéntanos tu motivación (mínimo 3 líneas)..."></textarea></div>
+        <div><label class="fl">¿Qué te hace diferente a otros candidatos?</label><textarea class="ft" id="f-diferencial" placeholder="Tu propuesta de valor personal..."></textarea></div>
+        <div>
+          <label class="fl">¿Cómo consigues clientes? (describe tu método)</label>
+          <textarea class="ft" id="f-metodo" placeholder="Ej: Redes sociales, referidos, puerta a puerta..."></textarea>
+        </div>
+      </div>
+
+      <!-- CV -->
+      <div class="form-section-title">Hoja de vida (opcional)</div>
+      <div class="cv-upload" id="cv-upload-area">
+        <input type="file" id="f-cv" accept=".pdf,.doc,.docx,image/*" onchange="cargarCV(event)">
+        <span class="cv-icon">📄</span>
+        <div class="cv-text">Haz clic para subir tu hoja de vida</div>
+        <div class="cv-sub">PDF, Word o imagen · Máximo 5MB</div>
+        <div class="cv-nombre" id="cv-nombre"></div>
+      </div>
+      <div style="font-size:11px;color:var(--mist);margin-top:5px">Si no tienes HV digital, no te preocupes — el formulario es suficiente.</div>
+
+      <button class="btn-postular" onclick="enviarPostulacion()" style="margin-top:20px">✅ Enviar postulación</button>
+    </div>
+  </div>
+
+  <!-- VISTA: CANDIDATOS -->
+  <div class="vista" id="v-candidatos">
+    <div class="candidatos-header">
+      <div class="candidatos-title">Candidatos recibidos</div>
+      <div class="candidatos-tools">
+        <button class="tool-btn active" id="fil-todos" onclick="filtrarCandidatos('todos',this)">Todos</button>
+        <button class="tool-btn" id="fil-asesor" onclick="filtrarCandidatos('Asesor Comercial',this)">Asesor</button>
+        <button class="tool-btn" id="fil-vendedor" onclick="filtrarCandidatos('Vendedor Externo',this)">Vendedor</button>
+        <button class="tool-btn" onclick="ordenarPorScore()">📊 Ordenar por puntaje</button>
+      </div>
+    </div>
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card"><div class="stat-num" id="st-total">0</div><div class="stat-lbl">Total postulados</div></div>
+      <div class="stat-card"><div class="stat-num" id="st-nuevos">0</div><div class="stat-lbl">Sin revisar</div></div>
+      <div class="stat-card"><div class="stat-num" id="st-entrevista">0</div><div class="stat-lbl">En entrevista</div></div>
+      <div class="stat-card"><div class="stat-num" id="st-sel">0</div><div class="stat-lbl">Seleccionados</div></div>
+    </div>
+    <div class="cand-table-wrap">
+      <table class="cand-table">
+        <thead><tr>
+          <th>Candidato</th>
+          <th>Cargo</th>
+          <th>Experiencia</th>
+          <th>Puntaje IA</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr></thead>
+        <tbody id="cand-tbody">
+          <tr><td colspan="6"><div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin candidatos aún</div><div style="font-size:13px">Los formularios enviados aparecen aquí en tiempo real</div></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VISTA: SELECCIONADOS -->
+  <div class="vista" id="v-seleccionados">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--navy);margin-bottom:18px">Candidatos <em style="color:var(--reef)">seleccionados</em></div>
+    <div id="seleccionados-lista">
+      <div class="empty"><div class="empty-icon">⭐</div><div class="empty-title">Sin seleccionados aún</div><div style="font-size:13px">Cambia el estado de un candidato a "Seleccionado" para verlo aquí</div></div>
+    </div>
+  </div>
+
+  <!-- VISTA: ADMIN -->
+  <div class="vista" id="v-admin">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--navy);margin-bottom:18px">Panel <em style="color:var(--ocean)">Administrador</em></div>
+    <div id="admin-login-wrap">
+      <div style="background:var(--white);border-radius:16px;padding:24px;max-width:360px;border:1px solid rgba(10,74,110,.08)">
+        <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:12px">Acceso restringido</div>
+        <label class="fl">Contraseña</label>
+        <input type="password" class="fi" id="admin-pass" placeholder="Contraseña admin" onkeydown="if(event.key==='Enter')verificarAdmin()" style="margin-bottom:12px">
+        <button class="btn-postular" onclick="verificarAdmin()">Entrar</button>
+      </div>
+    </div>
+    <div id="admin-panel" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+        <div style="background:var(--white);border-radius:14px;padding:18px;border:1px solid rgba(10,74,110,.08)">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-bottom:8px">Convocatoria activa</div>
+          <div style="font-size:13.5px;font-weight:600;color:var(--navy)">Asesor Comercial + Vendedor Externo</div>
+          <div style="font-size:12px;color:var(--mist);margin-top:4px">2 cupos disponibles · Buenaventura</div>
+        </div>
+        <div style="background:var(--white);border-radius:14px;padding:18px;border:1px solid rgba(10,74,110,.08)">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-bottom:8px">Acciones rápidas</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <button class="tool-btn" onclick="exportarCandidatos()">📥 Exportar candidatos CSV</button>
+            <button class="tool-btn" onclick="showTab('candidatos')">👥 Ver todos los candidatos</button>
+          </div>
+        </div>
+      </div>
+      <div style="background:rgba(107,78,204,.06);border:1.5px solid rgba(107,78,204,.15);border-radius:14px;padding:18px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#533AB4;margin-bottom:8px">🤖 Análisis IA disponible</div>
+        <div style="font-size:13px;color:var(--ink);line-height:1.6">Cada candidato puede analizarse con Claude AI. Haz clic en <strong>"🤖 Analizar"</strong> en la tabla de candidatos para obtener un análisis detallado del perfil, puntaje de idoneidad (0-100) y recomendación de entrevista.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- MODAL CANDIDATO -->
+<div class="overlay" id="modal-candidato">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title" id="modal-cand-title">Perfil del candidato</div>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-cand-body"></div>
+  </div>
+</div>
+
+<!-- MODAL ENVIAR CAPACITACIÓN -->
+<div class="cap-overlay" id="cap-overlay">
+  <div class="cap-box">
+    <div class="cap-header">
+      <div class="cap-header-title">🎓 Enviar capacitación · Universidad AVSTRAVEL</div>
+      <button class="cap-close" onclick="cerrarCapacitacion()">✕</button>
+    </div>
+    <div class="cap-body">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding:12px 14px;background:var(--light);border-radius:10px">
+        <div class="cand-avatar" id="cap-avatar" style="background:#533AB4;width:40px;height:40px;font-size:14px">?</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--navy)" id="cap-nombre">Candidato</div>
+          <div style="font-size:12px;color:var(--mist)" id="cap-cargo-label">Cargo seleccionado</div>
+        </div>
+        <div style="margin-left:auto;padding:4px 12px;border-radius:20px;background:rgba(0,168,120,.1);color:var(--reef);font-size:11px;font-weight:700">SELECCIONADO</div>
+      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-bottom:6px">Vista previa del mensaje</div>
+      <div class="cap-preview" id="cap-preview"></div>
+      <div class="cap-btns">
+        <button class="cap-btn-wa" id="cap-btn-wa" onclick="enviarPorWA()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Enviar por WhatsApp
+        </button>
+        <button class="cap-btn-email" id="cap-btn-email" onclick="enviarPorEmail()">
+          ✉️ Enviar por correo electrónico
+        </button>
+        <button class="cap-btn-copy" onclick="copiarMensaje()">
+          📋 Copiar mensaje
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getDatabase, ref, push, set, onValue, update, remove }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+
+const cfg = {
+  apiKey:"AIzaSyCSiwt0zFr8g6jVctNfbD5kr1KAM_YFeGc",
+  authDomain:"avstravel-crm.firebaseapp.com",
+  databaseURL:"https://avstravel-crm-default-rtdb.firebaseio.com",
+  projectId:"avstravel-crm"
+};
+const app = initializeApp(cfg);
+const db  = getDatabase(app);
+window._db=db; window._ref=ref; window._push=push;
+window._set=set; window._upd=update; window._del=remove;
+
+onValue(ref(db,'candidatos'), snap => {
+  window._candidatos=[];
+  if(snap.exists()) snap.forEach(c=>{const v=c.val();if(v)window._candidatos.push({id:c.key,...v});});
+  renderCandidatos(); actualizarBadges();
+});
+</script>
+
+<script>
+// ════════════════════════════
+//  STATE
+// ════════════════════════════
+let estrellas = { comunicacion:0, digital:0, ventas:0, equipo:0, turismo:0 };
+let cvBase64  = '';
+let cvNombre  = '';
+let filtroActivo = 'todos';
+let adminOk   = false;
+
+// ════════════════════════════
+//  TABS
+// ════════════════════════════
+function showTab(tab) {
+  if((tab==='candidatos'||tab==='seleccionados'||tab==='admin') && !adminOk) {
+    verificarAdminPrompt(tab); return;
+  }
+  document.querySelectorAll('.vista').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('v-'+tab).classList.add('active');
+  document.getElementById('tab-'+tab)?.classList.add('active');
+  if(tab==='seleccionados') renderSeleccionados();
+}
+
+function verificarAdminPrompt(targetTab) {
+  document.querySelectorAll('.vista').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('v-admin').classList.add('active');
+  document.getElementById('tab-admin')?.classList.add('active');
+  document.getElementById('admin-pass').dataset.target = targetTab;
+  setTimeout(()=>document.getElementById('admin-pass').focus(), 300);
+}
+
+function verificarAdmin() {
+  const pass = document.getElementById('admin-pass').value;
+  if(pass==='avstravel2026') {
+    adminOk = true;
+    document.getElementById('admin-login-wrap').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    const target = document.getElementById('admin-pass').dataset.target || 'admin';
+    toast('✓ Acceso concedido');
+    if(target!=='admin') showTab(target);
+  } else {
+    toast('Contraseña incorrecta','err');
+    document.getElementById('admin-pass').value='';
+  }
+}
+
+// ════════════════════════════
+//  ESTRELLAS
+// ════════════════════════════
+const SKILLS = ['comunicacion','digital','ventas','equipo','turismo'];
+SKILLS.forEach(sk => {
+  const cont = document.getElementById('stars-'+sk);
+  for(let i=1;i<=5;i++) {
+    const btn = document.createElement('button');
+    btn.type='button'; btn.className='star-btn'; btn.textContent='★';
+    btn.dataset.val=i; btn.dataset.skill=sk;
+    btn.onclick = function() {
+      estrellas[sk] = parseInt(this.dataset.val);
+      actualizarEstrellas(sk);
+    };
+    cont.appendChild(btn);
+  }
+});
+
+function actualizarEstrellas(sk) {
+  const cont = document.getElementById('stars-'+sk);
+  cont.querySelectorAll('.star-btn').forEach((btn,i) => {
+    btn.classList.toggle('active', i < estrellas[sk]);
+  });
+}
+
+// ════════════════════════════
+//  CV UPLOAD
+// ════════════════════════════
+function cargarCV(event) {
+  const file = event.target.files[0];
+  if(!file) return;
+  if(file.size > 5*1024*1024) { toast('El archivo es muy grande (máx 5MB)','err'); return; }
+  cvNombre = file.name;
+  const reader = new FileReader();
+  reader.onload = e => {
+    cvBase64 = e.target.result;
+    document.getElementById('cv-nombre').textContent = '✓ ' + cvNombre;
+    document.getElementById('cv-nombre').style.display = 'block';
+    document.getElementById('cv-upload-area').classList.add('has-file');
+    toast('✓ Hoja de vida cargada');
+  };
+  reader.readAsDataURL(file);
+}
+window.cargarCV = cargarCV;
+
+// ════════════════════════════
+//  CALCULAR SCORE AUTOMÁTICO
+// ════════════════════════════
+function calcularScore(c) {
+  let score = 0;
+  // Habilidades (máx 40)
+  const habs = [c.habilidades?.comunicacion||0, c.habilidades?.digital||0, c.habilidades?.ventas||0, c.habilidades?.equipo||0, c.habilidades?.turismo||0];
+  score += Math.round((habs.reduce((a,b)=>a+b,0)/25)*40);
+  // Experiencia ventas (máx 20)
+  const expMap = {'0':0,'1':10,'2':15,'3':18,'5':20};
+  score += expMap[c.experiencia] || 0;
+  // Experiencia turismo (máx 15)
+  const turMap = {'No':0,'Poca':8,'Media':12,'Alta':15};
+  score += turMap[c.expTurismo] || 0;
+  // Formación (máx 15)
+  const estMap = {'Bachiller':5,'Técnico':8,'Tecnólogo':10,'Universitario':12,'Profesional':15,'Posgrado':15};
+  score += estMap[c.estudios] || 0;
+  // Motivación (máx 10)
+  if(c.motivacion && c.motivacion.length > 100) score += 10;
+  else if(c.motivacion && c.motivacion.length > 50) score += 5;
+  return Math.min(score, 100);
+}
+
+// ════════════════════════════
+//  ENVIAR POSTULACIÓN
+// ════════════════════════════
+async function enviarPostulacion() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const tel    = document.getElementById('f-tel').value.trim();
+  const email  = document.getElementById('f-email').value.trim();
+  const cargo  = document.getElementById('f-cargo').value;
+  if(!nombre || !tel || !cargo) { toast('Completa los campos obligatorios (*)','err'); return; }
+  if(tel.length < 7) { toast('Ingresa un WhatsApp válido','err'); return; }
+
+  const candidato = {
+    nombre, tel, email,
+    cedula:      document.getElementById('f-cedula').value.trim(),
+    nacimiento:  document.getElementById('f-nacimiento').value,
+    barrio:      document.getElementById('f-barrio').value.trim(),
+    cargo,
+    disponibilidad: document.getElementById('f-disponibilidad').value,
+    estudios:    document.getElementById('f-estudios').value,
+    carrera:     document.getElementById('f-carrera').value.trim(),
+    institucion: document.getElementById('f-institucion').value.trim(),
+    estadoEstudio: document.getElementById('f-estado-estudio').value,
+    experiencia: document.getElementById('f-experiencia').value,
+    expTurismo:  document.getElementById('f-exp-turismo').value,
+    empleos:     document.getElementById('f-empleos').value.trim(),
+    habilidades: { ...estrellas },
+    motivacion:  document.getElementById('f-motivacion').value.trim(),
+    diferencial: document.getElementById('f-diferencial').value.trim(),
+    metodo:      document.getElementById('f-metodo').value.trim(),
+    cv: cvBase64 ? { nombre: cvNombre, data: cvBase64 } : null,
+    estado: 'Nuevo',
+    createdAt: Date.now(),
+    fecha: new Date().toLocaleDateString('es-CO')
+  };
+  candidato.score = calcularScore(candidato);
+
+  document.querySelector('.btn-postular').disabled = true;
+  document.querySelector('.btn-postular').textContent = 'Enviando...';
+
+  try {
+    if(window._db) {
+      const r = window._push(window._ref(window._db,'candidatos'));
+      await window._set(r, { ...candidato, id: r.key });
+    }
+    // Notificación WA al admin
+    const msg = `🎯 *NUEVA POSTULACIÓN — AVSTRAVEL*\n\n👤 *${nombre}*\n📱 ${tel}\n💼 ${cargo}\n📊 Puntaje: ${candidato.score}/100\n📅 ${candidato.fecha}\n\nRevisa el portal: jhonlerma2024.github.io/AVSTRAVEL-CRM/seleccion.html`;
+    window.open(`https://wa.me/573153945461?text=${encodeURIComponent(msg)}`, '_blank');
+    mostrarConfirmacion(nombre, candidato.score);
+  } catch(e) {
+    toast('Error al enviar. Intenta de nuevo','err');
+    document.querySelector('.btn-postular').disabled = false;
+    document.querySelector('.btn-postular').textContent = '✅ Enviar postulación';
+  }
+}
+
+function mostrarConfirmacion(nombre, score) {
+  document.getElementById('v-postular').innerHTML = `
+    <div style="text-align:center;padding:60px 20px">
+      <div style="font-size:64px;margin-bottom:20px;animation:popIn .5s ease both">🎉</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--reef);margin-bottom:10px">¡Gracias, ${nombre.split(' ')[0]}!</div>
+      <div style="font-size:15px;color:var(--mist);line-height:1.8;max-width:480px;margin:0 auto 24px">
+        Tu postulación fue recibida exitosamente. Nuestro equipo la revisará y te contactará al WhatsApp registrado si tu perfil es seleccionado para entrevista.
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:12px;background:rgba(0,168,120,.08);border:1.5px solid rgba(0,168,120,.25);border-radius:14px;padding:16px 24px;margin-bottom:28px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:600;color:var(--reef);line-height:1">${score}</div>
+        <div><div style="font-size:13px;font-weight:700;color:var(--navy)">Puntaje de tu perfil</div><div style="font-size:11px;color:var(--mist)">sobre 100 puntos posibles</div></div>
+      </div>
+      <div style="font-size:13px;color:var(--mist)">¿Dudas? Escríbenos: <a href="https://wa.me/573153945461" target="_blank" style="color:var(--reef);font-weight:600">315 394 5461</a></div>
+    </div>`;
+}
+
+// ════════════════════════════
+//  RENDER CANDIDATOS
+// ════════════════════════════
+function getColor(nombre) {
+  const colors=['#006EAF','#00A878','#C8922A','#E05C3A','#533AB4','#0F9E7A','#1B7FA6','#8B1A8B'];
+  let h=0; for(let c of (nombre||'')) h=c.charCodeAt(0)+(h<<5)-h;
+  return colors[Math.abs(h)%colors.length];
+}
+function initials(n=''){const p=n.trim().split(' ');return p.length>=2?p[0][0]+p[p.length-1][0]:n.slice(0,2).toUpperCase()}
+
+let ordenarDesc = true;
+function ordenarPorScore() {
+  if(!window._candidatos) return;
+  window._candidatos.sort((a,b) => ordenarDesc ? b.score-a.score : a.score-b.score);
+  ordenarDesc = !ordenarDesc;
+  renderCandidatos();
+}
+
+function filtrarCandidatos(fil, el) {
+  filtroActivo = fil;
+  document.querySelectorAll('.tool-btn[id^="fil-"]').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderCandidatos();
+}
+
+function renderCandidatos() {
+  const tbody = document.getElementById('cand-tbody');
+  if(!tbody) return;
+  let lista = window._candidatos || [];
+  if(filtroActivo !== 'todos') lista = lista.filter(c => c.cargo === filtroActivo || c.cargo === 'Ambos');
+  if(!lista.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Sin candidatos aún</div><div style="font-size:13px">Los formularios enviados aparecen aquí en tiempo real</div></div></td></tr>`;
+    return;
+  }
+  const estadoColor = {'Nuevo':'#E05C3A','Revisado':'#1B7FA6','En entrevista':'#C8922A','Seleccionado':'#00A878','Descartado':'#999'};
+  tbody.innerHTML = lista.map(c => {
+    const sc = c.score||0;
+    const scClass = sc>=70?'score-alto':sc>=40?'score-medio':'score-bajo';
+    const scLabel = sc>=70?'Alto':sc>=40?'Medio':'Bajo';
+    return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:9px">
+          <div class="cand-avatar" style="background:${getColor(c.nombre)}">${initials(c.nombre)}</div>
+          <div>
+            <div class="cand-nombre">${c.nombre}</div>
+            <div class="cand-cargo">${c.tel} · ${c.fecha||''}</div>
+          </div>
+        </div>
+      </td>
+      <td style="font-size:12.5px">${c.cargo}</td>
+      <td style="font-size:12.5px">${c.expTurismo||'-'}</td>
+      <td><span class="score-badge ${scClass}">${sc}/100 · ${scLabel}</span></td>
+      <td>
+        <select class="estado-sel" onchange="cambiarEstado('${c.id}',this.value)" style="border-color:${estadoColor[c.estado]||'#ccc'}">
+          ${['Nuevo','Revisado','En entrevista','Seleccionado','Descartado'].map(e=>`<option ${c.estado===e?'selected':''}>${e}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <div class="acc-btns">
+          <button class="acc-btn acc-ver" onclick="verCandidato('${c.id}')">👁 Ver</button>
+          <button class="acc-btn acc-ia" onclick="analizarConIA('${c.id}')">🤖 IA</button>
+          <button class="acc-btn acc-agenda" onclick="agendarEntrevista('${c.id}')">📅</button>
+          <button class="acc-btn" style="background:rgba(107,78,204,.12);color:#533AB4;border:1px solid rgba(107,78,204,.2)" onclick="enviarCapacitacion('${c.id}')">🎓</button>
+          <button class="acc-btn acc-eliminar" onclick="eliminarCandidato('${c.id}')">🗑</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  actualizarStats(lista);
+}
+
+function actualizarStats(lista) {
+  document.getElementById('st-total').textContent = lista.length;
+  document.getElementById('st-nuevos').textContent = lista.filter(c=>c.estado==='Nuevo').length;
+  document.getElementById('st-entrevista').textContent = lista.filter(c=>c.estado==='En entrevista').length;
+  document.getElementById('st-sel').textContent = lista.filter(c=>c.estado==='Seleccionado').length;
+}
+
+function actualizarBadges() {
+  const total = (window._candidatos||[]).length;
+  const sel   = (window._candidatos||[]).filter(c=>c.estado==='Seleccionado').length;
+  document.getElementById('badge-total').textContent = total;
+  document.getElementById('badge-sel').textContent   = sel;
+}
+
+// ════════════════════════════
+//  CAMBIAR ESTADO
+// ════════════════════════════
+async function cambiarEstado(id, estado) {
+  if(window._db) await window._upd(window._ref(window._db,'candidatos/'+id), {estado});
+  toast('✓ Estado actualizado');
+}
+
+// ════════════════════════════
+//  VER CANDIDATO
+// ════════════════════════════
+function verCandidato(id) {
+  const c = (window._candidatos||[]).find(x=>x.id===id);
+  if(!c) return;
+  document.getElementById('modal-cand-title').textContent = c.nombre;
+  const hab = c.habilidades||{};
+  const stars = n => '★'.repeat(n||0) + '☆'.repeat(5-(n||0));
+  document.getElementById('modal-cand-body').innerHTML = `
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;padding:14px;background:var(--light);border-radius:12px">
+      <div class="cand-avatar" style="background:${getColor(c.nombre)};width:48px;height:48px;font-size:16px">${initials(c.nombre)}</div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--navy)">${c.nombre}</div>
+        <div style="font-size:12px;color:var(--mist)">${c.cargo} · ${c.fecha}</div>
+      </div>
+      <div style="margin-left:auto;text-align:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--reef)">${c.score||0}</div>
+        <div style="font-size:10px;color:var(--mist)">/ 100 pts</div>
+      </div>
+    </div>
+    <div class="mrow"><span class="mk">WhatsApp</span><span class="mv"><a href="https://wa.me/57${(c.tel||'').replace(/\D/g,'')}" target="_blank" style="color:var(--reef)">${c.tel}</a></span></div>
+    <div class="mrow"><span class="mk">Email</span><span class="mv">${c.email||'—'}</span></div>
+    <div class="mrow"><span class="mk">Cédula</span><span class="mv">${c.cedula||'—'}</span></div>
+    <div class="mrow"><span class="mk">Barrio</span><span class="mv">${c.barrio||'—'}</span></div>
+    <div class="mrow"><span class="mk">Disponibilidad</span><span class="mv">${c.disponibilidad||'—'}</span></div>
+    <div class="mrow"><span class="mk">Estudios</span><span class="mv">${c.estudios||'—'} · ${c.carrera||''}</span></div>
+    <div class="mrow"><span class="mk">Institución</span><span class="mv">${c.institucion||'—'}</span></div>
+    <div class="mrow"><span class="mk">Exp. ventas</span><span class="mv">${c.experiencia||'—'} años</span></div>
+    <div class="mrow"><span class="mk">Exp. turismo</span><span class="mv">${c.expTurismo||'—'}</span></div>
+    <div class="mrow"><span class="mk">Empleos previos</span><span class="mv" style="font-size:12px">${c.empleos||'—'}</span></div>
+    <div style="margin:14px 0 8px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ocean)">Habilidades autocalificadas</div>
+    <div style="background:var(--light);border-radius:10px;padding:12px;font-size:13px;color:var(--sun);line-height:2">
+      Comunicación: ${stars(hab.comunicacion)}<br>
+      Digital: ${stars(hab.digital)}<br>
+      Ventas: ${stars(hab.ventas)}<br>
+      Trabajo en equipo: ${stars(hab.equipo)}<br>
+      Turismo: ${stars(hab.turismo)}
+    </div>
+    ${c.motivacion?`<div style="margin-top:12px"><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ocean);margin-bottom:5px">¿Por qué AVSTRAVEL?</div><div style="font-size:13px;color:var(--ink);line-height:1.7;background:var(--light);border-radius:8px;padding:10px">${c.motivacion}</div></div>`:''}
+    ${c.diferencial?`<div style="margin-top:10px"><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ocean);margin-bottom:5px">¿Qué lo hace diferente?</div><div style="font-size:13px;color:var(--ink);line-height:1.7;background:var(--light);border-radius:8px;padding:10px">${c.diferencial}</div></div>`:''}
+    ${c.metodo?`<div style="margin-top:10px"><div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ocean);margin-bottom:5px">Método de consecución de clientes</div><div style="font-size:13px;color:var(--ink);line-height:1.7;background:var(--light);border-radius:8px;padding:10px">${c.metodo}</div></div>`:''}
+    ${c.cv?`<div style="margin-top:14px"><a href="${c.cv.data}" download="${c.cv.nombre}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:30px;background:var(--ocean);color:#fff;font-size:13px;font-weight:600;text-decoration:none">📄 Descargar HV: ${c.cv.nombre}</a></div>`:''}
+    <div class="ia-box" id="ia-result-${id}">
+      <div class="ia-box-title">🤖 Análisis Claude AI</div>
+      <button class="btn-analizar" onclick="analizarConIA('${id}')">🤖 Analizar con IA →</button>
+    </div>
+    <!-- ENVIAR CAPACITACIÓN -->
+    <div style="background:linear-gradient(135deg,rgba(107,78,204,.08),rgba(27,127,166,.05));border:1.5px solid rgba(107,78,204,.2);border-radius:14px;padding:16px;margin-top:12px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#533AB4;margin-bottom:10px">🎓 Enviar capacitación</div>
+      <div style="font-size:13px;color:var(--ink);line-height:1.65;margin-bottom:12px">Envía el link de la <strong>Universidad AVSTRAVEL</strong> al candidato seleccionado. Recibirá el correo y el mensaje de WhatsApp con instrucciones de acceso.</div>
+      <button onclick="enviarCapacitacion('${id}')" style="width:100%;padding:11px;border-radius:30px;border:none;background:linear-gradient(135deg,#533AB4,#7B5FCC);color:#fff;font-family:Jost,sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s">🎓 Enviar link de capacitación →</button>
+    </div>
+    <div class="agenda-box" id="agenda-box-${id}">
+      <div class="agenda-box-title">📅 Agendar entrevista</div>
+      <div class="agenda-grid">
+        <div><label class="fl">Fecha</label><input type="date" class="fi" id="ent-fecha-${id}"></div>
+        <div><label class="fl">Hora</label><input type="time" class="fi" id="ent-hora-${id}" value="09:00"></div>
+        <div style="grid-column:1/-1"><label class="fl">Modalidad</label><select class="fs" id="ent-modo-${id}"><option>Presencial en oficina</option><option>WhatsApp / Videollamada</option><option>Llamada telefónica</option></select></div>
+      </div>
+      <button class="btn-agendar" onclick="confirmarEntrevista('${id}','${c.nombre}','${c.tel}')">📅 Confirmar entrevista</button>
+    </div>`;
+  document.getElementById('modal-candidato').classList.add('show');
+}
+
+// ════════════════════════════
+//  ANÁLISIS IA
+// ════════════════════════════
+async function analizarConIA(id) {
+  const c = (window._candidatos||[]).find(x=>x.id===id);
+  if(!c) return;
+  const box = document.getElementById('ia-result-'+id);
+  if(!box) return;
+  box.innerHTML = `<div class="ia-box-title">🤖 Analizando con Claude AI...</div><div class="ia-loading"><div class="ia-spinner"></div>Evaluando el perfil de ${c.nombre}...</div>`;
+  const hab = c.habilidades||{};
+  const prompt = `Eres el director de recursos humanos de AVSTRAVEL, agencia de viajes en Buenaventura, Colombia. Analiza este candidato para el cargo de ${c.cargo} y proporciona:
+
+1. RESUMEN DEL PERFIL (2-3 líneas)
+2. FORTALEZAS (máximo 3 puntos clave)
+3. ÁREAS DE MEJORA (máximo 2 puntos)
+4. RECOMENDACIÓN: ¿Entrevistar? Sí / No / Prioritario — con justificación breve
+5. PUNTAJE SUGERIDO: X/100
+
+DATOS DEL CANDIDATO:
+- Nombre: ${c.nombre}
+- Cargo al que aplica: ${c.cargo}
+- Estudios: ${c.estudios} en ${c.carrera||'—'} (${c.estadoEstudio||''})
+- Experiencia en ventas: ${c.experiencia} años
+- Experiencia en turismo: ${c.expTurismo}
+- Empleos previos: ${c.empleos||'No especificado'}
+- Habilidades (1-5): Comunicación ${hab.comunicacion||0}, Digital ${hab.digital||0}, Ventas ${hab.ventas||0}, Equipo ${hab.equipo||0}, Turismo ${hab.turismo||0}
+- Motivación: "${c.motivacion||'No especificó'}"
+- Diferencial: "${c.diferencial||'No especificó'}"
+- Método de consecución clientes: "${c.metodo||'No especificó'}"
+- Puntaje automático: ${c.score||0}/100
+
+Responde en español, de forma concisa y profesional. Sé directo y objetivo.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:800,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await res.json();
+    if(data.error){
+      box.innerHTML = `<div class="ia-box-title">🤖 Análisis Claude AI</div>
+        <div style="font-size:13px;font-weight:700;color:var(--coral);margin-bottom:8px">⚠️ ${data.error.message||'Error de autenticación'}</div>
+        <div style="font-size:12px;color:var(--mist);line-height:1.7">El análisis IA requiere configurar la API Key de Anthropic. Mientras tanto usa el puntaje automático de <strong>${c.score||0}/100</strong> puntos para evaluar al candidato.</div>`;
+      return;
+    }
+    const texto = data.content?.map(x=>x.text||'').join('') || 'Sin respuesta';
+    const textoHtml = texto.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+    box.innerHTML = `<div class="ia-box-title">🤖 Análisis Claude AI</div><div class="ia-resultado">${textoHtml}</div>`;
+    if(window._db) window._upd(window._ref(window._db,'candidatos/'+id), {analisisIA: texto});
+  } catch(e) {
+    console.error('IA error:', e);
+    box.innerHTML = `<div class="ia-box-title">🤖 Análisis Claude AI</div>
+      <div style="font-size:13px;font-weight:700;color:var(--coral);margin-bottom:8px">⚠️ No se pudo conectar con Claude AI</div>
+      <div style="font-size:12px;color:var(--mist);line-height:1.7">
+        Este análisis requiere la API Key de Anthropic configurada.<br><br>
+        <strong>Alternativa inmediata:</strong> El puntaje automático del candidato es <strong style="color:var(--reef)">${c.score||0}/100</strong> puntos, calculado con base en experiencia, habilidades y formación. Usa ese dato para tu evaluación.
+      </div>`;
+  }
+}
+window.analizarConIA = analizarConIA;
+
+// ════════════════════════════
+//  AGENDAR ENTREVISTA
+// ════════════════════════════
+function agendarEntrevista(id) {
+  verCandidato(id);
+  setTimeout(() => {
+    const box = document.getElementById('agenda-box-'+id);
+    if(box) box.scrollIntoView({behavior:'smooth'});
+  }, 400);
+}
+window.agendarEntrevista = agendarEntrevista;
+
+async function confirmarEntrevista(id, nombre, tel) {
+  const fecha = document.getElementById('ent-fecha-'+id)?.value;
+  const hora  = document.getElementById('ent-hora-'+id)?.value;
+  const modo  = document.getElementById('ent-modo-'+id)?.value;
+  if(!fecha||!hora) { toast('Selecciona fecha y hora','err'); return; }
+  if(window._db) await window._upd(window._ref(window._db,'candidatos/'+id), {estado:'En entrevista', entrevista:{fecha,hora,modo}});
+  const msg = `Hola ${nombre.split(' ')[0]}! 👋 Te escribimos de *AVSTRAVEL Agencia de Viajes*.\n\nTu postulación fue revisada y quedaste seleccionado(a) para una entrevista 🎉\n\n📅 *Fecha:* ${fecha}\n⏰ *Hora:* ${hora}\n📍 *Modalidad:* ${modo}\n\n¿Confirmas tu asistencia? ¡Te esperamos!`;
+  window.open(`https://wa.me/57${tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`,'_blank');
+  cerrarModal();
+  toast('✓ Entrevista agendada — WhatsApp abierto');
+}
+window.confirmarEntrevista = confirmarEntrevista;
+
+// ════════════════════════════
+//  SELECCIONADOS
+// ════════════════════════════
+function renderSeleccionados() {
+  const lista = (window._candidatos||[]).filter(c=>c.estado==='Seleccionado');
+  const el = document.getElementById('seleccionados-lista');
+  if(!lista.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">⭐</div><div class="empty-title">Sin seleccionados aún</div><div style="font-size:13px">Cambia el estado de un candidato a "Seleccionado"</div></div>';
+    return;
+  }
+  el.innerHTML = lista.map(c => `
+    <div style="background:var(--white);border-radius:16px;padding:18px;border:1.5px solid rgba(0,168,120,.2);margin-bottom:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div class="cand-avatar" style="background:${getColor(c.nombre)};width:44px;height:44px;font-size:15px">${initials(c.nombre)}</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700;color:var(--navy)">${c.nombre}</div>
+        <div style="font-size:12px;color:var(--mist)">${c.cargo} · ${c.expTurismo} exp. turismo</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--reef)">${c.score||0}</div>
+        <div style="font-size:10px;color:var(--mist)">puntos</div>
+      </div>
+      <a href="https://wa.me/57${(c.tel||'').replace(/\D/g,'')}" target="_blank" style="padding:8px 16px;border-radius:30px;background:#25D366;color:#fff;font-size:12px;font-weight:700;text-decoration:none">💬 Contactar</a>
+    </div>`).join('');
+}
+
+// ════════════════════════════
+//  ELIMINAR
+// ════════════════════════════
+async function eliminarCandidato(id) {
+  if(!confirm('¿Eliminar este candidato?')) return;
+  if(window._db) await window._del(window._ref(window._db,'candidatos/'+id));
+  toast('✓ Candidato eliminado');
+}
+window.eliminarCandidato = eliminarCandidato;
+
+// ════════════════════════════
+//  EXPORTAR CSV
+// ════════════════════════════
+function exportarCandidatos() {
+  const lista = window._candidatos||[];
+  if(!lista.length) { toast('No hay candidatos para exportar','err'); return; }
+  const cols = ['Nombre','Teléfono','Email','Cargo','Estudios','ExpVentas','ExpTurismo','Score','Estado','Fecha'];
+  const rows = lista.map(c=>[c.nombre,c.tel,c.email||'',c.cargo,c.estudios,c.experiencia,c.expTurismo,c.score||0,c.estado,c.fecha||''].map(v=>`"${v}"`).join(','));
+  const csv  = [cols.join(','),...rows].join('\n');
+  const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a'); a.href=url; a.download='candidatos_avstravel.csv'; a.click();
+  toast('✓ CSV descargado');
+}
+window.exportarCandidatos = exportarCandidatos;
+
+// ════════════════════════════
+//  ENVIAR CAPACITACIÓN
+// ════════════════════════════
+let capData = null;
+
+function enviarCapacitacion(id) {
+  const c = (window._candidatos||[]).find(x=>x.id===id);
+  if(!c) return;
+  capData = c;
+
+  const uni = 'jhonlerma2024.github.io/AVSTRAVEL-CRM/universidad.html';
+  const nombre1 = (c.nombre||'').split(' ')[0];
+
+  const msgWA = `¡Hola ${nombre1}! 👋
+
+*¡Felicitaciones!* 🎉 Quedaste seleccionado(a) para hacer parte del equipo *AVSTRAVEL Agencia de Viajes*.
+
+Como parte de tu proceso de ingreso, debes completar nuestra capacitación virtual antes de comenzar a trabajar. Es obligatoria y te dará todo lo que necesitas para desempeñarte con éxito.
+
+🎓 *Universidad AVSTRAVEL*
+👉 ${uni}
+
+*¿Qué encontrarás?*
+✅ 10 módulos de formación
+✅ Habilidades blandas y ventas
+✅ Cómo usar el CRM
+✅ Plataformas de viajes
+✅ Diploma digital al finalizar
+
+*Tiempo estimado:* 3-4 horas (puedes hacerlo desde el celular en partes)
+
+Cualquier duda escríbenos 😊
+*Equipo AVSTRAVEL · 315 394 5461*`;
+
+  // Avatar y datos del modal
+  document.getElementById('cap-avatar').textContent = initials(c.nombre);
+  document.getElementById('cap-avatar').style.background = getColor(c.nombre);
+  document.getElementById('cap-nombre').textContent = c.nombre;
+  document.getElementById('cap-cargo-label').textContent = c.cargo + ' · ' + (c.tel||'');
+  document.getElementById('cap-preview').textContent = msgWA;
+
+  // Configurar botones
+  const telNum = (c.tel||'').replace(/\D/g,'');
+  document.getElementById('cap-btn-wa').onclick = () => {
+    window.open('https://wa.me/57'+telNum+'?text='+encodeURIComponent(msgWA),'_blank');
+    toast('✓ WhatsApp abierto con el mensaje de capacitación');
+  };
+
+  // Correo
+  const asunto = 'Universidad AVSTRAVEL · Tu capacitación de ingreso';
+  const cuerpoEmail = generarEmailCapacitacion(c.nombre, c.cargo, uni);
+  document.getElementById('cap-btn-email').onclick = () => {
+    const mailLink = 'mailto:'+encodeURIComponent(c.email||'')+
+      '?subject='+encodeURIComponent(asunto)+
+      '&body='+encodeURIComponent(cuerpoEmail);
+    window.location.href = mailLink;
+    toast('✓ Correo abierto — revisa tu cliente de email');
+  };
+
+  if(!c.email) {
+    document.getElementById('cap-btn-email').textContent = '✉️ Sin correo registrado';
+    document.getElementById('cap-btn-email').style.opacity = '.5';
+    document.getElementById('cap-btn-email').style.cursor = 'not-allowed';
+    document.getElementById('cap-btn-email').onclick = () => toast('Este candidato no registró correo electrónico','err');
+  }
+
+  document.getElementById('cap-overlay').classList.add('show');
+}
+window.enviarCapacitacion = enviarCapacitacion;
+
+function generarEmailCapacitacion(nombre, cargo, uni) {
+  const nombre1 = (nombre||'').split(' ')[0];
+  return `Estimado(a) ${nombre},
+
+Desde el equipo de AVSTRAVEL Agencia de Viajes te damos la más cordial bienvenida. 🎉
+
+Nos complace informarte que quedaste seleccionado(a) para el cargo de ${cargo} en nuestra agencia.
+
+Como parte fundamental de tu proceso de ingreso, es OBLIGATORIO completar nuestra capacitación virtual antes de comenzar a trabajar. La Universidad AVSTRAVEL es nuestro programa de formación propio diseñado para darte todas las herramientas que necesitas.
+
+🎓 ACCEDE A TU CAPACITACIÓN AQUÍ:
+${uni}
+
+QUÉ APRENDERÁS:
+✅ Módulo 0: Conoce AVSTRAVEL — organización, misión, visión y valores
+✅ Módulo 1: Habilidades blandas — empatía, proactividad y resiliencia
+✅ Módulo 2: Comunicación efectiva — WhatsApp, verbal y escrita
+✅ Módulo 3: Técnicas de ventas — proceso y método SPIN
+✅ Módulo 4: Cierre de ventas — 5 técnicas profesionales
+✅ Módulo 5: Discurso y presentación personal
+✅ Módulo 6: Responsabilidad y compromiso
+✅ Módulo 7: CRM AVSTRAVEL — cómo gestionar clientes
+✅ Módulo 8: Plataformas de viajes — cotización real
+🎓 Diploma digital al finalizar
+
+INSTRUCCIONES:
+1. Abre el link desde tu celular o computador
+2. Escribe tu nombre completo en la pantalla de bienvenida
+3. Completa los módulos a tu propio ritmo (3-4 horas total)
+4. Al finalizar todos los módulos obtienes tu diploma
+5. Envía una captura de tu diploma al WhatsApp 315 394 5461 para confirmar tu ingreso
+
+IMPORTANTE: Esta capacitación es el requisito previo para tu primera jornada laboral. Sin completarla no podrás iniciar funciones.
+
+Cualquier duda o inconveniente escríbenos:
+📱 WhatsApp: 315 394 5461
+✉️ Email: reservasavstravel@gmail.com
+
+¡Bienvenido(a) al mejor equipo del Pacífico colombiano! 🦋
+
+Atentamente,
+Jhon Edier Lerma Riascos
+Director General — AVSTRAVEL Agencia de Viajes
+Buenaventura, Valle del Cauca · R.N.T. 47142`;
+}
+
+function copiarMensaje() {
+  const texto = document.getElementById('cap-preview').textContent;
+  if(navigator.clipboard) {
+    navigator.clipboard.writeText(texto).then(()=>toast('✓ Mensaje copiado al portapapeles'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = texto; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('✓ Mensaje copiado');
+  }
+}
+window.copiarMensaje = copiarMensaje;
+
+function cerrarCapacitacion() {
+  document.getElementById('cap-overlay').classList.remove('show');
+  capData = null;
+}
+window.cerrarCapacitacion = cerrarCapacitacion;
+
+// ════════════════════════════
+//  UTILS
+// ════════════════════════════
+function cerrarModal() { document.getElementById('modal-candidato').classList.remove('show'); }
+window.cerrarModal = cerrarModal;
+
+function toast(msg, t='ok') {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className='toast'+(t==='err'?' err':'');
+  el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),3000);
+}
+
+// Fecha mínima agenda
+document.addEventListener('DOMContentLoaded', () => {
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+
+  // Solo aplicar min=hoy a fechas de entrevista, NO a fecha de nacimiento
+  document.querySelectorAll('input[type=date]').forEach(i => {
+    if(i.id !== 'f-nacimiento') i.min = todayStr;
+  });
+
+  // Nacimiento: máximo = hace 18 años (mayoría de edad), mínimo = hace 75 años
+  const maxNac = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+  const minNac = new Date(today.getFullYear() - 75, today.getMonth(), today.getDate());
+  const nac = document.getElementById('f-nacimiento');
+  if(nac){
+    nac.min = minNac.toISOString().split('T')[0];
+    nac.max = maxNac.toISOString().split('T')[0];
+  }
+});
+
+// Exponer funciones necesarias
+window.showTab=showTab; window.verificarAdmin=verificarAdmin;
+window.enviarPostulacion=enviarPostulacion; window.filtrarCandidatos=filtrarCandidatos;
+window.verCandidato=verCandidato; window.cambiarEstado=cambiarEstado;
+window.ordenarPorScore=ordenarPorScore;
+</script>
+</body>
+</html>
