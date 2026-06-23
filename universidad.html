@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Universidad AVSTRAVEL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A2A4A;--ocean:#0A4A6E;--sky:#1B7FA6;--reef:#00A878;
+  --sun:#F2A922;--coral:#E05C3A;--purple:#6B4ECC;--cream:#FDFAF5;
+  --white:#fff;--mist:#7A9AAD;--ink:#0D1B2A;--light:#EEF4F8;
+  --ease:cubic-bezier(.25,.46,.45,.94);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:#0A0F1E;color:var(--ink);line-height:1.6;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.layout{display:flex;min-height:100vh}
+.sidebar{
+  width:260px;background:linear-gradient(180deg,#051220 0%,#0A1E35 100%);
+  position:fixed;top:0;left:0;height:100vh;overflow-y:auto;
+  display:flex;flex-direction:column;z-index:100;
+  transition:transform .3s var(--ease);
+}
+.sidebar-brand{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:#fff;letter-spacing:-0.5px}
+.sb-logo em{font-style:italic;color:var(--sun)}
+.sb-sub{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:2px}
+.sb-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-user-name{font-size:13px;font-weight:600;color:#fff}
+.sb-user-role{font-size:11px;color:rgba(255,255,255,.35)}
+.sb-progress-wrap{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-prog-lbl{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:6px;display:flex;justify-content:space-between}
+.sb-prog-bar{height:4px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.sb-prog-fill{height:100%;background:linear-gradient(90deg,var(--reef),var(--sky));border-radius:4px;transition:width .5s var(--ease)}
+.sb-nav{padding:12px 0;flex:1}
+.sb-section{padding:8px 20px 4px;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.2)}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 20px;cursor:pointer;transition:all .2s;
+  border-left:3px solid transparent;font-size:13px;color:rgba(255,255,255,.5);
+  font-weight:500;
+}
+.sb-item:hover{background:rgba(255,255,255,.05);color:#fff}
+.sb-item.active{background:rgba(27,127,166,.15);border-left-color:var(--sky);color:#fff}
+.sb-item.completado{color:rgba(0,168,120,.8)}
+.sb-item.completado::after{content:'✓';margin-left:auto;font-size:11px;font-weight:700;color:var(--reef)}
+.sb-item-num{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);flex-shrink:0}
+.sb-item.active .sb-item-num{background:var(--sky);color:#fff}
+.sb-item.completado .sb-item-num{background:var(--reef);color:#fff}
+.sb-btn-menu{display:none;position:fixed;top:12px;left:12px;z-index:200;width:38px;height:38px;border-radius:10px;background:rgba(10,20,40,.9);border:none;color:#fff;font-size:18px;cursor:pointer}
+
+/* ── CONTENT ── */
+.content{margin-left:260px;min-height:100vh;background:var(--cream)}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .content{margin-left:0}
+  .sb-btn-menu{display:flex;align-items:center;justify-content:center}
+}
+
+/* ── LECCIÓN ── */
+.leccion{display:none;min-height:100vh;flex-direction:column}
+.leccion.active{display:flex}
+.lec-hero{
+  padding:48px 40px 36px;
+  background:linear-gradient(160deg,#051525,#082540,#0A3D5F);
+  position:relative;overflow:hidden;
+}
+@media(max-width:600px){.lec-hero{padding:60px 20px 28px}}
+.lec-hero-glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(27,127,166,.18),transparent 70%);top:-100px;right:-100px;pointer-events:none}
+.lec-num{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
+.lec-titulo{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,44px);font-weight:300;color:#fff;line-height:1.1;margin-bottom:8px}
+.lec-titulo em{font-style:italic;color:var(--sun)}
+.lec-desc{font-size:14px;color:rgba(255,255,255,.5);max-width:540px;line-height:1.7}
+.lec-meta{display:flex;gap:14px;margin-top:18px;flex-wrap:wrap}
+.lec-pill{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.08);font-size:11.5px;color:rgba(255,255,255,.6)}
+.lec-body{padding:36px 40px;flex:1;max-width:760px}
+@media(max-width:600px){.lec-body{padding:24px 18px}}
+
+/* SECCIÓN DE CONTENIDO */
+.content-section{margin-bottom:32px}
+.cs-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.cs-text{font-size:15px;color:#444;line-height:1.85;margin-bottom:12px}
+.cs-text strong{color:var(--navy);font-weight:700}
+
+/* CARD CONCEPTO */
+.concepto-card{background:var(--white);border-radius:16px;padding:20px 22px;border:1px solid rgba(10,74,110,.08);margin-bottom:14px;border-left:4px solid var(--sky)}
+.cc-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.cc-text{font-size:13.5px;color:#555;line-height:1.7}
+
+/* TIP BOX */
+.tip-box{background:rgba(0,168,120,.07);border:1.5px solid rgba(0,168,120,.2);border-radius:14px;padding:16px 18px;margin:16px 0;display:flex;gap:12px}
+.tip-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.tip-text{font-size:13.5px;color:var(--ink);line-height:1.7}
+.tip-text strong{color:var(--reef)}
+
+/* ALERTA */
+.alert-box{background:rgba(107,78,204,.07);border:1.5px solid rgba(107,78,204,.2);border-radius:14px;padding:16px 18px;margin:16px 0;display:flex;gap:12px}
+
+/* LISTA ESTILIZADA */
+.lista-pro{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.lp-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--white);border-radius:12px;border:1px solid rgba(10,74,110,.07);font-size:13.5px;color:var(--ink);line-height:1.6}
+.lp-icon{flex-shrink:0;font-size:18px}
+
+/* EJERCICIO */
+.ejercicio{background:linear-gradient(135deg,rgba(242,169,34,.08),rgba(200,146,42,.05));border:1.5px solid rgba(242,169,34,.25);border-radius:16px;padding:20px;margin:20px 0}
+.ej-title{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold,#C8922A);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.ej-text{font-size:14px;color:var(--ink);line-height:1.75;margin-bottom:12px}
+.ej-input{width:100%;padding:12px 14px;border:1.5px solid rgba(10,74,110,.14);border-radius:10px;font-family:'Jost',sans-serif;font-size:13.5px;color:var(--ink);outline:none;resize:vertical;min-height:80px;transition:border-color .2s;line-height:1.6}
+.ej-input:focus{border-color:var(--sky)}
+.btn-guardar-ej{margin-top:10px;padding:10px 22px;border-radius:30px;border:none;background:var(--sun);color:var(--ink);font-family:'Jost',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-guardar-ej:hover{background:#d49018;transform:translateY(-1px)}
+.ej-saved{font-size:12px;color:var(--reef);font-weight:600;margin-top:8px;display:none}
+
+/* QUIZ */
+.quiz-card{background:var(--white);border-radius:16px;padding:22px;border:1px solid rgba(10,74,110,.08);margin:16px 0}
+.quiz-pregunta{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:14px}
+.quiz-opciones{display:flex;flex-direction:column;gap:8px}
+.quiz-opcion{
+  padding:12px 14px;border-radius:10px;border:1.5px solid rgba(10,74,110,.12);
+  cursor:pointer;font-size:13.5px;color:var(--ink);transition:all .2s;
+  display:flex;align-items:center;gap:10px;
+}
+.quiz-opcion:hover{border-color:var(--sky);background:rgba(27,127,166,.04)}
+.quiz-opcion.correcta{border-color:var(--reef);background:rgba(0,168,120,.07);color:var(--reef)}
+.quiz-opcion.incorrecta{border-color:var(--coral);background:rgba(224,92,58,.07);color:var(--coral)}
+.quiz-feedback{font-size:13px;font-weight:600;margin-top:10px;padding:10px 14px;border-radius:8px;display:none}
+.quiz-feedback.ok{background:rgba(0,168,120,.1);color:var(--reef)}
+.quiz-feedback.mal{background:rgba(224,92,58,.1);color:var(--coral)}
+
+/* PROGRESO LECCIÓN */
+.lec-footer{padding:24px 40px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid rgba(10,74,110,.08)}
+@media(max-width:600px){.lec-footer{padding:20px 18px}}
+.btn-completar{padding:13px 28px;border-radius:50px;border:none;background:var(--reef);color:#fff;font-family:'Jost',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;box-shadow:0 4px 20px rgba(0,168,120,.3)}
+.btn-completar:hover{background:#008060;transform:translateY(-2px)}
+.btn-sig{padding:13px 28px;border-radius:50px;border:none;background:var(--ocean);color:#fff;font-family:'Jost',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s}
+.btn-sig:hover{background:#0b3d5c;transform:translateY(-2px)}
+.btn-prev{padding:13px 22px;border-radius:50px;border:1.5px solid rgba(10,74,110,.15);background:transparent;color:var(--mist);font-family:'Jost',sans-serif;font-size:14px;cursor:pointer;transition:all .2s}
+.btn-prev:hover{border-color:var(--sky);color:var(--ocean)}
+
+/* DIPLOMA */
+.diploma-wrap{display:none;padding:40px;text-align:center}
+.diploma-wrap.show{display:block}
+.diploma{background:linear-gradient(135deg,#051525,#0A2A4A);border-radius:24px;padding:48px 36px;max-width:600px;margin:0 auto;border:3px solid rgba(200,146,42,.4);box-shadow:0 20px 80px rgba(0,0,0,.4)}
+.dip-stars{font-size:32px;letter-spacing:6px;margin-bottom:16px}
+.dip-brand{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.4);letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px}
+.dip-certifica{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:8px;letter-spacing:.08em}
+.dip-nombre{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:400;color:var(--sun);margin-bottom:8px;line-height:1.1}
+.dip-texto{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:20px}
+.dip-firma{border-top:1px solid rgba(255,255,255,.1);padding-top:18px;font-size:12px;color:rgba(255,255,255,.3)}
+.btn-print-dip{margin-top:20px;padding:12px 28px;border-radius:30px;border:1.5px solid rgba(200,146,42,.4);background:transparent;color:var(--sun);font-family:'Jost',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-print-dip:hover{background:rgba(200,146,42,.1)}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.25);border-left:3px solid var(--reef);opacity:0;transform:translateY(6px);transition:all .25s;pointer-events:none;z-index:999}
+.toast.show{opacity:1;transform:none}
+
+@media print{
+  .sidebar,.sb-btn-menu,.lec-footer{display:none!important}
+  .content{margin-left:0}
+  .diploma{box-shadow:none}
+}
+
+/* COMPROMISO Y CONTRATO */
+.comp-nivel{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;border:1.5px solid rgba(10,74,110,.12);background:var(--white);cursor:pointer;transition:all .2s;margin-bottom:8px}
+.comp-nivel:hover{border-color:var(--sky)}
+.comp-nivel.selected{border-color:var(--reef);background:rgba(0,168,120,.06)}
+.comp-nivel.selected .cn-radio{background:var(--reef);border-color:var(--reef)}
+.comp-nivel.selected .cn-radio::after{display:block}
+.cn-radio{width:20px;height:20px;border-radius:50%;border:2px solid rgba(10,74,110,.2);flex-shrink:0;position:relative;background:var(--white);transition:all .2s}
+.cn-radio::after{content:'';display:none;position:absolute;width:10px;height:10px;border-radius:50%;background:#fff;top:50%;left:50%;transform:translate(-50%,-50%)}
+.cn-info{flex:1}.cn-title{font-size:14px;font-weight:700;color:var(--navy)}.cn-desc{font-size:12px;color:var(--mist);margin-top:2px}.cn-badge{flex-shrink:0;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700}
+.meta-calc{background:var(--white);border-radius:16px;padding:20px;border:1px solid rgba(10,74,110,.08);margin:16px 0}
+.mc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(10,74,110,.06);font-size:13px}.mc-row:last-child{border-bottom:none;font-weight:700;font-size:14px}.mc-key{color:var(--mist)}.mc-val{color:var(--navy);font-weight:600}.mc-val.pos{color:var(--reef)}.mc-val.neg{color:var(--coral)}
+.contrato-wrap{background:var(--white);border-radius:16px;border:2px solid rgba(10,74,110,.12);overflow:hidden;margin:20px 0}
+.contrato-header{background:var(--navy);padding:18px 22px;display:flex;align-items:center;gap:10px}.contrato-header-title{font-size:13px;font-weight:700;color:#fff}
+.contrato-body{padding:22px;font-size:13px;color:var(--ink);line-height:1.85}
+.contrato-articulo{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(10,74,110,.07)}.contrato-articulo:last-child{border-bottom:none;margin-bottom:0}
+.contrato-art-num{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ocean);margin-bottom:4px}
+.firma-area{background:var(--sand);border-radius:14px;padding:20px;margin:18px 0;border:1px solid rgba(10,74,110,.1)}
+.firma-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ocean);margin-bottom:12px}
+.firma-campos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+@media(max-width:480px){.firma-campos{grid-template-columns:1fr}}
+.firma-input{width:100%;padding:10px 13px;border:1.5px solid rgba(10,74,110,.13);border-radius:10px;font-family:'Jost',sans-serif;font-size:13.5px;color:var(--ink);outline:none;transition:border-color .2s}
+.firma-input:focus{border-color:var(--sky)}
+.firma-canvas{width:100%;height:100px;border:1.5px dashed rgba(10,74,110,.2);border-radius:10px;background:#fff;cursor:crosshair;touch-action:none;display:block}
+.firma-canvas-wrap{position:relative;margin-top:10px}
+.firma-canvas-lbl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;color:rgba(10,74,110,.3);pointer-events:none;text-align:center}
+.firma-clear{margin-top:6px;padding:5px 14px;border-radius:20px;border:1px solid rgba(10,74,110,.14);background:transparent;font-size:11px;color:var(--mist);cursor:pointer}
+.chk-wrap{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:rgba(242,169,34,.07);border-radius:10px;border:1.5px solid rgba(242,169,34,.2);margin-bottom:10px}
+.chk-box{width:18px;height:18px;border-radius:4px;border:2px solid rgba(10,74,110,.2);flex-shrink:0;cursor:pointer;margin-top:1px;appearance:none;-webkit-appearance:none;background:var(--white);transition:all .2s}
+.chk-box:checked{background:var(--ocean);border-color:var(--ocean)}
+.chk-text{font-size:13px;color:var(--ink);line-height:1.6}
+.btn-firmar{width:100%;padding:15px;border-radius:50px;border:none;background:linear-gradient(135deg,var(--navy),var(--ocean));color:#fff;font-family:'Jost',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .25s;box-shadow:0 6px 24px rgba(10,74,110,.3);margin-top:14px}
+.btn-firmar:hover{transform:translateY(-2px)}.btn-firmar:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.firma-confirmada{display:none;text-align:center;padding:28px;background:rgba(0,168,120,.06);border-radius:14px;border:1.5px solid rgba(0,168,120,.2)}.firma-confirmada.show{display:block}
+
+</style>
+</head>
+<body>
+
+<!-- MENU MÓVIL -->
+<button class="sb-btn-menu" id="menu-btn" onclick="toggleMenu()">☰</button>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="sb-logo">AVS<em>TRAVEL</em></div>
+    <div class="sb-sub">Universidad · Capacitación</div>
+  </div>
+  <div class="sb-user">
+    <div class="sb-user-name" id="sb-nombre">Bienvenido(a)</div>
+    <div class="sb-user-role">Asesor en formación</div>
+  </div>
+  <div class="sb-progress-wrap">
+    <div class="sb-prog-lbl"><span>Progreso general</span><span id="sb-pct">0%</span></div>
+    <div class="sb-prog-bar"><div class="sb-prog-fill" id="sb-fill" style="width:0%"></div></div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-section">Inducción</div>
+    <div class="sb-item active" id="nav-0" onclick="irA(0)"><div class="sb-item-num">★</div>Bienvenida</div>
+    <div class="sb-item" id="nav-org" onclick="irA('org')"><div class="sb-item-num">🏢</div>Conoce AVSTRAVEL</div>
+    <div class="sb-section">Módulos de ventas</div>
+    <div class="sb-item" id="nav-1" onclick="irA(1)"><div class="sb-item-num">1</div>Habilidades blandas</div>
+    <div class="sb-item" id="nav-2" onclick="irA(2)"><div class="sb-item-num">2</div>Comunicación efectiva</div>
+    <div class="sb-item" id="nav-3" onclick="irA(3)"><div class="sb-item-num">3</div>Técnicas de ventas</div>
+    <div class="sb-item" id="nav-4" onclick="irA(4)"><div class="sb-item-num">4</div>Cierre de ventas</div>
+    <div class="sb-item" id="nav-5" onclick="irA(5)"><div class="sb-item-num">5</div>Discurso y presentación</div>
+    <div class="sb-item" id="nav-6" onclick="irA(6)"><div class="sb-item-num">6</div>Responsabilidad</div>
+    <div class="sb-section">Herramientas</div>
+    <div class="sb-item" id="nav-7" onclick="irA(7)"><div class="sb-item-num">7</div>CRM AVSTRAVEL</div>
+    <div class="sb-item" id="nav-8" onclick="irA(8)"><div class="sb-item-num">8</div>Plataformas de viajes</div>
+    <div class="sb-item" id="nav-comp" onclick="irA('comp')"><div class="sb-item-num">📋</div>Mi compromiso</div>
+    <div class="sb-item" id="nav-9" onclick="irA(9)"><div class="sb-item-num">🎓</div>Mi diploma</div>
+  </div>
+</div>
+
+<!-- CONTENIDO -->
+<div class="content" id="content">
+
+<!-- ══════════ BIENVENIDA ══════════ -->
+<div class="leccion active" id="lec-0">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Universidad AVSTRAVEL · 2026</div>
+    <h1 class="lec-titulo">Bienvenido(a) a tu<br><em>formación profesional</em></h1>
+    <p class="lec-desc">Este programa te preparará para convertirte en un asesor de viajes excepcional. 10 módulos, ejercicios prácticos y un diploma al finalizar.</p>
+    <div class="lec-meta">
+      <div class="lec-pill">📚 10 módulos</div>
+      <div class="lec-pill">⏱ ~4 horas</div>
+      <div class="lec-pill">🎓 Diploma digital</div>
+      <div class="lec-pill">📱 Desde el celular</div>
+    </div>
+  </div>
+  <div class="lec-body">
+    <div style="background:var(--white);border-radius:18px;padding:24px;border:1px solid rgba(10,74,110,.08);margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:var(--mist);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Antes de empezar</div>
+      <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px">¿Cómo te llamas?</div>
+      <input type="text" id="input-nombre" class="ej-input" style="min-height:auto" placeholder="Escribe tu nombre completo...">
+      <button class="btn-sig" onclick="guardarNombre()" style="margin-top:12px">Comenzar →</button>
+    </div>
+    <div class="tip-box">
+      <div class="tip-icon">💡</div>
+      <div class="tip-text"><strong>¿Cómo funciona?</strong> Cada módulo tiene contenido de aprendizaje, ejercicios prácticos y una pregunta de verificación. Al completar todos los módulos recibirás tu diploma digital de AVSTRAVEL.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ MÓDULO: CONOCE AVSTRAVEL ══════════ -->
+<div class="leccion" id="lec-org">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Inducción · Módulo especial</div>
+    <h1 class="lec-titulo">Conoce<br><em>AVSTRAVEL</em></h1>
+    <p class="lec-desc">Antes de vender, debes conocer a fondo la empresa que representas: su historia, su estructura, sus valores y todo lo que ofrece.</p>
+    <div class="lec-meta"><div class="lec-pill">⏱ 30 min</div><div class="lec-pill">🏢 Inducción completa</div><div class="lec-pill">📋 Organigrama</div><div class="lec-pill">🗺 Flujogramas</div></div>
+  </div>
+  <div class="lec-body">
+
+    <!-- HISTORIA -->
+    <div class="content-section">
+      <div class="cs-title">📖 ¿Quiénes somos?</div>
+      <div class="cs-text"><strong>AVSTRAVEL</strong> es una agencia de viajes con sede en Buenaventura, Valle del Cauca, Colombia. Nacimos con el propósito de <strong>visibilizar el Pacífico colombiano</strong> y conectar a nuestros clientes con las experiencias turísticas más increíbles del país y el mundo.</div>
+      <div class="cs-text">Con más de <strong>10 años de trayectoria</strong>, somos hoy una agencia referente en el Pacífico colombiano, miembros de ANATO y parte de los miembros fundadores de la Corporación Turística y Cultural de Buenaventura. Contamos con <strong>R.N.T. 47142</strong> vigente, lo que nos acredita legalmente ante el Ministerio de Comercio.</div>
+      <div class="concepto-card">
+        <div class="cc-title">📌 Datos oficiales</div>
+        <div class="cc-text">
+          <strong>Razón social:</strong> AVSTRAVEL Agencia de Viajes<br>
+          <strong>NIT:</strong> 1061112114-5 · <strong>R.N.T.:</strong> 47142<br>
+          <strong>Dirección:</strong> Calle 3 No. 5a-16 Calle Videla, Centro, Buenaventura<br>
+          <strong>Teléfonos:</strong> 315 394 5461 · 315 685 0066<br>
+          <strong>Email:</strong> reservasavstravel@gmail.com<br>
+          <strong>Redes:</strong> @avstravelpacifico (Instagram y Facebook)
+        </div>
+      </div>
+    </div>
+
+    <!-- MISIÓN, VISIÓN, VALORES -->
+    <div class="content-section">
+      <div class="cs-title">🎯 Misión</div>
+      <div class="concepto-card" style="border-left-color:var(--reef)">
+        <div class="cc-text">Ser el aliado de confianza de cada viajero, ofreciendo experiencias turísticas de calidad en el Pacífico colombiano, a nivel nacional e internacional, con servicio personalizado, precios honestos y respaldo legal. Convertimos sueños en realidad con responsabilidad y pasión por el turismo.</div>
+      </div>
+      <div class="cs-title" style="margin-top:20px">🔭 Visión</div>
+      <div class="concepto-card" style="border-left-color:var(--sky)">
+        <div class="cc-text">Para 2030, ser la agencia de viajes líder del Pacífico colombiano, reconocida en todo el país por la calidad de nuestros planes, la innovación tecnológica en la gestión del servicio y el impacto positivo en las comunidades locales de Buenaventura y el Pacífico.</div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <div class="cs-title">💎 Nuestros valores</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">🤝</div><div><strong>Honestidad:</strong> Informamos siempre la verdad sobre precios, servicios y condiciones. Sin letra pequeña.</div></div>
+        <div class="lp-item"><div class="lp-icon">⭐</div><div><strong>Excelencia:</strong> Buscamos superar las expectativas del cliente en cada interacción.</div></div>
+        <div class="lp-item"><div class="lp-icon">🌊</div><div><strong>Identidad territorial:</strong> Amamos el Pacífico. Somos embajadores de Buenaventura y su cultura.</div></div>
+        <div class="lp-item"><div class="lp-icon">🔒</div><div><strong>Responsabilidad:</strong> Cumplimos lo que prometemos. Nuestra palabra vale más que cualquier contrato.</div></div>
+        <div class="lp-item"><div class="lp-icon">💡</div><div><strong>Innovación:</strong> Usamos tecnología propia para dar mejor servicio. CRM, ecommerce y automatización.</div></div>
+        <div class="lp-item"><div class="lp-icon">❤️</div><div><strong>Calidez humana:</strong> Cada cliente es una persona con un sueño. Lo tratamos como familia.</div></div>
+      </div>
+    </div>
+
+    <!-- ORGANIGRAMA -->
+    <div class="content-section">
+      <div class="cs-title">🏗️ Organigrama AVSTRAVEL</div>
+      <div class="cs-text">Conoce la estructura de nuestra organización y cómo se relacionan los roles:</div>
+      <div style="background:var(--white);border-radius:16px;padding:24px;border:1px solid rgba(10,74,110,.08);overflow-x:auto">
+        <!-- ORGANIGRAMA VISUAL SVG -->
+        <svg viewBox="0 0 680 420" style="width:100%;max-width:680px;font-family:Jost,sans-serif">
+          <!-- DIRECTOR -->
+          <rect x="240" y="10" width="200" height="56" rx="12" fill="#0A2A4A"/>
+          <text x="340" y="34" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Jhon Lerma Riascos</text>
+          <text x="340" y="52" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="10">Director General</text>
+          <!-- Línea central -->
+          <line x1="340" y1="66" x2="340" y2="100" stroke="#CBD5E0" stroke-width="1.5"/>
+          <!-- Línea horizontal -->
+          <line x1="100" y1="100" x2="580" y2="100" stroke="#CBD5E0" stroke-width="1.5"/>
+          <!-- Líneas bajas -->
+          <line x1="100" y1="100" x2="100" y2="120" stroke="#CBD5E0" stroke-width="1.5"/>
+          <line x1="260" y1="100" x2="260" y2="120" stroke="#CBD5E0" stroke-width="1.5"/>
+          <line x1="420" y1="100" x2="420" y2="120" stroke="#CBD5E0" stroke-width="1.5"/>
+          <line x1="580" y1="100" x2="580" y2="120" stroke="#CBD5E0" stroke-width="1.5"/>
+          <!-- ÁREA PACÍFICO -->
+          <rect x="20" y="120" width="160" height="56" rx="12" fill="#065070"/>
+          <text x="100" y="144" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Asesor Pacífico</text>
+          <text x="100" y="160" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="10">Línea local</text>
+          <!-- ÁREA NACIONAL -->
+          <rect x="180" y="120" width="160" height="56" rx="12" fill="#1A4A1A"/>
+          <text x="260" y="144" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Asesor Nacional</text>
+          <text x="260" y="160" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="10">Línea nacional</text>
+          <!-- ÁREA INTERNACIONAL -->
+          <rect x="340" y="120" width="160" height="56" rx="12" fill="#2A1A4A"/>
+          <text x="420" y="144" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Asesor Internacional</text>
+          <text x="420" y="160" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="10">Línea internacional</text>
+          <!-- VENDEDOR EXTERNO -->
+          <rect x="500" y="120" width="160" height="56" rx="12" fill="#4A1A00"/>
+          <text x="580" y="144" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Vendedor Externo</text>
+          <text x="580" y="160" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="10">Campo y redes</text>
+          <!-- Líneas a apoyo -->
+          <line x1="100" y1="176" x2="100" y2="210" stroke="#CBD5E0" stroke-width="1.5"/>
+          <line x1="260" y1="176" x2="260" y2="210" stroke="#CBD5E0" stroke-width="1.5"/>
+          <line x1="420" y1="176" x2="420" y2="210" stroke="#CBD5E0" stroke-width="1.5"/>
+          <line x1="580" y1="176" x2="580" y2="210" stroke="#CBD5E0" stroke-width="1.5"/>
+          <!-- Línea horizontal apoyo -->
+          <line x1="100" y1="210" x2="580" y2="210" stroke="#CBD5E0" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="340" y1="210" x2="340" y2="230" stroke="#CBD5E0" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <!-- HERRAMIENTAS TECH -->
+          <rect x="180" y="230" width="320" height="56" rx="12" fill="rgba(27,127,166,.15)" stroke="#1B7FA6" stroke-width="1.5"/>
+          <text x="340" y="254" text-anchor="middle" fill="#1B7FA6" font-size="11" font-weight="700">CRM + Tienda online + Automatización IA</text>
+          <text x="340" y="272" text-anchor="middle" fill="#7A9AAD" font-size="10">Soporte tecnológico para todos los asesores</text>
+          <!-- CLIENTES -->
+          <line x1="340" y1="286" x2="340" y2="320" stroke="#CBD5E0" stroke-width="1.5"/>
+          <rect x="180" y="320" width="320" height="56" rx="12" fill="rgba(0,168,120,.1)" stroke="#00A878" stroke-width="1.5"/>
+          <text x="340" y="344" text-anchor="middle" fill="#00A878" font-size="11" font-weight="700">Clientes · Viajeros</text>
+          <text x="340" y="362" text-anchor="middle" fill="#7A9AAD" font-size="10">El centro de todo lo que hacemos</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- FLUJOGRAMA DE VENTA -->
+    <div class="content-section">
+      <div class="cs-title">🗺️ Flujograma del proceso de venta</div>
+      <div class="cs-text">Así funciona el ciclo completo desde que el cliente llega hasta que viaja:</div>
+      <div style="background:var(--white);border-radius:16px;padding:24px;border:1px solid rgba(10,74,110,.08)">
+        <div style="display:flex;flex-direction:column;gap:0;position:relative">
+          <!-- PASOS DEL FLUJO -->
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 0">
+            <div style="width:40px;height:40px;border-radius:50%;background:#0A2A4A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">1</div>
+            <div style="flex:1;background:var(--light);border-radius:10px;padding:12px 14px"><div style="font-size:13px;font-weight:700;color:var(--navy)">Captación del cliente</div><div style="font-size:12px;color:var(--mist)">WhatsApp, redes sociales, formulario web, referidos, contacto directo</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:#CBD5E0;margin-left:19px"></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 0">
+            <div style="width:40px;height:40px;border-radius:50%;background:#065070;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">2</div>
+            <div style="flex:1;background:var(--light);border-radius:10px;padding:12px 14px"><div style="font-size:13px;font-weight:700;color:var(--navy)">Registro en el CRM</div><div style="font-size:12px;color:var(--mist)">Estado: Prospecto · Asignación al asesor de su línea</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:#CBD5E0;margin-left:19px"></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 0">
+            <div style="width:40px;height:40px;border-radius:50%;background:#1B7FA6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">3</div>
+            <div style="flex:1;background:var(--light);border-radius:10px;padding:12px 14px"><div style="font-size:13px;font-weight:700;color:var(--navy)">Descubrimiento de necesidades</div><div style="font-size:12px;color:var(--mist)">Preguntas SPIN · Destino, fechas, personas, presupuesto, ocasión</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:#CBD5E0;margin-left:19px"></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 0">
+            <div style="width:40px;height:40px;border-radius:50%;background:#C8922A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">4</div>
+            <div style="flex:1;background:var(--light);border-radius:10px;padding:12px 14px"><div style="font-size:13px;font-weight:700;color:var(--navy)">Cotización personalizada</div><div style="font-size:12px;color:var(--mist)">Búsqueda en plataformas · Costo + 20% = Precio venta · Envío en ≤48h · CRM: En cotización</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:#CBD5E0;margin-left:19px"></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 0">
+            <div style="width:40px;height:40px;border-radius:50%;background:#533AB4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">5</div>
+            <div style="flex:1;background:var(--light);border-radius:10px;padding:12px 14px"><div style="font-size:13px;font-weight:700;color:var(--navy)">Manejo de objeciones y cierre</div><div style="font-size:12px;color:var(--mist)">Técnicas de cierre · Anticipo del 50% · CRM: Pre-reserva</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:#CBD5E0;margin-left:19px"></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 0">
+            <div style="width:40px;height:40px;border-radius:50%;background:#00A878;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">6</div>
+            <div style="flex:1;background:var(--light);border-radius:10px;padding:12px 14px"><div style="font-size:13px;font-weight:700;color:var(--navy)">Pago y confirmación</div><div style="font-size:12px;color:var(--mist)">Pago completo · Reserva con proveedor · Documentos · CRM: Reservado</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:#CBD5E0;margin-left:19px"></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 0">
+            <div style="width:40px;height:40px;border-radius:50%;background:#E05C3A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">7</div>
+            <div style="flex:1;background:var(--light);border-radius:10px;padding:12px 14px"><div style="font-size:13px;font-weight:700;color:var(--navy)">Pre-viaje y acompañamiento</div><div style="font-size:12px;color:var(--mist)">Check-in, recordatorios, documentos, contacto con el cliente día del viaje</div></div>
+          </div>
+          <div style="width:2px;height:16px;background:#CBD5E0;margin-left:19px"></div>
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 0">
+            <div style="width:40px;height:40px;border-radius:50%;background:#F2A922;color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">8</div>
+            <div style="flex:1;background:rgba(242,169,34,.08);border-radius:10px;padding:12px 14px;border:1px solid rgba(242,169,34,.2)"><div style="font-size:13px;font-weight:700;color:var(--navy)">Post-venta y fidelización</div><div style="font-size:12px;color:var(--mist)">CRM: Viajó · Solicitar reseña · Pedir referidos · Mantener activo para próxima venta</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUNCIONES DEL ASESOR -->
+    <div class="content-section">
+      <div class="cs-title">📋 Funciones del Asesor Comercial</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">📞</div><div><strong>Atención al cliente:</strong> Responder todas las consultas por WhatsApp, Instagram, Facebook y teléfono en menos de 2 horas.</div></div>
+        <div class="lp-item"><div class="lp-icon">💼</div><div><strong>Cotización:</strong> Preparar y enviar cotizaciones personalizadas en máximo 48 horas usando las plataformas autorizadas.</div></div>
+        <div class="lp-item"><div class="lp-icon">🔧</div><div><strong>CRM:</strong> Registrar cada cliente, actualizar estados y agregar comentarios después de cada interacción. Sin excepciones.</div></div>
+        <div class="lp-item"><div class="lp-icon">📊</div><div><strong>Informe diario:</strong> Completar el informe de gestión en el CRM antes de terminar la jornada.</div></div>
+        <div class="lp-item"><div class="lp-icon">🤝</div><div><strong>Cierre y seguimiento:</strong> Hacer seguimiento activo a cada cotización enviada hasta obtener respuesta definitiva.</div></div>
+        <div class="lp-item"><div class="lp-icon">🌟</div><div><strong>Post-venta:</strong> Contactar al cliente después del viaje, solicitar calificación del servicio y pedir referidos.</div></div>
+      </div>
+    </div>
+
+    <!-- FUNCIONES VENDEDOR EXTERNO -->
+    <div class="content-section">
+      <div class="cs-title">🚀 Funciones del Vendedor Externo</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">🏢</div><div><strong>Visita empresarial:</strong> Visitar empresas, instituciones y negocios en Buenaventura para presentar los planes corporativos de AVSTRAVEL.</div></div>
+        <div class="lp-item"><div class="lp-icon">📱</div><div><strong>Redes sociales:</strong> Compartir contenido de AVSTRAVEL en sus propias redes y grupos de WhatsApp para generar prospectos.</div></div>
+        <div class="lp-item"><div class="lp-icon">📝</div><div><strong>Registro de contactos:</strong> Toda persona contactada debe registrarse en el CRM ese mismo día.</div></div>
+        <div class="lp-item"><div class="lp-icon">🎯</div><div><strong>Meta semanal:</strong> Conseguir mínimo 5 prospectos nuevos por semana y presentar reporte los viernes.</div></div>
+        <div class="lp-item"><div class="lp-icon">🤝</div><div><strong>Referidos:</strong> Cada cliente satisfecho es una oportunidad de referidos. Siempre preguntar: "¿Conoce alguien más que quiera viajar?"</div></div>
+      </div>
+    </div>
+
+    <!-- PORTAFOLIO -->
+    <div class="content-section">
+      <div class="cs-title">🌊 Portafolio de servicios AVSTRAVEL</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+        <div style="background:linear-gradient(150deg,#042A40,#065070);border-radius:14px;padding:18px;color:#fff">
+          <div style="font-size:24px;margin-bottom:8px">🌊</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px">Línea Pacífico</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.55);line-height:1.6">Ballenas Yubarta · Tours islas · Playas · Cascadas · Ruta gastronómica · Ruta de los ríos · Crucero Pacífico</div>
+        </div>
+        <div style="background:linear-gradient(150deg,#1A2A10,#2A5020);border-radius:14px;padding:18px;color:#fff">
+          <div style="font-size:24px;margin-bottom:8px">🇨🇴</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px">Línea Nacional</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.55);line-height:1.6">Cartagena · San Andrés · La Guajira · Santa Marta · Eje Cafetero · Coveñas · Pasadías</div>
+        </div>
+        <div style="background:linear-gradient(150deg,#1A0A2A,#3A1050);border-radius:14px;padding:18px;color:#fff">
+          <div style="font-size:24px;margin-bottom:8px">🌎</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px">Línea Internacional</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.55);line-height:1.6">Cancún · Punta Cana · Europa · EE.UU. · Panamá · Curazao · Cruceros Caribe</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:var(--white);border-radius:12px;padding:14px;border:1px solid rgba(10,74,110,.08)">
+          <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px">✈️ Servicios incluidos</div>
+          <div style="font-size:12px;color:var(--mist);line-height:1.7">Tiquetes · Hotel · Traslados · Alimentación · Tours · Asistencia médica · Seguro de viaje</div>
+        </div>
+        <div style="background:var(--white);border-radius:12px;padding:14px;border:1px solid rgba(10,74,110,.08)">
+          <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px">🎉 Servicios especiales</div>
+          <div style="font-size:12px;color:var(--mist);line-height:1.7">Bodas de viaje · XV años · Grupos empresariales · Cruceros · Asesoría de visas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLATAFORMA DEL CLIENTE -->
+    <div class="content-section">
+      <div class="cs-title">🛒 Cómo compra el cliente en AVSTRAVEL</div>
+      <div class="cs-text">Tenemos una <strong>tienda online propia</strong> donde el cliente puede ver los planes, calcular su precio y hacer una pre-reserva sin necesidad de hablar con un asesor primero.</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">1️⃣</div><div>Cliente entra a la tienda: <strong>jhonlerma2024.github.io/AVSTRAVEL-CRM/tienda.html</strong></div></div>
+        <div class="lp-item"><div class="lp-icon">2️⃣</div><div>Filtra por línea (Pacífico, Nacional, Internacional) o busca su destino</div></div>
+        <div class="lp-item"><div class="lp-icon">3️⃣</div><div>Selecciona el plan, elige fecha y número de personas</div></div>
+        <div class="lp-item"><div class="lp-icon">4️⃣</div><div>El sistema calcula automáticamente el precio total</div></div>
+        <div class="lp-item"><div class="lp-icon">5️⃣</div><div>Llena sus datos y hace clic en <strong>"Confirmar reserva"</strong></div></div>
+        <div class="lp-item"><div class="lp-icon">6️⃣</div><div>El cliente queda registrado en el CRM como <strong>Pre-reserva</strong> y el asesor lo contacta para confirmar el pago</div></div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-icon">💡</div>
+        <div class="tip-text"><strong>También existe el formulario de cotización:</strong> jhonlerma2024.github.io/AVSTRAVEL-CRM/cotizar.html — para clientes que quieren una cotización personalizada antes de decidir. Llegan al CRM como "Prospecto".</div>
+      </div>
+    </div>
+
+    <div class="ejercicio">
+      <div class="ej-title">✏️ Ejercicio — Conoce tu empresa</div>
+      <div class="ej-text">Con base en todo lo que leíste, responde: ¿Cuáles son los 3 valores de AVSTRAVEL que más te identifican y por qué? ¿Cómo los aplicarías en tu trabajo diario?</div>
+      <textarea class="ej-input" id="ej-org" placeholder="Los 3 valores que más me identifican son..."></textarea>
+      <button class="btn-guardar-ej" onclick="guardarEj('ej-org')">Guardar</button>
+      <div class="ej-saved" id="saved-ej-org">✓ Guardado</div>
+    </div>
+
+    <div class="quiz-card">
+      <div class="quiz-pregunta">¿Cuál es el margen de ganancia estándar que aplica AVSTRAVEL sobre el costo de un plan?</div>
+      <div class="quiz-opciones">
+        <div class="quiz-opcion" onclick="quiz(this,false,'qorg')">10%</div>
+        <div class="quiz-opcion" onclick="quiz(this,true,'qorg')">20%</div>
+        <div class="quiz-opcion" onclick="quiz(this,false,'qorg')">30%</div>
+      </div>
+      <div class="quiz-feedback ok" id="fb-qorg-ok">✓ Correcto. El margen estándar es 20% sobre el costo. Costo × 1.20 = precio de venta.</div>
+      <div class="quiz-feedback mal" id="fb-qorg-mal">✗ El margen estándar de AVSTRAVEL es 20%. Recuerda: Costo × 1.20 = precio de venta al cliente.</div>
+    </div>
+
+  </div>
+  <div class="lec-footer">
+    <button class="btn-prev" onclick="irA(0)">← Anterior</button>
+    <button class="btn-sig" onclick="completarYSiguiente('org')">Siguiente módulo →</button>
+  </div>
+</div>
+
+<!-- ══════════ MÓDULO 1: HABILIDADES BLANDAS ══════════ -->
+<div class="leccion" id="lec-1">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Módulo 1 de 9</div>
+    <h1 class="lec-titulo"><em>Habilidades blandas</em><br>La base de todo</h1>
+    <p class="lec-desc">Las habilidades blandas son las cualidades personales que te permiten relacionarte, trabajar y comunicarte de manera efectiva con los demás.</p>
+    <div class="lec-meta"><div class="lec-pill">⏱ 20 min</div><div class="lec-pill">💬 3 ejercicios</div></div>
+  </div>
+  <div class="lec-body">
+    <div class="content-section">
+      <div class="cs-title">🌟 ¿Qué son las habilidades blandas?</div>
+      <div class="cs-text">A diferencia de las habilidades técnicas (saber usar un programa o conocer un destino), las habilidades blandas son <strong>cómo eres como persona</strong> al interactuar con los demás. En ventas de turismo, son más importantes que cualquier conocimiento técnico.</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">🤝</div><div><strong>Empatía:</strong> Ponerte en el lugar del cliente, entender sus sueños y miedos al viajar.</div></div>
+        <div class="lp-item"><div class="lp-icon">⚡</div><div><strong>Proactividad:</strong> Actuar antes de que te lo pidan. El buen asesor llama antes de que el cliente pregunte.</div></div>
+        <div class="lp-item"><div class="lp-icon">💪</div><div><strong>Resiliencia:</strong> No rendirse ante un "no". En ventas, el rechazo es parte del proceso.</div></div>
+        <div class="lp-item"><div class="lp-icon">🎯</div><div><strong>Orientación al resultado:</strong> Siempre enfocado en cerrar, sin perder la calidad del servicio.</div></div>
+        <div class="lp-item"><div class="lp-icon">🕐</div><div><strong>Puntualidad y compromiso:</strong> El cliente que confía en ti espera que cumplas lo que prometes.</div></div>
+      </div>
+    </div>
+    <div class="concepto-card">
+      <div class="cc-title">📌 Regla de oro en turismo</div>
+      <div class="cc-text">El cliente no compra un tiquete ni un hotel. <strong>Compra el sueño de un momento especial</strong>. Tu trabajo es hacer que ese sueño sea realidad con la mejor experiencia posible.</div>
+    </div>
+    <div class="ejercicio">
+      <div class="ej-title">✏️ Ejercicio 1 · Autoevaluación</div>
+      <div class="ej-text">De las 5 habilidades blandas que vimos, ¿cuál crees que es tu mayor fortaleza y cuál necesitas mejorar más? Sé honesto(a) contigo mismo(a).</div>
+      <textarea class="ej-input" id="ej-1" placeholder="Mi mayor fortaleza es... porque... Necesito mejorar... porque..."></textarea>
+      <button class="btn-guardar-ej" onclick="guardarEj('ej-1')">Guardar respuesta</button>
+      <div class="ej-saved" id="saved-ej-1">✓ Guardado</div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-icon">🚀</div>
+      <div class="tip-text"><strong>Para recordar:</strong> Las habilidades blandas no son innatas, se <strong>desarrollan con práctica</strong>. Cada conversación con un cliente es una oportunidad de mejorar.</div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-pregunta">¿Cuál de estas acciones demuestra mejor la habilidad blanda de empatía con un cliente?</div>
+      <div class="quiz-opciones">
+        <div class="quiz-opcion" onclick="quiz(this,false,'q1')">🔴 Decirle al cliente cuál es el mejor plan sin escucharlo</div>
+        <div class="quiz-opcion" onclick="quiz(this,true,'q1')">🟢 Preguntar sobre la ocasión del viaje antes de cotizar</div>
+        <div class="quiz-opcion" onclick="quiz(this,false,'q1')">🔴 Enviar el precio más económico disponible</div>
+      </div>
+      <div class="quiz-feedback ok" id="fb-q1-ok">✓ ¡Correcto! Escuchar primero siempre genera más confianza y permite una cotización más acertada.</div>
+      <div class="quiz-feedback mal" id="fb-q1-mal">✗ No es la mejor opción. La empatía empieza por escuchar antes de proponer.</div>
+    </div>
+  </div>
+  <div class="lec-footer">
+    <button class="btn-prev" onclick="irA(0)">← Anterior</button>
+    <button class="btn-sig" onclick="completarYSiguiente(1)">Siguiente módulo →</button>
+  </div>
+</div>
+
+<!-- ══════════ MÓDULO 2: COMUNICACIÓN ══════════ -->
+<div class="leccion" id="lec-2">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Módulo 2 de 9</div>
+    <h1 class="lec-titulo"><em>Comunicación</em><br>efectiva</h1>
+    <p class="lec-desc">La forma en que te comunicas determina si el cliente confía en ti o busca otra agencia. Aprende a comunicar con claridad, calidez y profesionalismo.</p>
+    <div class="lec-meta"><div class="lec-pill">⏱ 20 min</div><div class="lec-pill">💬 Ejercicio de discurso</div></div>
+  </div>
+  <div class="lec-body">
+    <div class="content-section">
+      <div class="cs-title">📱 Comunicación por WhatsApp (el canal principal)</div>
+      <div class="cs-text">El 90% de tus interacciones con clientes serán por WhatsApp. Estos son los principios básicos:</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">⚡</div><div><strong>Responde rápido:</strong> Más de 2 horas sin responder y el cliente ya está hablando con otra agencia. Meta: responder en menos de 30 minutos.</div></div>
+        <div class="lp-item"><div class="lp-icon">✍️</div><div><strong>Sin errores de ortografía:</strong> Un mensaje con faltas de ortografía destruye la credibilidad. Usa el corrector antes de enviar.</div></div>
+        <div class="lp-item"><div class="lp-icon">📏</div><div><strong>Mensajes cortos y claros:</strong> Evita párrafos de 10 líneas. Un mensaje = una idea. El cliente lee en el celular.</div></div>
+        <div class="lp-item"><div class="lp-icon">🎯</div><div><strong>Termina siempre con una pregunta:</strong> "¿Para cuántas personas viajan?" o "¿Tienes fechas en mente?" — mantén la conversación activa.</div></div>
+      </div>
+    </div>
+    <div class="concepto-card">
+      <div class="cc-title">💬 Ejemplo: cómo responder una consulta</div>
+      <div class="cc-text">
+        ❌ <strong>Mal:</strong> "hola si tenemos paquetes a cartagena son 5 dias 4 noches con tiquete y hotel"<br><br>
+        ✅ <strong>Bien:</strong> "¡Hola! 😊 Claro, tenemos un paquete a Cartagena de 5 días/4 noches con tiquete + hotel desde $1.450.000 por persona. ¿Cuántas personas viajan y en qué fechas piensan ir? Así te preparo la mejor opción 🏖️"
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="cs-title">🗣️ Comunicación verbal (presencial o llamada)</div>
+      <div class="cs-text">Cuando hablas con un cliente cara a cara o por llamada, el <strong>tono de voz vale el 38%</strong> de lo que comunicas. Estas son las reglas:</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">😊</div><div><strong>Sonríe siempre:</strong> Se nota en la voz. Un asesor que suena feliz de atenderte genera confianza inmediata.</div></div>
+        <div class="lp-item"><div class="lp-icon">👂</div><div><strong>Escucha el 70%, habla el 30%:</strong> Deja que el cliente te cuente su sueño antes de empezar a vender.</div></div>
+        <div class="lp-item"><div class="lp-icon">🔁</div><div><strong>Repite para confirmar:</strong> "Si entiendo bien, buscan un plan para 4 personas a Cartagena en semana de receso, ¿correcto?" — valida que entendiste bien.</div></div>
+      </div>
+    </div>
+    <div class="ejercicio">
+      <div class="ej-title">✏️ Ejercicio 2 · Tu saludo profesional</div>
+      <div class="ej-text">Escribe cómo te presentarías ante un cliente nuevo que llega a la oficina o te escribe por primera vez. Incluye: saludo, tu nombre, cargo y la pregunta inicial para conocer qué necesita.</div>
+      <textarea class="ej-input" id="ej-2" placeholder="Escribe tu saludo profesional..."></textarea>
+      <button class="btn-guardar-ej" onclick="guardarEj('ej-2')">Guardar</button>
+      <div class="ej-saved" id="saved-ej-2">✓ Guardado</div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-pregunta">Un cliente te escribe "cuánto cuesta San Andrés". ¿Cuál es la mejor respuesta?</div>
+      <div class="quiz-opciones">
+        <div class="quiz-opcion" onclick="quiz(this,false,'q2')">Enviarle el precio directamente sin más preguntas</div>
+        <div class="quiz-opcion" onclick="quiz(this,false,'q2')">Decirle que busque en la página web</div>
+        <div class="quiz-opcion" onclick="quiz(this,true,'q2')">Saludar, preguntar cuántas personas y fechas antes de cotizar</div>
+      </div>
+      <div class="quiz-feedback ok" id="fb-q2-ok">✓ ¡Exacto! Sin saber personas y fechas, cualquier precio que des puede estar mal. Siempre califica primero.</div>
+      <div class="quiz-feedback mal" id="fb-q2-mal">✗ Recuerda: antes de cotizar necesitas saber personas, fechas y presupuesto aproximado.</div>
+    </div>
+  </div>
+  <div class="lec-footer">
+    <button class="btn-prev" onclick="irA(1)">← Anterior</button>
+    <button class="btn-sig" onclick="completarYSiguiente(2)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- ══════════ MÓDULO 3: VENTAS ══════════ -->
+<div class="leccion" id="lec-3">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Módulo 3 de 9</div>
+    <h1 class="lec-titulo">Técnicas de<br><em>ventas en turismo</em></h1>
+    <p class="lec-desc">Vender viajes no es convencer a alguien de gastar dinero — es ayudar a alguien a vivir una experiencia que recordará toda la vida.</p>
+    <div class="lec-meta"><div class="lec-pill">⏱ 25 min</div><div class="lec-pill">🎯 Técnica SPIN</div></div>
+  </div>
+  <div class="lec-body">
+    <div class="content-section">
+      <div class="cs-title">🎯 El proceso de venta en 5 pasos</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">1️⃣</div><div><strong>Contacto inicial:</strong> Saludo cálido, presentación y creación de rapport (conexión). El cliente debe sentirse bienvenido, no presionado.</div></div>
+        <div class="lp-item"><div class="lp-icon">2️⃣</div><div><strong>Descubrimiento:</strong> Preguntas para entender qué necesita. ¿A dónde sueña ir? ¿Para qué ocasión? ¿Cuántas personas? ¿Presupuesto aproximado?</div></div>
+        <div class="lp-item"><div class="lp-icon">3️⃣</div><div><strong>Presentación:</strong> Muestra 2-3 opciones (no más) personalizadas según lo que descubriste. Explica beneficios, no solo características.</div></div>
+        <div class="lp-item"><div class="lp-icon">4️⃣</div><div><strong>Manejo de objeciones:</strong> El cliente dice "está muy caro" o "lo pienso". Esto no es un NO, es una oportunidad de seguir vendiendo.</div></div>
+        <div class="lp-item"><div class="lp-icon">5️⃣</div><div><strong>Cierre:</strong> Preguntas de cierre para confirmar la decisión y solicitar el anticipo para reservar.</div></div>
+      </div>
+    </div>
+    <div class="concepto-card">
+      <div class="cc-title">🧲 Técnica SPIN — Las 4 preguntas clave</div>
+      <div class="cc-text">
+        <strong>S - Situación:</strong> "¿Cuándo tienen pensado viajar?"<br>
+        <strong>P - Problema:</strong> "¿Han tenido alguna mala experiencia con otras agencias?"<br>
+        <strong>I - Implicación:</strong> "¿Eso les ha generado desconfianza al reservar?"<br>
+        <strong>N - Necesidad:</strong> "¿Qué sería ideal para ustedes en este viaje?"<br><br>
+        Esta técnica hace que el cliente <strong>identifique solo sus propias necesidades</strong>, sin sentir que le estás vendiendo.
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="cs-title">💡 Manejo de objeciones más comunes</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">💰</div><div><strong>"Está muy caro":</strong> "Entiendo perfectamente. ¿Le cuento qué incluye el plan? Cuando lo compara con hacerlo por separado, sale más económico." — Muestra el valor, no bajes el precio.</div></div>
+        <div class="lp-item"><div class="lp-icon">🤔</div><div><strong>"Lo pienso y le aviso":</strong> "Claro, ¿qué información adicional necesita para tomar la decisión? Con gusto se la consigo ahora mismo." — No des tiempo sin propósito.</div></div>
+        <div class="lp-item"><div class="lp-icon">🔍</div><div><strong>"Voy a cotizar en otras partes":</strong> "Perfecto, así puede comparar. Lo que le puedo garantizar es que con AVSTRAVEL tiene 10 años de respaldo y atención personalizada que no encontrará en internet." — Diferénciate por valor, no por precio.</div></div>
+      </div>
+    </div>
+    <div class="ejercicio">
+      <div class="ej-title">✏️ Ejercicio 3 · Roleplay</div>
+      <div class="ej-text">Un cliente te dice: "Vi un plan a Cancún en internet por $2.500.000. Tu cotización me salió en $3.000.000. ¿Por qué debería comprarte a ti?" — Escribe tu respuesta como si fuera un mensaje de WhatsApp.</div>
+      <textarea class="ej-input" id="ej-3" placeholder="Tu respuesta al cliente..."></textarea>
+      <button class="btn-guardar-ej" onclick="guardarEj('ej-3')">Guardar</button>
+      <div class="ej-saved" id="saved-ej-3">✓ Guardado</div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-pregunta">Un cliente dice "lo pienso". ¿Cuál es la mejor respuesta?</div>
+      <div class="quiz-opciones">
+        <div class="quiz-opcion" onclick="quiz(this,false,'q3')">Decirle "con gusto, me avisa cuando quiera"</div>
+        <div class="quiz-opcion" onclick="quiz(this,true,'q3')">Preguntar qué información adicional necesita para decidir</div>
+        <div class="quiz-opcion" onclick="quiz(this,false,'q3')">Bajarle el precio para que compre</div>
+      </div>
+      <div class="quiz-feedback ok" id="fb-q3-ok">✓ Perfecto. "Lo pienso" casi siempre esconde una duda no resuelta. Tu misión es descubrir cuál es y resolverla.</div>
+      <div class="quiz-feedback mal" id="fb-q3-mal">✗ Bajar el precio sin explorar la objeción real es un error. Descubre qué duda tiene el cliente primero.</div>
+    </div>
+  </div>
+  <div class="lec-footer">
+    <button class="btn-prev" onclick="irA(2)">← Anterior</button>
+    <button class="btn-sig" onclick="completarYSiguiente(3)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- ══════════ MÓDULO 4: CIERRE ══════════ -->
+<div class="leccion" id="lec-4">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Módulo 4 de 9</div>
+    <h1 class="lec-titulo">Cierre de<br><em>ventas</em></h1>
+    <p class="lec-desc">El cierre no es presionar al cliente — es ayudarlo a tomar una decisión que ya quiere tomar pero que necesita un pequeño empujón.</p>
+    <div class="lec-meta"><div class="lec-pill">⏱ 20 min</div><div class="lec-pill">🔑 5 técnicas</div></div>
+  </div>
+  <div class="lec-body">
+    <div class="content-section">
+      <div class="cs-title">🔑 5 técnicas de cierre para turismo</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">⏰</div><div><strong>Cierre por urgencia:</strong> "Esta tarifa está disponible solo hasta el viernes. Si reservamos hoy, le aseguro ese precio." — Real en temporadas y cupos limitados.</div></div>
+        <div class="lp-item"><div class="lp-icon">✅</div><div><strong>Cierre por asunción:</strong> "Perfecto, entonces para confirmarle el plan necesito su nombre completo y el 50% de anticipo. ¿Prefiere pagar por Nequi o transferencia?" — Asumes que ya decidió.</div></div>
+        <div class="lp-item"><div class="lp-icon">⚖️</div><div><strong>Cierre por alternativa:</strong> "¿Prefieren el plan de 5 días todo incluido o el de 4 días con tours opcionales?" — Siempre entre dos opciones de compra, nunca "¿va a comprar o no?"</div></div>
+        <div class="lp-item"><div class="lp-icon">🎁</div><div><strong>Cierre con incentivo:</strong> "Si reservamos hoy le incluyo el traslado del aeropuerto sin costo adicional." — Un pequeño extra puede ser el detalle que cierre.</div></div>
+        <div class="lp-item"><div class="lp-icon">💬</div><div><strong>Cierre con resumen:</strong> "Para recapitular: viajan 4 personas a San Andrés del 15 al 20 de julio, todo incluido por $5.760.000 total. ¿Cuándo les queda bien hacer el anticipo?" — Resume y pide acción concreta.</div></div>
+      </div>
+    </div>
+    <div class="alert-box">
+      <div class="tip-icon">⚠️</div>
+      <div class="tip-text" style="color:var(--purple)"><strong>Error más común:</strong> Hacer la presentación perfecta y al final decir "bueno, cualquier cosa me avisa". Eso NO es cerrar. Siempre termina con una pregunta de acción: "¿Cuándo hacemos el anticipo?", "¿A nombre de quién queda la reserva?"</div>
+    </div>
+    <div class="ejercicio">
+      <div class="ej-title">✏️ Ejercicio 4 · Tu cierre perfecto</div>
+      <div class="ej-text">Escribe cómo cerrarías esta venta: El cliente mostró interés en un plan a Cartagena de 4 días para 2 personas a $2.160.000 total. Ha revisado todo y dice "suena bien". ¿Cómo cierras?</div>
+      <textarea class="ej-input" id="ej-4" placeholder="Escribe tu frase de cierre..."></textarea>
+      <button class="btn-guardar-ej" onclick="guardarEj('ej-4')">Guardar</button>
+      <div class="ej-saved" id="saved-ej-4">✓ Guardado</div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-pregunta">¿Cuál de estas es una pregunta de cierre correcta?</div>
+      <div class="quiz-opciones">
+        <div class="quiz-opcion" onclick="quiz(this,false,'q4')">¿Va a comprar el plan o no?</div>
+        <div class="quiz-opcion" onclick="quiz(this,false,'q4')">¿Le gustó lo que le mostré?</div>
+        <div class="quiz-opcion" onclick="quiz(this,true,'q4')">¿Le queda bien hacer el anticipo hoy o mañana?</div>
+      </div>
+      <div class="quiz-feedback ok" id="fb-q4-ok">✓ Correcto. Esta pregunta da opciones de acción sin dar la opción de "no".</div>
+      <div class="quiz-feedback mal" id="fb-q4-mal">✗ Esa pregunta da al cliente la oportunidad de decir "no" sin compromiso. Usa siempre alternativas de acción.</div>
+    </div>
+  </div>
+  <div class="lec-footer">
+    <button class="btn-prev" onclick="irA(3)">← Anterior</button>
+    <button class="btn-sig" onclick="completarYSiguiente(4)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- ══════════ MÓDULO 5: DISCURSO ══════════ -->
+<div class="leccion" id="lec-5">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Módulo 5 de 9</div>
+    <h1 class="lec-titulo">Discurso y<br><em>presentación personal</em></h1>
+    <p class="lec-desc">Cómo te presentas, cómo hablas y cómo te ves, comunican más que cualquier argumento de venta.</p>
+    <div class="lec-meta"><div class="lec-pill">⏱ 15 min</div><div class="lec-pill">🎤 Elevator pitch</div></div>
+  </div>
+  <div class="lec-body">
+    <div class="content-section">
+      <div class="cs-title">🎤 El Elevator Pitch de AVSTRAVEL</div>
+      <div class="cs-text">Un elevator pitch es tu presentación de 30-60 segundos. Cuando alguien te pregunta "¿a qué te dedicas?", esta es tu oportunidad de generar interés.</div>
+      <div class="concepto-card">
+        <div class="cc-title">✅ Ejemplo de pitch AVSTRAVEL</div>
+        <div class="cc-text">"Soy asesor de viajes de AVSTRAVEL, una agencia con 10 años en Buenaventura. Ayudamos a familias y personas a vivir sus viajes soñados — desde las ballenas del Pacífico hasta Cancún o Europa — con servicio personalizado, todo incluido y al mejor precio. ¿Tienes algún destino en mente?"</div>
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="cs-title">👔 Presentación personal</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">👗</div><div><strong>Viste con profesionalismo:</strong> No necesitas traje, pero sí ropa limpia, ordenada y apropiada. Tu imagen es la primera impresión de AVSTRAVEL.</div></div>
+        <div class="lp-item"><div class="lp-icon">📱</div><div><strong>Perfil de WhatsApp profesional:</strong> Foto de perfil presentable, nombre completo, y si puedes, el logo de AVSTRAVEL. Tu WhatsApp es tu tarjeta de presentación digital.</div></div>
+        <div class="lp-item"><div class="lp-icon">🗣️</div><div><strong>Lenguaje apropiado:</strong> Evita jerga o palabras vulgares con clientes. Habla con claridad, sin apresurarte. La confianza en la voz se desarrolla con práctica.</div></div>
+        <div class="lp-item"><div class="lp-icon">📵</div><div><strong>Atención plena:</strong> Cuando estés con un cliente, el celular va al bolsillo. Nada comunica más irrespeto que revisar el teléfono mientras el cliente habla.</div></div>
+      </div>
+    </div>
+    <div class="ejercicio">
+      <div class="ej-title">✏️ Ejercicio 5 · Tu pitch personal</div>
+      <div class="ej-text">Escribe tu propio elevator pitch como asesor de AVSTRAVEL. Debe durar máximo 45 segundos leído en voz alta (aproximadamente 80-90 palabras). Incluye quién eres, qué hace AVSTRAVEL y una pregunta final.</div>
+      <textarea class="ej-input" id="ej-5" placeholder="Mi pitch: Hola, soy [nombre]..."></textarea>
+      <button class="btn-guardar-ej" onclick="guardarEj('ej-5')">Guardar mi pitch</button>
+      <div class="ej-saved" id="saved-ej-5">✓ Guardado — practica decirlo en voz alta 5 veces</div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-pregunta">¿Con qué debe terminar siempre un elevator pitch efectivo?</div>
+      <div class="quiz-opciones">
+        <div class="quiz-opcion" onclick="quiz(this,false,'q5')">Con el precio del producto</div>
+        <div class="quiz-opcion" onclick="quiz(this,true,'q5')">Con una pregunta que genere conversación</div>
+        <div class="quiz-opcion" onclick="quiz(this,false,'q5')">Con "muchas gracias por escucharme"</div>
+      </div>
+      <div class="quiz-feedback ok" id="fb-q5-ok">✓ Exacto. Una pregunta abre la puerta a conocer al prospecto y continuar la conversación de ventas.</div>
+      <div class="quiz-feedback mal" id="fb-q5-mal">✗ El pitch debe generar conversación. Termina siempre con una pregunta que invite al otro a hablar.</div>
+    </div>
+  </div>
+  <div class="lec-footer">
+    <button class="btn-prev" onclick="irA(4)">← Anterior</button>
+    <button class="btn-sig" onclick="completarYSiguiente(5)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- ══════════ MÓDULO 6: RESPONSABILIDAD ══════════ -->
+<div class="leccion" id="lec-6">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Módulo 6 de 9</div>
+    <h1 class="lec-titulo">Responsabilidad<br>y <em>compromiso</em></h1>
+    <p class="lec-desc">En turismo, una promesa incumplida no solo pierde una venta — puede arruinar el viaje de toda una familia. La responsabilidad es innegociable.</p>
+    <div class="lec-meta"><div class="lec-pill">⏱ 15 min</div></div>
+  </div>
+  <div class="lec-body">
+    <div class="content-section">
+      <div class="cs-title">⚖️ Las 3 responsabilidades del asesor AVSTRAVEL</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">🤝</div><div><strong>Responsabilidad con el cliente:</strong> Cada promesa que haces al cliente es un compromiso de AVSTRAVEL. Si dices que llamas a las 3pm, llamas a las 3pm. Si hay un problema, comunícalo antes de que el cliente lo descubra solo.</div></div>
+        <div class="lp-item"><div class="lp-icon">🏢</div><div><strong>Responsabilidad con AVSTRAVEL:</strong> Representas a una empresa con 10 años de reputación. Tus acciones afectan la imagen de todos. Mantén la confidencialidad de precios, clientes y procesos internos.</div></div>
+        <div class="lp-item"><div class="lp-icon">📊</div><div><strong>Responsabilidad con tus resultados:</strong> Nadie va a perseguirte para que vendas. Eres responsable de tu propio desempeño. Registra cada cliente en el CRM, reporta diariamente y cumple tus metas.</div></div>
+      </div>
+    </div>
+    <div class="concepto-card">
+      <div class="cc-title">📌 La regla del "bajo-promete, sobre-entrega"</div>
+      <div class="cc-text">Siempre da menos de lo que puedes cumplir, y entrega más de lo que prometiste. Si puedes conseguir algo en 24 horas, di 48. Si sale en 20 horas, ¡el cliente queda encantado!</div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-icon">⚡</div>
+      <div class="tip-text"><strong>Situaciones difíciles:</strong> Si un proveedor falla (hotel cerrado, vuelo cancelado), tu responsabilidad es informar al cliente ANTES de que él lo descubra, tener alternativas listas y acompañarlo en la solución. Eso es lo que diferencia un asesor de un vendedor.</div>
+    </div>
+    <div class="ejercicio">
+      <div class="ej-title">✏️ Ejercicio 6 · Plan de acción ante crisis</div>
+      <div class="ej-text">Un cliente ya pagó su viaje a San Andrés y dos días antes de la salida el hotel confirma que no tiene disponibilidad por overbooking. ¿Qué haces paso a paso?</div>
+      <textarea class="ej-input" id="ej-6" placeholder="Paso 1: Primero haría... Paso 2: ..."></textarea>
+      <button class="btn-guardar-ej" onclick="guardarEj('ej-6')">Guardar</button>
+      <div class="ej-saved" id="saved-ej-6">✓ Guardado</div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-pregunta">Si cometes un error que afecta a un cliente, lo mejor es:</div>
+      <div class="quiz-opciones">
+        <div class="quiz-opcion" onclick="quiz(this,false,'q6')">Esperar a ver si el cliente lo nota solo</div>
+        <div class="quiz-opcion" onclick="quiz(this,false,'q6')">Echarle la culpa al proveedor</div>
+        <div class="quiz-opcion" onclick="quiz(this,true,'q6')">Informar al cliente de inmediato y presentar soluciones</div>
+      </div>
+      <div class="quiz-feedback ok" id="fb-q6-ok">✓ Correcto. La transparencia genera confianza incluso en momentos difíciles. Un cliente que ve que resuelves los problemas, vuelve.</div>
+      <div class="quiz-feedback mal" id="fb-q6-mal">✗ Ocultar errores o echar culpas destruye la relación con el cliente. La honestidad es siempre el mejor camino.</div>
+    </div>
+  </div>
+  <div class="lec-footer">
+    <button class="btn-prev" onclick="irA(5)">← Anterior</button>
+    <button class="btn-sig" onclick="completarYSiguiente(6)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- ══════════ MÓDULO 7: CRM ══════════ -->
+<div class="leccion" id="lec-7">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Módulo 7 de 9</div>
+    <h1 class="lec-titulo">CRM<br><em>AVSTRAVEL</em></h1>
+    <p class="lec-desc">El CRM es tu herramienta de trabajo diaria. Aprende a usarlo correctamente para que ningún cliente se pierda y el equipo trabaje sincronizado.</p>
+    <div class="lec-meta"><div class="lec-pill">⏱ 20 min</div><div class="lec-pill">💻 Práctica en vivo</div></div>
+  </div>
+  <div class="lec-body">
+    <div class="content-section">
+      <div class="cs-title">💻 ¿Qué es el CRM y para qué sirve?</div>
+      <div class="cs-text">CRM significa <strong>Customer Relationship Management</strong> — sistema de gestión de relaciones con clientes. El CRM de AVSTRAVEL es nuestra herramienta propia donde registramos TODOS los clientes y su proceso de venta.</div>
+      <div class="tip-box">
+        <div class="tip-icon">🔑</div>
+        <div class="tip-text"><strong>Regla fundamental:</strong> Si no está en el CRM, no existe. Cada cliente que contactes debe quedar registrado, sin excepciones.</div>
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="cs-title">📋 Cómo registrar un cliente nuevo</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">1️⃣</div><div>Abre el CRM: <strong>jhonlerma2024.github.io/AVSTRAVEL-CRM</strong></div></div>
+        <div class="lp-item"><div class="lp-icon">2️⃣</div><div>Inicia sesión con tu perfil de asesor</div></div>
+        <div class="lp-item"><div class="lp-icon">3️⃣</div><div>Clic en <strong>"+ Cliente"</strong> — completa los 6 datos mínimos: nombre, teléfono, destino, presupuesto, fecha de ida y regreso</div></div>
+        <div class="lp-item"><div class="lp-icon">4️⃣</div><div>Selecciona la línea: <strong>Pacífico, Nacional o Internacional</strong></div></div>
+        <div class="lp-item"><div class="lp-icon">5️⃣</div><div>Estado inicial: <strong>Prospecto</strong></div></div>
+        <div class="lp-item"><div class="lp-icon">6️⃣</div><div>Agrega un comentario con el resumen de la conversación</div></div>
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="cs-title">🔄 Los 5 estados del Pipeline</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">🟡</div><div><strong>Prospecto:</strong> Primer contacto. El cliente preguntó pero aún no tiene intención clara de comprar.</div></div>
+        <div class="lp-item"><div class="lp-icon">🔵</div><div><strong>En cotización:</strong> Le enviaste una cotización y está evaluando.</div></div>
+        <div class="lp-item"><div class="lp-icon">🟠</div><div><strong>Pre-reserva:</strong> Dijo que sí, estás gestionando los detalles y el anticipo.</div></div>
+        <div class="lp-item"><div class="lp-icon">🟢</div><div><strong>Reservado:</strong> Pagó. El viaje está confirmado. Debes hacer seguimiento hasta que viaje.</div></div>
+        <div class="lp-item"><div class="lp-icon">⭐</div><div><strong>Viajó:</strong> Ya regresó. Es el momento de pedir referidos y reseñas.</div></div>
+      </div>
+    </div>
+    <div class="concepto-card">
+      <div class="cc-title">📅 Informe diario — obligatorio</div>
+      <div class="cc-text">Cada día antes de terminar tu jornada debes registrar en el CRM tu <strong>informe diario</strong>: cuántos clientes atendiste, cuántas cotizaciones enviaste, cuántas ventas cerraste y cuántas llamadas hiciste. Esto permite al equipo medir el desempeño.</div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-icon">📱</div>
+      <div class="tip-text"><strong>Practica ahora:</strong> Abre el CRM en <strong>jhonlerma2024.github.io/AVSTRAVEL-CRM</strong>, inicia sesión con tu usuario y registra un cliente de prueba con datos ficticios. Así aprenderás el flujo real.</div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-pregunta">¿En qué estado debes poner a un cliente que ya te pagó el anticipo?</div>
+      <div class="quiz-opciones">
+        <div class="quiz-opcion" onclick="quiz(this,false,'q7')">Prospecto</div>
+        <div class="quiz-opcion" onclick="quiz(this,false,'q7')">En cotización</div>
+        <div class="quiz-opcion" onclick="quiz(this,true,'q7')">Reservado</div>
+      </div>
+      <div class="quiz-feedback ok" id="fb-q7-ok">✓ Correcto. Una vez el cliente pagó, pasa a "Reservado" para que el equipo sepa que la venta está cerrada.</div>
+      <div class="quiz-feedback mal" id="fb-q7-mal">✗ Si el cliente ya pagó, el estado correcto es "Reservado". Mantener el estado actualizado es fundamental para el equipo.</div>
+    </div>
+  </div>
+  <div class="lec-footer">
+    <button class="btn-prev" onclick="irA(6)">← Anterior</button>
+    <button class="btn-sig" onclick="completarYSiguiente(7)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- ══════════ MÓDULO 8: PLATAFORMAS ══════════ -->
+<div class="leccion" id="lec-8">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Módulo 8 de 9</div>
+    <h1 class="lec-titulo">Plataformas<br><em>de viajes</em></h1>
+    <p class="lec-desc">Conoce las herramientas digitales que usarás para cotizar vuelos, hoteles y paquetes de manera rápida y profesional.</p>
+    <div class="lec-meta"><div class="lec-pill">⏱ 20 min</div><div class="lec-pill">🌐 Herramientas reales</div></div>
+  </div>
+  <div class="lec-body">
+    <div class="content-section">
+      <div class="cs-title">✈️ Plataformas para vuelos nacionales</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">🔵</div><div><strong>Avianca:</strong> avianca.com — Principal aerolínea colombiana. Vuelos nacionales e internacionales. Como agencia tenemos acceso a tarifas especiales en algunos momentos.</div></div>
+        <div class="lp-item"><div class="lp-icon">🟡</div><div><strong>LATAM:</strong> latam.com — Segunda opción para nacionales, especialmente a Bogotá, Medellín y Cali.</div></div>
+        <div class="lp-item"><div class="lp-icon">🟠</div><div><strong>Wingo:</strong> wingo.com — Aerolínea económica para nacionales. Buenas tarifas pero sin equipaje incluido.</div></div>
+        <div class="lp-item"><div class="lp-icon">🔴</div><div><strong>Despegar.com:</strong> despegar.com.co — Comparador de vuelos nacionales e internacionales. Útil para ver opciones rápido.</div></div>
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="cs-title">🌎 Plataformas para vuelos internacionales</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">🌐</div><div><strong>Despegar.com:</strong> Paquetes completos internacionales todo incluido. Es la plataforma más completa para el cliente colombiano.</div></div>
+        <div class="lp-item"><div class="lp-icon">🏨</div><div><strong>Hotelbeds:</strong> hotelbeds.com — Plataforma B2B de hoteles internacionales para agencias. Acceso a tarifas netas exclusivas.</div></div>
+        <div class="lp-item"><div class="lp-icon">🌴</div><div><strong>One Way Travel:</strong> Mayorista colombiano de paquetes turísticos. Buenos precios para Caribe, México y Europa.</div></div>
+        <div class="lp-item"><div class="lp-icon">🔍</div><div><strong>Google Flights:</strong> google.com/flights — Para verificar tarifas de referencia antes de cotizar. No vende directo pero ayuda a calibrar precios.</div></div>
+      </div>
+    </div>
+    <div class="concepto-card">
+      <div class="cc-title">💡 Proceso de cotización paso a paso</div>
+      <div class="cc-text">
+        <strong>1.</strong> Recibe los datos del cliente: destino, fechas, personas, presupuesto<br>
+        <strong>2.</strong> Busca en 2-3 plataformas para comparar (tarda 10-15 min)<br>
+        <strong>3.</strong> Calcula: costo + 20% de margen = precio de venta<br>
+        <strong>4.</strong> Arma la cotización clara: qué incluye, qué no incluye, precio total y fecha límite para reservar<br>
+        <strong>5.</strong> Envía la cotización en máximo 48 horas — política de AVSTRAVEL
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="cs-title">📋 Herramientas internas AVSTRAVEL</div>
+      <div class="lista-pro">
+        <div class="lp-item"><div class="lp-icon">🔧</div><div><strong>CRM:</strong> jhonlerma2024.github.io/AVSTRAVEL-CRM — Gestión de clientes</div></div>
+        <div class="lp-item"><div class="lp-icon">🛒</div><div><strong>Tienda online:</strong> jhonlerma2024.github.io/AVSTRAVEL-CRM/tienda.html — Productos con precios calculados</div></div>
+        <div class="lp-item"><div class="lp-icon">📋</div><div><strong>Formulario cotización:</strong> jhonlerma2024.github.io/AVSTRAVEL-CRM/cotizar.html — Para clientes que llegan solos</div></div>
+        <div class="lp-item"><div class="lp-icon">📸</div><div><strong>Instagram:</strong> @avstravelpacifico — Contenido y captación de clientes</div></div>
+      </div>
+    </div>
+    <div class="ejercicio">
+      <div class="ej-title">✏️ Ejercicio 7 · Práctica de cotización</div>
+      <div class="ej-text">Busca en Despegar.com un paquete de 5 días a San Andrés para 2 personas en los próximos 30 días. Anota el costo que encuentras, aplica el 20% de margen y escribe el precio de venta que le darías al cliente.</div>
+      <textarea class="ej-input" id="ej-7" placeholder="Encontré: $_________ por persona. Con 20% queda: $_________. Le diría al cliente: $_________."></textarea>
+      <button class="btn-guardar-ej" onclick="guardarEj('ej-7')">Guardar</button>
+      <div class="ej-saved" id="saved-ej-7">✓ Guardado — excelente práctica real</div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-pregunta">Si un paquete te cuesta $1.200.000 por persona, ¿cuánto debes cobrarle al cliente con el 20% de margen?</div>
+      <div class="quiz-opciones">
+        <div class="quiz-opcion" onclick="quiz(this,false,'q8')">$1.320.000</div>
+        <div class="quiz-opcion" onclick="quiz(this,true,'q8')">$1.440.000</div>
+        <div class="quiz-opcion" onclick="quiz(this,false,'q8')">$1.500.000</div>
+      </div>
+      <div class="quiz-feedback ok" id="fb-q8-ok">✓ ¡Correcto! $1.200.000 × 1.20 = $1.440.000. El margen del 20% se aplica sobre el costo.</div>
+      <div class="quiz-feedback mal" id="fb-q8-mal">✗ Recuerda: costo × 1.20 = precio de venta. $1.200.000 × 1.20 = $1.440.000.</div>
+    </div>
+  </div>
+  <div class="lec-footer">
+    <button class="btn-prev" onclick="irA(7)">← Anterior</button>
+    <button class="btn-sig" onclick="completarYSiguiente(8)">Siguiente → Mi compromiso</button>
+  </div>
+</div>
+
+
+<!-- ══════════ MÓDULO: MI COMPROMISO ══════════ -->
+<div class="leccion" id="lec-comp">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Módulo final · Antes del diploma</div>
+    <h1 class="lec-titulo">Mi compromiso<br><em>con AVSTRAVEL</em></h1>
+    <p class="lec-desc">Este módulo es diferente. No hay respuestas correctas — hay honestidad. Evalúa si realmente estás listo(a) para asumir este reto y firma tu acuerdo de período de prueba.</p>
+    <div class="lec-meta"><div class="lec-pill">📋 Evaluación honesta</div><div class="lec-pill">✍️ Firma digital</div><div class="lec-pill">⚖️ 2 meses de prueba</div></div>
+  </div>
+  <div class="lec-body">
+
+    <!-- RECORDATORIO DE METAS -->
+    <div class="content-section">
+      <div class="cs-title">📊 Las metas que debes cumplir</div>
+      <div class="cs-text">Antes de comprometerte, lee esto con calma y evalúa honestamente si puedes cumplirlo:</div>
+      <div class="meta-calc">
+        <div class="mc-row"><span class="mc-key">Ventas mínimas por mes</span><span class="mc-val pos">$13.000.000</span></div>
+        <div class="mc-row"><span class="mc-key">Prospectos nuevos por semana</span><span class="mc-val pos">15 personas</span></div>
+        <div class="mc-row"><span class="mc-key">Tiempo máximo de respuesta</span><span class="mc-val">2 horas</span></div>
+        <div class="mc-row"><span class="mc-key">Cotizaciones enviadas en</span><span class="mc-val">máximo 48h</span></div>
+        <div class="mc-row"><span class="mc-key">Informe diario en el CRM</span><span class="mc-val">todos los días</span></div>
+        <div class="mc-row"><span class="mc-key">Período de prueba</span><span class="mc-val">2 meses</span></div>
+        <div class="mc-row"><span class="mc-key">Salario si no se cumple</span><span class="mc-val neg">Solo mínimo, sin comisión</span></div>
+      </div>
+    </div>
+
+    <!-- TEST DE NIVEL DE COMPROMISO -->
+    <div class="content-section">
+      <div class="cs-title">🔍 ¿Cuál es tu nivel de compromiso real?</div>
+      <div class="cs-text">Selecciona la opción que más se acerca a tu situación actual. Sé completamente honesto(a) — esto es entre tú y tu conciencia.</div>
+
+      <div class="comp-nivel" id="cn-a" onclick="selNivel('a')">
+        <div class="cn-radio" id="cr-a"></div>
+        <div class="cn-info">
+          <div class="cn-title">Nivel A — Completamente comprometido(a)</div>
+          <div class="cn-desc">Entiendo las metas, tengo la energía, la disciplina y la actitud para cumplirlas. Estoy dispuesto(a) a trabajar con dedicación total los 2 meses de prueba.</div>
+        </div>
+        <div class="cn-badge" style="background:rgba(0,168,120,.12);color:#085041">Listo</div>
+      </div>
+
+      <div class="comp-nivel" id="cn-b" onclick="selNivel('b')">
+        <div class="cn-radio" id="cr-b"></div>
+        <div class="cn-info">
+          <div class="cn-title">Nivel B — Comprometido(a) con dudas</div>
+          <div class="cn-desc">Quiero cumplir pero tengo algunas dudas sobre si podré conseguir tantos prospectos o si el proceso de ventas me sale natural. Necesito apoyo al inicio.</div>
+        </div>
+        <div class="cn-badge" style="background:rgba(242,169,34,.12);color:#633806">Con dudas</div>
+      </div>
+
+      <div class="comp-nivel" id="cn-c" onclick="selNivel('c')">
+        <div class="cn-radio" id="cr-c"></div>
+        <div class="cn-info">
+          <div class="cn-title">Nivel C — No estoy seguro(a)</div>
+          <div class="cn-desc">Siendo honesto(a), no sé si tengo el perfil para este rol. Las ventas me generan inseguridad y no estoy seguro(a) de poder cumplir con las metas propuestas.</div>
+        </div>
+        <div class="cn-badge" style="background:rgba(224,92,58,.12);color:#8B1A00">Evaluar</div>
+      </div>
+
+      <div id="nivel-feedback" style="display:none;margin-top:14px"></div>
+    </div>
+
+    <!-- CALCULADORA PERSONAL -->
+    <div class="content-section" id="calc-section" style="display:none">
+      <div class="cs-title">🧮 Tu calculadora personal de ingresos</div>
+      <div class="cs-text">Basado en el plan de ventas, esto es lo que ganarías según tu desempeño:</div>
+      <div style="margin-bottom:14px">
+        <label class="fl" style="margin-bottom:6px">¿Cuánto crees que podrías vender tu primer mes? (mueve el rango)</label>
+        <input type="range" id="sl-mis-ventas" min="5000000" max="35000000" step="1000000" value="13000000"
+          style="width:100%;margin-bottom:8px" oninput="calcMiSueldo()">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--mist)"><span>$5M</span><span>$35M</span></div>
+      </div>
+      <div class="meta-calc" id="mi-sueldo-calc">
+        <div class="mc-row"><span class="mc-key">Mis ventas estimadas</span><span class="mc-val pos" id="ms-ventas">$13.000.000</span></div>
+        <div class="mc-row"><span class="mc-key">Utilidad bruta (20%)</span><span class="mc-val" id="ms-utilidad">$2.600.000</span></div>
+        <div class="mc-row"><span class="mc-key">Mi salario base fijo</span><span class="mc-val">$1.423.500</span></div>
+        <div class="mc-row"><span class="mc-key">Auxilio de transporte</span><span class="mc-val">$200.000</span></div>
+        <div class="mc-row"><span class="mc-key">Mi comisión</span><span class="mc-val pos" id="ms-comision">$0</span></div>
+        <div class="mc-row"><span class="mc-key">Mi ingreso total del mes</span><span class="mc-val pos" id="ms-total">$1.623.500</span></div>
+        <div class="mc-row"><span class="mc-key">¿Alcancé la meta mínima?</span><span class="mc-val" id="ms-meta">❌ No</span></div>
+      </div>
+      <div class="tip-box" id="ms-tip">
+        <div class="tip-icon">💡</div>
+        <div class="tip-text" id="ms-tip-text">Con ventas de $13.000.000 estás justo en la meta mínima y empiezas a ganar comisión.</div>
+      </div>
+    </div>
+
+    <!-- CONTRATO DIGITAL -->
+    <div class="content-section" id="contrato-section" style="display:none">
+      <div class="cs-title">📄 Acuerdo de período de prueba</div>
+      <div class="cs-text">Lee el siguiente acuerdo completo y firma digitalmente al final. Esta firma confirma que entiendes y aceptas las condiciones de tu vinculación a AVSTRAVEL.</div>
+
+      <div class="contrato-wrap">
+        <div class="contrato-header">
+          <span style="font-size:20px">📋</span>
+          <div class="contrato-header-title">ACUERDO DE PERÍODO DE PRUEBA · AVSTRAVEL AGENCIA DE VIAJES</div>
+        </div>
+        <div class="contrato-body">
+          <div style="text-align:center;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid rgba(10,74,110,.1)">
+            <div style="font-size:11px;color:var(--mist);margin-bottom:4px">Entre las partes:</div>
+            <div style="font-size:13px"><strong>AVSTRAVEL Agencia de Viajes</strong> · NIT 1061112114-5 · R.N.T. 47142<br>
+            Calle 3 No. 5a-16, Centro, Buenaventura, Valle del Cauca<br>
+            Representada por: <strong>Jhon Edier Lerma Riascos</strong> — Director General</div>
+            <div style="margin-top:10px;font-size:13px">Y el(la) candidato(a): <strong id="contrato-nombre-display">—</strong></div>
+          </div>
+
+          <div class="contrato-articulo">
+            <div class="contrato-art-num">Artículo 1 — Objeto del acuerdo</div>
+            El presente acuerdo establece las condiciones de vinculación durante el <strong>período de prueba de dos (2) meses calendario</strong>, durante el cual el candidato desempeñará funciones de <strong>Asesor Comercial y/o Vendedor Externo</strong> de AVSTRAVEL, con el objetivo de demostrar su capacidad para cumplir las metas establecidas.
+          </div>
+
+          <div class="contrato-articulo">
+            <div class="contrato-art-num">Artículo 2 — Remuneración</div>
+            Durante el período de prueba, la remuneración será así:
+            <br><br>
+            • <strong>Salario base fijo:</strong> $1.423.500 (salario mínimo legal vigente 2026)<br>
+            • <strong>Auxilio de transporte:</strong> $200.000 mensuales<br>
+            • <strong>Comisión variable:</strong> 10% sobre la utilidad bruta generada, <strong>únicamente si</strong> se alcanza la meta mínima de ventas mensual de <strong>$13.000.000</strong><br>
+            • Si las ventas superan $20.000.000: comisión del 12%<br>
+            • Si las ventas superan $30.000.000: comisión del 15% + bono de $500.000
+          </div>
+
+          <div class="contrato-articulo">
+            <div class="contrato-art-num">Artículo 3 — Metas mínimas obligatorias</div>
+            El candidato se compromete a cumplir las siguientes metas mensuales mínimas:
+            <br><br>
+            • <strong>Ventas brutas:</strong> mínimo $13.000.000 por mes<br>
+            • <strong>Prospectos nuevos:</strong> mínimo 15 por semana (60 por mes), registrados en el CRM<br>
+            • <strong>Cotizaciones enviadas:</strong> en máximo 48 horas después de recibir la consulta<br>
+            • <strong>Tiempo de respuesta:</strong> máximo 2 horas en horario laboral<br>
+            • <strong>Informe diario:</strong> completado en el CRM antes de las 6:00 PM de cada día hábil
+          </div>
+
+          <div class="contrato-articulo">
+            <div class="contrato-art-num">Artículo 4 — Consecuencias del incumplimiento</div>
+            • Si en el primer mes no se alcanzan las metas mínimas, se recibirá retroalimentación y se dará una segunda oportunidad.<br>
+            • Si en el segundo mes consecutivo no se alcanzan las metas mínimas, <strong>AVSTRAVEL podrá dar por terminado el período de prueba sin indemnización</strong>, conforme al artículo 78 del Código Sustantivo del Trabajo colombiano.<br>
+            • La comisión del mes en el que no se alcancen las metas no se genera ni se acumula.<br>
+            • Tres (3) días sin informe diario en el CRM en un mismo mes reduce la comisión de ese mes en un 30%.
+          </div>
+
+          <div class="contrato-articulo">
+            <div class="contrato-art-num">Artículo 5 — Obligaciones del candidato</div>
+            • Mantener confidencialidad sobre precios, clientes y estrategias de AVSTRAVEL.<br>
+            • No trabajar con agencias competidoras durante el período de prueba.<br>
+            • Registrar todos los clientes en el CRM de AVSTRAVEL sin excepción.<br>
+            • Completar satisfactoriamente la Universidad AVSTRAVEL antes de iniciar funciones.<br>
+            • Representar a AVSTRAVEL con profesionalismo, puntualidad y honestidad.
+          </div>
+
+          <div class="contrato-articulo">
+            <div class="contrato-art-num">Artículo 6 — Evaluación y continuidad</div>
+            Al finalizar los dos (2) meses de prueba, AVSTRAVEL evaluará el desempeño del candidato. Si los resultados son satisfactorios, se formalizará la vinculación con un contrato de trabajo a término fijo por seis (6) meses, con posibilidad de renovación según desempeño.
+          </div>
+
+          <div style="text-align:center;font-size:11px;color:var(--mist);margin-top:14px;padding-top:14px;border-top:1px solid rgba(10,74,110,.1)">
+            Buenaventura, Valle del Cauca, Colombia · <span id="contrato-fecha"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FIRMA DIGITAL -->
+      <div class="firma-area" id="firma-area">
+        <div class="firma-title">✍️ Firma digital del candidato</div>
+        <div class="firma-campos">
+          <div>
+            <label class="fl">Nombre completo *</label>
+            <input type="text" class="firma-input" id="firma-nombre" placeholder="Escribe tu nombre completo">
+          </div>
+          <div>
+            <label class="fl">Número de cédula *</label>
+            <input type="text" class="firma-input" id="firma-cedula" placeholder="Número de cédula">
+          </div>
+          <div>
+            <label class="fl">Cargo al que aplica</label>
+            <input type="text" class="firma-input" id="firma-cargo" placeholder="Asesor Comercial / Vendedor Externo">
+          </div>
+          <div>
+            <label class="fl">WhatsApp</label>
+            <input type="tel" class="firma-input" id="firma-tel" placeholder="315 XXX XXXX">
+          </div>
+        </div>
+        <label class="fl" style="margin-bottom:6px">Firma manuscrita digital (dibuja tu firma abajo)</label>
+        <div class="firma-canvas-wrap">
+          <canvas class="firma-canvas" id="firma-canvas" width="600" height="100"></canvas>
+          <div class="firma-canvas-lbl" id="firma-canvas-lbl">Dibuja tu firma aquí con el dedo o el mouse</div>
+        </div>
+        <button class="firma-clear" onclick="limpiarFirma()">↺ Borrar firma</button>
+
+        <div style="margin-top:16px">
+          <div class="chk-wrap">
+            <input type="checkbox" class="chk-box" id="chk1" onchange="verificarFirma()">
+            <span class="chk-text">He leído y entiendo completamente el Acuerdo de Período de Prueba y acepto sus condiciones voluntariamente.</span>
+          </div>
+          <div class="chk-wrap">
+            <input type="checkbox" class="chk-box" id="chk2" onchange="verificarFirma()">
+            <span class="chk-text">Entiendo que si no cumplo las metas mínimas de ventas ($13.000.000/mes) y prospectos (15/semana), no tendré derecho a comisión y AVSTRAVEL puede dar por terminado el período de prueba.</span>
+          </div>
+          <div class="chk-wrap">
+            <input type="checkbox" class="chk-box" id="chk3" onchange="verificarFirma()">
+            <span class="chk-text">Me comprometo a trabajar con honestidad, dedicación y profesionalismo durante los dos meses de prueba, representando a AVSTRAVEL con orgullo.</span>
+          </div>
+        </div>
+
+        <button class="btn-firmar" id="btn-firmar" onclick="firmarContrato()" disabled>
+          ✍️ Firmar y enviar mi compromiso
+        </button>
+      </div>
+
+      <!-- CONFIRMACIÓN DE FIRMA -->
+      <div class="firma-confirmada" id="firma-confirmada">
+        <div style="font-size:48px;margin-bottom:14px">🎉</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--reef);margin-bottom:8px">¡Compromiso firmado!</div>
+        <div style="font-size:14px;color:var(--mist);line-height:1.75;max-width:420px;margin:0 auto 18px">Tu acuerdo fue registrado. AVSTRAVEL lo recibió y un asesor del equipo te contactará para confirmar tu fecha de inicio.</div>
+        <div id="firma-resumen" style="font-size:12px;color:var(--mist);background:var(--light);border-radius:8px;padding:10px 14px;margin-bottom:16px;text-align:left"></div>
+        <a id="firma-wa-btn" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:30px;background:#25D366;color:#fff;text-decoration:none;font-weight:700;font-size:13px">💬 Confirmar por WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="lec-footer">
+    <button class="btn-prev" onclick="irA(8)">← Anterior</button>
+    <button class="btn-sig" id="btn-sig-comp" onclick="completarYSiguiente('comp')" style="display:none">🎓 Ver mi diploma →</button>
+  </div>
+</div>
+
+<!-- ══════════ DIPLOMA ══════════ -->
+<div class="leccion" id="lec-9">
+  <div class="lec-hero">
+    <div class="lec-hero-glow"></div>
+    <div class="lec-num">Universidad AVSTRAVEL</div>
+    <h1 class="lec-titulo"><em>¡Felicitaciones!</em><br>Lo lograste</h1>
+    <p class="lec-desc">Completaste los 8 módulos de formación. Estás listo(a) para ser un asesor profesional de AVSTRAVEL.</p>
+  </div>
+  <div class="lec-body">
+    <div class="diploma-wrap show">
+      <div class="diploma" id="diploma-card">
+        <div class="dip-stars">⭐ ⭐ ⭐</div>
+        <div class="dip-brand">Universidad AVSTRAVEL</div>
+        <div style="width:50px;height:1px;background:rgba(200,146,42,.4);margin:12px auto"></div>
+        <div class="dip-certifica">Certifica que</div>
+        <div class="dip-nombre" id="dip-nombre">—</div>
+        <div class="dip-texto">Ha completado satisfactoriamente el programa de formación en<br><strong style="color:rgba(255,255,255,.7)">Ventas, Servicio al Cliente y Herramientas Digitales en Turismo</strong><br>con una duración de 9 módulos y evaluaciones prácticas.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:16px 0;font-size:11px;color:rgba(255,255,255,.35);text-align:center">
+          <div>✓ Habilidades blandas</div><div>✓ Comunicación</div><div>✓ Ventas y cierres</div>
+          <div>✓ Presentación</div><div>✓ Responsabilidad</div><div>✓ CRM y plataformas</div>
+        </div>
+        <div class="dip-firma">
+          Buenaventura, Colombia · <span id="dip-fecha"></span><br>
+          <strong style="color:rgba(255,255,255,.4)">AVSTRAVEL Agencia de Viajes · R.N.T. 47142</strong><br>
+          Jhon Edier Lerma Riascos · Director General
+        </div>
+      </div>
+      <button class="btn-print-dip" onclick="window.print()">🖨️ Imprimir mi diploma</button>
+    </div>
+    <div style="text-align:center;margin-top:28px">
+      <div style="font-size:14px;color:var(--mist);margin-bottom:16px">¿Tienes dudas o quieres repasar algún módulo?</div>
+      <a href="https://wa.me/573153945461" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:30px;background:#25D366;color:#fff;text-decoration:none;font-weight:700;font-size:14px">💬 Hablar con el director</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════
+//  STATE
+// ════════════════════════════
+let lecActual = 0;
+let completados = new Set(JSON.parse(localStorage.getItem('avs_uni_completados')||'[]'));
+let nombreUsuario = localStorage.getItem('avs_uni_nombre')||'';
+const TOTAL = 10; // org + módulos 1-8 + comp
+
+// ════════════════════════════
+//  INIT
+// ════════════════════════════
+if(nombreUsuario) {
+  document.getElementById('sb-nombre').textContent = nombreUsuario;
+  document.getElementById('input-nombre').value = nombreUsuario;
+  document.getElementById('dip-nombre').textContent = nombreUsuario;
+}
+document.getElementById('dip-fecha').textContent = new Date().toLocaleDateString('es-CO',{year:'numeric',month:'long',day:'numeric'});
+actualizarProgress();
+restaurarEjercicios();
+
+// ════════════════════════════
+//  NAVEGACIÓN
+// ════════════════════════════
+function irA(n) {
+  document.querySelectorAll('.leccion').forEach(l=>l.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  const lec = document.getElementById('lec-'+n);
+  const nav = document.getElementById('nav-'+n);
+  if(lec) lec.classList.add('active');
+  if(nav) nav.classList.add('active');
+  lecActual = n;
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+// Mapa de navegación: después de cada módulo va a...
+const SIGUIENTE = { 0:'org', 'org':1, 1:2, 2:3, 3:4, 4:5, 5:6, 6:7, 7:8, 8:'comp', 'comp':9 };
+
+function completarYSiguiente(n) {
+  completados.add(n);
+  localStorage.setItem('avs_uni_completados', JSON.stringify([...completados]));
+  const nav = document.getElementById('nav-'+n);
+  if(nav) nav.classList.add('completado');
+  actualizarProgress();
+  const label = n==='org'?'Conoce AVSTRAVEL':'Módulo '+n;
+  toast('✓ '+label+' completado 🎉');
+  const sig = SIGUIENTE[n];
+  if(sig !== undefined) irA(sig);
+}
+
+function actualizarProgress() {
+  const pct = Math.round((completados.size/TOTAL)*100);
+  document.getElementById('sb-pct').textContent = pct+'%';
+  document.getElementById('sb-fill').style.width = pct+'%';
+  completados.forEach(n => {
+    const nav = document.getElementById('nav-'+n);
+    if(nav) nav.classList.add('completado');
+  });
+}
+
+// ════════════════════════════
+//  NOMBRE
+// ════════════════════════════
+function guardarNombre() {
+  const nombre = document.getElementById('input-nombre').value.trim();
+  if(!nombre) { toast('Escribe tu nombre para continuar','err'); return; }
+  nombreUsuario = nombre;
+  localStorage.setItem('avs_uni_nombre', nombre);
+  document.getElementById('sb-nombre').textContent = nombre;
+  document.getElementById('dip-nombre').textContent = nombre;
+  toast('✓ Bienvenido(a), '+nombre.split(' ')[0]+'! Comenzamos con la inducción 🦋');
+  irA('org');
+}
+window.guardarNombre = guardarNombre;
+
+// ════════════════════════════
+//  EJERCICIOS
+// ════════════════════════════
+function guardarEj(id) {
+  const val = document.getElementById(id)?.value.trim();
+  if(!val) { toast('Escribe tu respuesta primero','err'); return; }
+  localStorage.setItem('avs_ej_'+id, val);
+  const saved = document.getElementById('saved-'+id);
+  if(saved) { saved.style.display='block'; setTimeout(()=>saved.style.display='none',3000); }
+  toast('✓ Ejercicio guardado');
+}
+window.guardarEj = guardarEj;
+
+function restaurarEjercicios() {
+  ['ej-org','ej-1','ej-2','ej-3','ej-4','ej-5','ej-6','ej-7','ej-comp'].forEach(id => {
+    const val = localStorage.getItem('avs_ej_'+id);
+    const el = document.getElementById(id);
+    if(val && el) el.value = val;
+  });
+}
+
+// ════════════════════════════
+//  QUIZ
+// ════════════════════════════
+function quiz(el, correcto, qid) {
+  const opciones = el.parentElement.querySelectorAll('.quiz-opcion');
+  opciones.forEach(o => { o.style.pointerEvents='none'; });
+  if(correcto) {
+    el.classList.add('correcta');
+    document.getElementById('fb-'+qid+'-ok').style.display='block';
+    toast('✓ ¡Correcto!');
+  } else {
+    el.classList.add('incorrecta');
+    document.getElementById('fb-'+qid+'-mal').style.display='block';
+    // Mostrar la correcta
+    opciones.forEach(o => { if(o.getAttribute('onclick')?.includes('true')) o.classList.add('correcta'); });
+    toast('Esa no era. Revisa la respuesta correcta','err');
+  }
+}
+window.quiz = quiz;
+
+// ════════════════════════════
+//  MENÚ MÓVIL
+// ════════════════════════════
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+window.toggleMenu = toggleMenu;
+
+// ════════════════════════════
+//  TOAST
+// ════════════════════════════
+function toast(msg, t='ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'toast'+(t==='err'?' err':'');
+  el.style.borderLeftColor = t==='err'?'var(--coral)':'var(--reef)';
+  el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),3000);
+}
+
+// Exponer nav functions
+window.irA=irA; window.completarYSiguiente=completarYSiguiente;
+window.filtrarCandidatos=window.filtrarCandidatos;
+
+// ════════════════════════════
+//  MÓDULO COMPROMISO
+// ════════════════════════════
+let nivelSeleccionado = null;
+let firmaHecha = false;
+
+// Fecha en contrato
+const fechaContrato = new Date().toLocaleDateString('es-CO',{year:'numeric',month:'long',day:'numeric'});
+const el_cf = document.getElementById('contrato-fecha');
+if(el_cf) el_cf.textContent = fechaContrato;
+
+function selNivel(nivel) {
+  nivelSeleccionado = nivel;
+  ['a','b','c'].forEach(n => {
+    document.getElementById('cn-'+n)?.classList.remove('selected');
+    document.getElementById('cr-'+n)?.classList.remove('selected');
+  });
+  document.getElementById('cn-'+nivel)?.classList.add('selected');
+
+  const fb = document.getElementById('nivel-feedback');
+  const calc = document.getElementById('calc-section');
+  const cont = document.getElementById('contrato-section');
+
+  if(nivel === 'a') {
+    fb.style.display = 'block';
+    fb.innerHTML = `<div class="tip-box"><div class="tip-icon">🚀</div><div class="tip-text"><strong>¡Excelente actitud!</strong> Esa es la mentalidad que AVSTRAVEL necesita. Ahora mira cuánto podrías ganar y firma tu acuerdo de prueba.</div></div>`;
+    if(calc) calc.style.display = 'block';
+    if(cont) cont.style.display = 'block';
+  } else if(nivel === 'b') {
+    fb.style.display = 'block';
+    fb.innerHTML = `<div class="tip-box" style="background:rgba(242,169,34,.07);border-color:rgba(242,169,34,.25)"><div class="tip-icon">💛</div><div class="tip-text"><strong>Honestidad valorada.</strong> Las dudas son normales. AVSTRAVEL te dará acompañamiento en el primer mes. Lo importante es que tengas la voluntad de intentarlo con todo. Revisa la calculadora y si te comprometes, firma el acuerdo.</div></div>`;
+    if(calc) calc.style.display = 'block';
+    if(cont) cont.style.display = 'block';
+  } else {
+    fb.style.display = 'block';
+    fb.innerHTML = `<div class="tip-box" style="background:rgba(224,92,58,.07);border-color:rgba(224,92,58,.2)"><div class="tip-icon">🤝</div><div class="tip-text"><strong>Gracias por tu honestidad.</strong> No todos los perfiles son para ventas y eso está bien. Te recomendamos tomarte un tiempo para pensar si este es el camino que quieres. Si decides continuar, habla primero con el director. Si decides no seguir, no hay problema — lo importante es no comprometerte con algo que no sientes.</div></div>`;
+    if(calc) calc.style.display = 'none';
+    if(cont) cont.style.display = 'none';
+  }
+}
+window.selNivel = selNivel;
+
+function calcMiSueldo() {
+  const ventas = parseInt(document.getElementById('sl-mis-ventas')?.value || 13000000);
+  const utilidad = ventas * 0.20;
+  const meta = 13000000;
+  const alcanza = ventas >= meta;
+  let comPct = 0;
+  if(alcanza) { comPct = ventas >= 30000000 ? 0.15 : ventas >= 20000000 ? 0.12 : 0.10; }
+  const comision = alcanza ? utilidad * comPct : 0;
+  const bono = ventas >= 30000000 ? 500000 : 0;
+  const total = 1423500 + 200000 + comision + bono;
+
+  const fmt = n => '$' + Math.round(n).toLocaleString('es-CO');
+  const el = id => document.getElementById(id);
+  if(el('ms-ventas')) el('ms-ventas').textContent = fmt(ventas);
+  if(el('ms-utilidad')) el('ms-utilidad').textContent = fmt(utilidad);
+  if(el('ms-comision')) el('ms-comision').textContent = fmt(comision) + (bono>0?' + bono $500K':'');
+  if(el('ms-total')) el('ms-total').textContent = fmt(total);
+  if(el('ms-meta')) { el('ms-meta').textContent = alcanza ? '✅ Sí' : '❌ No'; el('ms-meta').className = 'mc-val '+(alcanza?'pos':'neg'); }
+  const tip = el('ms-tip-text');
+  if(tip) {
+    if(!alcanza) tip.textContent = 'Con estas ventas no alcanzas la meta mínima. Solo recibirías el salario base sin comisión.';
+    else if(ventas < 20000000) tip.textContent = `Alcanzas la meta mínima. Tu comisión es del 10% sobre $${Math.round(utilidad).toLocaleString('es-CO')} = ${fmt(comision)}.`;
+    else if(ventas < 30000000) tip.textContent = `Excelente nivel. Tu comisión sube al 12%. Total del mes: ${fmt(total)}.`;
+    else tip.textContent = `Nivel top. Comisión del 15% más bono de $500.000. Total del mes: ${fmt(total)}. ¡Ese es el objetivo!`;
+  }
+}
+window.calcMiSueldo = calcMiSueldo;
+
+// ── CANVAS FIRMA ──
+let firmaDrawing = false;
+let firmaCtx = null;
+
+function initCanvas() {
+  const canvas = document.getElementById('firma-canvas');
+  if(!canvas) return;
+  firmaCtx = canvas.getContext('2d');
+  firmaCtx.strokeStyle = '#0A2A4A';
+  firmaCtx.lineWidth = 2.5;
+  firmaCtx.lineCap = 'round';
+  firmaCtx.lineJoin = 'round';
+
+  const getPos = (e) => {
+    const r = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / r.width;
+    const scaleY = canvas.height / r.height;
+    if(e.touches) return { x:(e.touches[0].clientX-r.left)*scaleX, y:(e.touches[0].clientY-r.top)*scaleY };
+    return { x:(e.clientX-r.left)*scaleX, y:(e.clientY-r.top)*scaleY };
+  };
+
+  const start = (e) => { e.preventDefault(); firmaDrawing=true; const p=getPos(e); firmaCtx.beginPath(); firmaCtx.moveTo(p.x,p.y); document.getElementById('firma-canvas-lbl').style.display='none'; };
+  const draw  = (e) => { e.preventDefault(); if(!firmaDrawing) return; const p=getPos(e); firmaCtx.lineTo(p.x,p.y); firmaCtx.stroke(); firmaHecha=true; verificarFirma(); };
+  const stop  = (e) => { e.preventDefault(); firmaDrawing=false; };
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stop);
+  canvas.addEventListener('touchstart', start, {passive:false});
+  canvas.addEventListener('touchmove', draw, {passive:false});
+  canvas.addEventListener('touchend', stop, {passive:false});
+}
+
+function limpiarFirma() {
+  const canvas = document.getElementById('firma-canvas');
+  if(canvas && firmaCtx) { firmaCtx.clearRect(0,0,canvas.width,canvas.height); }
+  firmaHecha = false;
+  document.getElementById('firma-canvas-lbl').style.display='block';
+  verificarFirma();
+}
+window.limpiarFirma = limpiarFirma;
+
+function verificarFirma() {
+  const nombre = document.getElementById('firma-nombre')?.value.trim();
+  const cedula = document.getElementById('firma-cedula')?.value.trim();
+  const chk1 = document.getElementById('chk1')?.checked;
+  const chk2 = document.getElementById('chk2')?.checked;
+  const chk3 = document.getElementById('chk3')?.checked;
+  const btn = document.getElementById('btn-firmar');
+  if(btn) btn.disabled = !(nombre && cedula && chk1 && chk2 && chk3 && firmaHecha);
+}
+window.verificarFirma = verificarFirma;
+
+function firmarContrato() {
+  const nombre = document.getElementById('firma-nombre')?.value.trim();
+  const cedula = document.getElementById('firma-cedula')?.value.trim();
+  const cargo  = document.getElementById('firma-cargo')?.value.trim() || 'Asesor Comercial';
+  const tel    = document.getElementById('firma-tel')?.value.trim();
+  const canvas = document.getElementById('firma-canvas');
+  const firmaImg = canvas ? canvas.toDataURL() : '';
+
+  // Guardar en localStorage
+  const acuerdo = { nombre, cedula, cargo, tel, fecha: fechaContrato, firma: firmaImg, ts: Date.now() };
+  localStorage.setItem('avs_acuerdo', JSON.stringify(acuerdo));
+
+  // Guardar en Firebase si está disponible
+  if(window._db) {
+    try {
+      const r = window._push(window._ref(window._db,'acuerdos_prueba'));
+      window._set(r, { nombre, cedula, cargo, tel, fecha: fechaContrato, ts: Date.now(), estado:'Firmado' });
+    } catch(e) {}
+  }
+
+  // Mostrar confirmación
+  document.getElementById('firma-area').style.display = 'none';
+  const conf = document.getElementById('firma-confirmada');
+  if(conf) {
+    conf.classList.add('show');
+    document.getElementById('firma-resumen').innerHTML = `
+      <strong>Candidato:</strong> ${nombre}<br>
+      <strong>Cédula:</strong> ${cedula}<br>
+      <strong>Cargo:</strong> ${cargo}<br>
+      <strong>Fecha:</strong> ${fechaContrato}<br>
+      <strong>Estado:</strong> Firmado digitalmente ✅`;
+  }
+
+  // WA al director
+  const msg = `📋 *ACUERDO FIRMADO — AVSTRAVEL*\n\n✅ *${nombre}* firmó digitalmente el acuerdo de período de prueba.\n\n👤 Cédula: ${cedula}\n💼 Cargo: ${cargo}\n📱 Tel: ${tel||'—'}\n📅 Fecha: ${fechaContrato}\n\nRevisa en la Universidad AVSTRAVEL.`;
+  const waBtn = document.getElementById('firma-wa-btn');
+  if(waBtn) waBtn.href = 'https://wa.me/573153945461?text='+encodeURIComponent(msg);
+
+  // Mostrar botón diploma
+  const btnSig = document.getElementById('btn-sig-comp');
+  if(btnSig) btnSig.style.display = 'inline-flex';
+
+  toast('✅ Acuerdo firmado correctamente');
+}
+window.firmarContrato = firmarContrato;
+
+// Iniciar canvas cuando se navega al módulo comp
+const origIrA = window.irA;
+window.irA = function(n) {
+  origIrA(n);
+  if(n === 'comp') {
+    setTimeout(() => {
+      initCanvas();
+      calcMiSueldo();
+      // Precargar nombre del candidato en el contrato
+      const nombreContr = document.getElementById('contrato-nombre-display');
+      if(nombreContr && nombreUsuario) nombreContr.textContent = nombreUsuario;
+      const firmaNombreInput = document.getElementById('firma-nombre');
+      if(firmaNombreInput && nombreUsuario && !firmaNombreInput.value) firmaNombreInput.value = nombreUsuario;
+    }, 200);
+  }
+};
+</script>
+</body>
+</html>
