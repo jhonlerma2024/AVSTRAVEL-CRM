@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVS Working · Coworking en Buenaventura</title>
+<meta name="description" content="Reserva tu puesto de trabajo, la sala de juntas o el escritorio de gerencia en AVS Working, Buenaventura. Agenda una visita en línea.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A2A4A;--ocean:#0A4A6E;--sky:#1B7FA6;--reef:#00A878;--sun:#F2A922;--coral:#E05C3A;
+  --cream:#FDFAF5;--white:#fff;--ink:#0D1B2A;--mist:#6B8798;--light:#EEF4F8;--line:#DCE6EC;
+  --ok:#00A878;--busy:#D84242;--sel:#F2A922;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);line-height:1.55;min-height:100vh}
+a{color:var(--sky)}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:15px}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,var(--navy) 0%,var(--ocean) 70%,var(--sky) 130%);color:#fff;padding:28px 16px 64px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;border:40px solid rgba(255,255,255,.05)}
+.hero-in{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.75)}
+.brand b{color:var(--sun)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.05;margin:18px 0 10px}
+.hero h1 em{color:var(--sun);font-style:italic;font-weight:500}
+.hero p{max-width:540px;color:rgba(255,255,255,.82);font-size:15.5px}
+.amen{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.amen span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:30px;padding:5px 12px;font-size:12.5px}
+
+/* LAYOUT */
+.wrap{max-width:960px;margin:-40px auto 40px;padding:0 16px;position:relative;z-index:2}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--white);border-radius:14px;padding:5px;box-shadow:0 8px 28px rgba(10,42,74,.12);gap:4px}
+.tab{border:none;background:none;padding:12px 6px;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--mist);transition:.2s}
+.tab.on{background:var(--navy);color:#fff}
+.panel{display:none;margin-top:16px}
+.panel.on{display:block}
+.card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+.step{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--navy);margin-bottom:12px;font-size:15px}
+.step i{font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--sun);color:var(--navy);display:grid;place-items:center;font-size:13px;flex-shrink:0}
+.hint{font-size:12.5px;color:var(--mist)}
+
+/* PLANES */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.plan{border:2px solid var(--line);border-radius:12px;padding:12px;background:var(--white);text-align:left;transition:.15s}
+.plan:hover{border-color:var(--sky)}
+.plan.on{border-color:var(--navy);background:var(--light)}
+.plan .pn{font-weight:700;color:var(--navy);font-size:14px}
+.plan .pp{font-size:12.5px;color:var(--mist)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.row.three{grid-template-columns:1fr 1fr 1fr}
+label.f{display:block;font-size:11.5px;font-weight:600;color:var(--mist);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.in{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--white);color:var(--ink)}
+.in:focus{outline:none;border-color:var(--sky)}
+
+/* PLANO PISO 2 */
+.floor{border:2px solid var(--navy);border-radius:14px;padding:12px;background:repeating-linear-gradient(45deg,#fbfdfe,#fbfdfe 10px,#f5f9fb 10px,#f5f9fb 20px);display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin-bottom:12px}
+.floor.f1{grid-template-columns:1fr}
+.zone{border:1.5px dashed var(--line);border-radius:10px;padding:10px;background:rgba(255,255,255,.75)}
+.zone h4{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-bottom:8px}
+.desks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.desks.d7{grid-template-columns:repeat(4,1fr)}
+.floor-t{font-weight:700;color:var(--navy);font-size:13px;margin:4px 0 8px;display:flex;align-items:center;gap:8px}
+.floor-t span{background:var(--navy);color:#fff;border-radius:6px;padding:2px 8px;font-size:11px;letter-spacing:.08em}
+.mini{border:1.5px solid var(--navy);background:var(--white);color:var(--navy);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:700;margin-top:8px}
+.mini:disabled{opacity:.45;cursor:not-allowed}
+.desk{border:2px solid var(--ok);background:#E8F7F1;border-radius:10px;padding:10px 4px;text-align:center;font-weight:700;color:#0B6E4F;font-size:13px;transition:.15s;min-height:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.desk small{font-weight:500;font-size:10.5px}
+.desk.busy{border-color:var(--busy);background:#FDECEC;color:#9B2525;cursor:not-allowed;opacity:.85}
+.desk.on{border-color:var(--navy);background:var(--sun);color:var(--navy);box-shadow:0 4px 14px rgba(242,169,34,.4)}
+.desk.off{border-color:var(--line);background:#f2f4f5;color:#9aa;cursor:not-allowed}
+.desk.big{min-height:96px;width:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--mist)}
+.legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.lg-ok::before{background:var(--ok)}.lg-busy::before{background:var(--busy)}.lg-sel::before{background:var(--sel)}
+
+/* RESUMEN */
+.sum{background:var(--navy);color:#fff;border-radius:14px;padding:16px;margin-top:14px}
+.sum .l{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:3px 0;color:rgba(255,255,255,.85)}
+.sum .t{border-top:1px solid rgba(255,255,255,.2);margin-top:8px;padding-top:8px;font-size:18px;font-weight:700;color:var(--sun)}
+.btn{width:100%;border:none;border-radius:30px;padding:15px;font-size:15px;font-weight:700;background:var(--reef);color:#fff;margin-top:14px;transition:.2s}
+.btn:hover{filter:brightness(1.06)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.sec{background:var(--white);color:var(--navy);border:2px solid var(--navy)}
+.btn.wa{background:#25D366}
+
+/* HORARIOS VISITA */
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:6px;margin-top:10px}
+.slot{border:1.5px solid var(--line);background:var(--white);border-radius:8px;padding:9px 0;font-size:13.5px;font-weight:600;color:var(--navy)}
+.slot.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.slot:disabled{background:#f2f4f5;color:#b5bfc6;text-decoration:line-through;cursor:not-allowed}
+
+/* OK */
+.done{text-align:center;padding:26px 18px}
+.done .big{font-size:46px}
+.done h3{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--navy);margin:6px 0}
+.code{display:inline-block;background:var(--light);border:2px dashed var(--sky);border-radius:10px;padding:8px 16px;font-weight:700;font-size:18px;color:var(--navy);letter-spacing:.06em;margin:8px 0}
+
+.mine{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:700}
+.b-otro{background:#F1EFE8;color:#5F5E5A}.b-Pendiente{background:#FFF3D6;color:#854F0B}.b-Confirmada{background:#E3F5EF;color:#0B6E4F}.b-Cancelada{background:#FEE9E9;color:#9B2525}
+.toast{position:fixed;left:50%;bottom:20px;opacity:0;pointer-events:none;transform:translateX(-50%) translateY(120px);background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;transition:.3s;z-index:99;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.err{background:var(--coral)}
+footer{text-align:center;font-size:12px;color:var(--mist);padding:10px 16px 30px}
+@media(max-width:620px){
+  .floor{grid-template-columns:1fr}
+  .desks,.desks.d7{grid-template-columns:repeat(2,1fr)}
+  .row,.row.three{grid-template-columns:1fr}
+  .tab{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="brand">✈ AVSTRAVEL <b>·</b> AVS Working</div>
+    <h1>Tu oficina en Buenaventura,<br><em>lista cuando la necesitas</em></h1>
+    <p>Reserva tu puesto de trabajo, el escritorio de gerencia o la sala de juntas en línea. Ve la disponibilidad en tiempo real y confirma por WhatsApp.</p>
+    <div class="amen"><span>📶 Internet de fibra</span><span>☕ Café ilimitado</span><span>💧 Agua ilimitada</span><span>🪑 Mobiliario de oficina</span><span>📍 Calle 3 #5A-16</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="tabs">
+    <button class="tab on" data-tab="reservar">🪑 Reservar</button>
+    <button class="tab" data-tab="visita">📅 Agendar visita</button>
+    <button class="tab" data-tab="mias">🗂 Mis reservas</button>
+  </nav>
+
+  <!-- ═════════ RESERVAR ═════════ -->
+  <section class="panel on" id="p-reservar">
+    <div id="res-form">
+      <div class="card">
+        <div class="step"><i>1</i> ¿Qué necesitas?</div>
+        <div class="plans" id="plans"></div>
+        <div class="row" id="fechas-puesto">
+          <div><label class="f" for="r-inicio">Fecha de inicio</label><input class="in" type="date" id="r-inicio"><div class="hint" id="r-ini-txt" style="margin-top:4px;font-weight:600;color:var(--navy)"></div></div>
+          <div><label class="f">Termina</label><div class="in" id="r-fin-txt" style="background:var(--light)">—</div></div>
+        </div>
+        <div class="row three" id="fechas-sala" style="display:none">
+          <div><label class="f" for="s-fecha">Fecha</label><input class="in" type="date" id="s-fecha"></div>
+          <div><label class="f" for="s-hora">Hora de inicio</label><select class="in" id="s-hora"></select></div>
+          <div><label class="f" for="s-dur">Duración</label><select class="in" id="s-dur"><option value="1">1 hora</option><option value="2">2 horas</option><option value="3">3 horas</option><option value="4">4 horas</option></select></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="step"><i>2</i> Elige tu espacio <span class="hint" style="font-weight:500">· puedes seleccionar varios</span></div>
+        <div class="floor-t"><span>PISO 1</span> Puestos individuales</div>
+        <div class="floor f1"><div class="zone"><h4>Zona de puestos · barra</h4><div class="desks" id="desks1"></div></div></div>
+        <div class="floor-t"><span>PISO 2</span> Oficina, gerencia y sala de juntas</div>
+        <div class="floor">
+          <div class="zone">
+            <h4>Oficina · 7 puestos</h4>
+            <div class="desks d7" id="desks2"></div>
+            <button class="mini" id="btn-oficina" type="button">🏢 Tomar la oficina completa (7 puestos)</button>
+          </div>
+          <div style="display:grid;gap:10px">
+            <div class="zone"><h4>Gerencia</h4><div id="z-ger"></div></div>
+            <div class="zone"><h4>Sala de juntas · hasta 10 personas</h4><div id="z-sala"></div></div>
+          </div>
+        </div>
+        <div class="legend"><span class="lg-ok">Disponible</span><span class="lg-busy">Ocupado en esas fechas</span><span class="lg-sel">Tu elección</span></div>
+        <p class="hint" style="margin-top:6px">Plano ilustrativo. La disponibilidad se actualiza en tiempo real.</p>
+      </div>
+
+      <div class="card">
+        <div class="step"><i>3</i> Tus datos</div>
+        <div class="row">
+          <div><label class="f" for="c-nombre">Nombre completo *</label><input class="in" id="c-nombre" autocomplete="name"></div>
+          <div><label class="f" for="c-tel">WhatsApp *</label><input class="in" id="c-tel" type="tel" inputmode="numeric" placeholder="3001234567" autocomplete="tel"></div>
+          <div><label class="f" for="c-doc">Cédula o NIT *</label><input class="in" id="c-doc" inputmode="numeric"></div>
+          <div><label class="f" for="c-email">Correo</label><input class="in" id="c-email" type="email" autocomplete="email"></div>
+          <div style="grid-column:1/-1"><label class="f" for="c-emp">Empresa</label><input class="in" id="c-emp" autocomplete="organization"></div>
+        </div>
+        <div class="sum" id="sum"><div class="l"><span>Elige el plan y el espacio</span></div></div>
+        <button class="btn" id="btn-reservar" disabled>Reservar ahora</button>
+        <p class="hint" style="text-align:center;margin-top:8px">La reserva queda <b>pendiente</b> hasta confirmar el pago con un asesor o en línea con Bold.</p>
+      </div>
+    </div>
+    <div class="card done" id="res-ok" style="display:none"></div>
+  </section>
+
+  <!-- ═════════ VISITA ═════════ -->
+  <section class="panel" id="p-visita">
+    <div id="vis-form">
+      <div class="card">
+        <div class="step"><i>1</i> Elige el día y la hora</div>
+        <div class="row">
+          <div><label class="f" for="v-fecha">Fecha</label><input class="in" type="date" id="v-fecha"></div>
+          <div><label class="f" for="v-interes">Me interesa</label>
+            <select class="in" id="v-interes"><option>Puesto de trabajo</option><option>Escritorio de gerencia</option><option>Sala de juntas</option><option>Varios puestos para mi empresa</option><option>Oficina completa (piso 2, 7 puestos)</option></select></div>
+        </div>
+        <div class="slots" id="slots"><p class="hint">Selecciona una fecha para ver los horarios disponibles.</p></div>
+      </div>
+      <div class="card">
+        <div class="step"><i>2</i> Tus datos</div>
+        <div class="row">
+          <div><label class="f" for="v-nombre">Nombre completo *</label><input class="in" id="v-nombre" autocomplete="name"></div>
+          <div><label class="f" for="v-tel">WhatsApp *</label><input class="in" id="v-tel" type="tel" inputmode="numeric" autocomplete="tel"></div>
+          <div style="grid-column:1/-1"><label class="f" for="v-emp">Empresa</label><input class="in" id="v-emp" autocomplete="organization"></div>
+          <div style="grid-column:1/-1"><label class="f" for="v-notas">¿Algo que debamos saber?</label><textarea class="in" id="v-notas" rows="2" placeholder="Ej.: somos 3 personas, necesitamos impresora…"></textarea></div>
+        </div>
+        <button class="btn" id="btn-visita" disabled>Agendar visita</button>
+      </div>
+    </div>
+    <div class="card done" id="vis-ok" style="display:none"></div>
+  </section>
+
+  <!-- ═════════ MIS RESERVAS ═════════ -->
+  <section class="panel" id="p-mias">
+    <div class="card">
+      <div class="step"><i>🗂</i> Reservas hechas desde este celular o computador</div>
+      <div id="mias"></div>
+      <p class="hint" style="margin-top:10px">¿Reservaste desde otro equipo o necesitas cambiar fechas? Escríbenos por <a href="https://wa.me/573156850066" target="_blank">WhatsApp 315 685 0066</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>AVSTRAVEL · RNT 47142 · Buenaventura, Valle del Cauca · <a href="https://wa.me/573156850066" target="_blank">WhatsApp 315 685 0066</a></footer>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getDatabase, ref, push, set, update, onValue, get, runTransaction } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+
+// ══════════════════════════════════════════════
+//  CONFIGURACIÓN — ajusta aquí precios y horarios
+// ══════════════════════════════════════════════
+const WA_COWORK = '573156850066';
+const HORARIO = { // 0=domingo … 6=sábado. null = cerrado
+  0:null, 1:['08:00','18:00'], 2:['08:00','18:00'], 3:['08:00','18:00'], 4:['08:00','18:00'], 5:['08:00','18:00'], 6:['08:00','13:00']
+};
+const PLANES = {
+  dia:    { nom:'Día',    dias:1,  pp:{ puesto:25000,  gerencia:40000 } },
+  semana: { nom:'Semana', dias:6,  pp:{ puesto:100000, gerencia:150000 } },   // 6 días seguidos sin contar domingo (lun→sáb)
+  mes:    { nom:'Mes',    meses:1, pp:{ puesto:350000, gerencia:500000 } },   // del día X al mismo día del mes siguiente
+  hora:   { nom:'Sala por horas', pp:{ sala:30000 } }   // valor por hora
+};
+const ESPACIOS = [
+  // Piso 1 (los IDs P1–P4 se mantienen para no afectar reservas existentes)
+  {id:'P1',nom:'Puesto 1 · Piso 1',corto:'Puesto 1',tipo:'puesto',piso:1},{id:'P2',nom:'Puesto 2 · Piso 1',corto:'Puesto 2',tipo:'puesto',piso:1},
+  {id:'P3',nom:'Puesto 3 · Piso 1',corto:'Puesto 3',tipo:'puesto',piso:1},{id:'P4',nom:'Puesto 4 · Piso 1',corto:'Puesto 4',tipo:'puesto',piso:1},
+  // Piso 2 · oficina de 7 puestos
+  ...[1,2,3,4,5,6,7].map(n=>({id:'O'+n,nom:`Oficina P2 · Puesto ${n}`,corto:`Puesto ${n}`,tipo:'puesto',piso:2})),
+  {id:'GER',nom:'Escritorio de gerencia · Piso 2',corto:'Gerencia',tipo:'gerencia',piso:2},
+  {id:'SALA',nom:'Sala de juntas · Piso 2',corto:'Sala de juntas',tipo:'sala',piso:2}
+];
+// Firmador Bold (opcional, ver bold-firma-worker.js). Vacío = el cliente digita el valor en Bold.
+const BOLD_API_KEY = 'fyo7yalzZyrwUFqFOCVbugYumJhQIDE1AslqzkEal0E';
+const BOLD_FIRMA_URL = '';
+
+const app = initializeApp({
+  apiKey:"AIzaSyCSiwt0zFr8g6jVctNfbD5kr1KAM_YFeGc",
+  authDomain:"avstravel-crm.firebaseapp.com",
+  databaseURL:"https://avstravel-crm-default-rtdb.firebaseio.com",
+  projectId:"avstravel-crm",
+  storageBucket:"avstravel-crm.firebasestorage.app",
+  messagingSenderId:"1048247230256",
+  appId:"1:1048247230256:web:885aa4026f8f93bce2b2f5"
+});
+const db = getDatabase(app);
+
+// ══════════════ utilidades ══════════════
+const textoFechas = r => r.horaInicio ? `${fechaLarga(r.fechaInicio)}, ${r.horaInicio}–${r.horaFin}` : (r.fechaFin===r.fechaInicio || r.plan==='dia') ? fechaLarga(r.fechaInicio) : `${fechaLarga(r.fechaInicio)} al ${fechaLarga(r.fechaFin)}`;
+const $ = id => document.getElementById(id);
+const fmt = n => '$' + (Math.round(n)||0).toLocaleString('es-CO');
+const esc = t => String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isoLocal = d => d.toLocaleDateString('en-CA');            // YYYY-MM-DD en hora local
+const parseISO = s => { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); };
+const addDias = (s,n) => { const d=parseISO(s); d.setDate(d.getDate()+n); return isoLocal(d); };
+// Mismo día del mes siguiente (si no existe, p. ej. 31 → último día del mes)
+const addMeses = (s,n) => { const d=parseISO(s); const dia=d.getDate(); d.setDate(1); d.setMonth(d.getMonth()+n); const ult=new Date(d.getFullYear(),d.getMonth()+1,0).getDate(); d.setDate(Math.min(dia,ult)); return isoLocal(d); };
+// Último día de la semana: cuenta 6 días seguidos saltando domingos (ej. lunes → sábado, miércoles → martes)
+const finSemana = ini => { let d=parseISO(ini), n=0, ult=ini; while(n<PLANES.semana.dias){ if(d.getDay()!==0){ n++; ult=isoLocal(d); } d.setDate(d.getDate()+1); } return ult; };
+// Fin de un plan: Día = el mismo día · Semana = último de los 6 días (incluido) · Mes = mismo día del mes siguiente (día de entrega)
+const finPlan = (ini,plan) => plan==='mes' ? addMeses(ini,PLANES.mes.meses) : plan==='semana' ? finSemana(ini) : ini;
+// Fin efectivo (exclusivo) para cruzar fechas. Mes: el día de entrega queda libre para renovar.
+const finEf = o => o.plan==='semana' ? addDias(o.fechaFin,1) : o.fechaFin>o.fechaInicio ? o.fechaFin : addDias(o.fechaInicio,1);
+const fechaLarga = s => parseISO(s).toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'short'});
+const aMin = h => { const [a,b]=h.split(':').map(Number); return a*60+b; };
+const deMin = m => String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+const telLimpio = t => String(t||'').replace(/\D/g,'');
+function toast(msg, err){ const t=$('toast'); t.textContent=msg; t.className='toast show'+(err?' err':''); clearTimeout(t._h); t._h=setTimeout(()=>t.className='toast',3800); }
+const HOY = isoLocal(new Date());
+
+// ══════════════ estado ══════════════
+let ocupacion = [];          // [{id, recurso, fechaInicio, fechaFin, horaInicio, horaFin, estado}]
+let horariosTomados = {};    // {HHMM:true} para la fecha de visita elegida
+const st = { plan:'dia', recursos:new Set(), inicio:HOY, salaFecha:HOY, salaHora:null, salaDur:1, visFecha:null, visHora:null };
+
+// ══════════════ pestañas ══════════════
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.tab));
+  if(b.dataset.tab==='mias') pintarMias();
+}));
+
+// ══════════════ planes ══════════════
+function pintarPlanes(){
+  $('plans').innerHTML = Object.entries(PLANES).map(([k,p])=>{
+    const precio = k==='hora' ? `${fmt(p.pp.sala)} / hora` : `Puesto ${fmt(p.pp.puesto)}`;
+    return `<button class="plan ${st.plan===k?'on':''}" data-plan="${k}"><div class="pn">${k==='hora'?'🗓 ':''}${p.nom}</div><div class="pp">${precio}</div></button>`;
+  }).join('');
+  $('plans').querySelectorAll('.plan').forEach(b=>b.onclick=()=>{
+    st.plan=b.dataset.plan;
+    for(const id of [...st.recursos]){ const r=ESPACIOS.find(e=>e.id===id); if(r && ((st.plan==='hora') !== (r.tipo==='sala'))) st.recursos.delete(id); }
+    pintarTodo();
+  });
+}
+
+// ══════════════ fechas ══════════════
+$('r-inicio').min = HOY; $('r-inicio').value = HOY;
+$('s-fecha').min = HOY;  $('s-fecha').value = HOY;
+$('v-fecha').min = HOY;
+$('r-inicio').onchange = e => { st.inicio = (e.target.value && e.target.value>=HOY) ? e.target.value : HOY; if(e.target.value && e.target.value<HOY){ e.target.value=HOY; toast('Elige una fecha desde hoy en adelante', true); } pintarTodo(); };
+$('s-fecha').onchange  = e => { st.salaFecha = e.target.value || HOY; st.salaHora=null; pintarTodo(); };
+$('s-hora').onchange   = e => { st.salaHora = e.target.value || null; pintarTodo(); };
+$('s-dur').onchange    = e => { st.salaDur = parseInt(e.target.value)||1; pintarTodo(); };
+
+function rangoActual(){
+  if(st.plan==='hora'){
+    if(!st.salaHora) return null;
+    const ini=aMin(st.salaHora);
+    return { plan:'hora', fechaInicio:st.salaFecha, fechaFin:st.salaFecha, horaInicio:st.salaHora, horaFin:deMin(ini+st.salaDur*60) };
+  }
+  return { plan:st.plan, fechaInicio:st.inicio, fechaFin:finPlan(st.inicio, st.plan) };
+}
+
+function pintarHorasSala(){
+  const h = HORARIO[parseISO(st.salaFecha).getDay()];
+  const sel=$('s-hora');
+  if(!h){ sel.innerHTML='<option value="">Cerrado ese día</option>'; st.salaHora=null; return; }
+  const opciones=[]; const ahora=new Date(); const minAhora = st.salaFecha===HOY ? ahora.getHours()*60+ahora.getMinutes() : -1;
+  for(let m=aMin(h[0]); m+60<=aMin(h[1]); m+=60){ if(m>minAhora) opciones.push(deMin(m)); }
+  if(!opciones.length){ sel.innerHTML='<option value="">Sin horarios ese día</option>'; st.salaHora=null; return; }
+  sel.innerHTML='<option value="">Elegir…</option>'+opciones.map(o=>`<option ${o===st.salaHora?'selected':''}>${o}</option>`).join('');
+  // duración máxima hasta el cierre
+  const maxDur = st.salaHora ? Math.min(4, Math.floor((aMin(h[1])-aMin(st.salaHora))/60)) : 4;
+  $('s-dur').innerHTML=[1,2,3,4].filter(n=>n<=Math.max(1,maxDur)).map(n=>`<option value="${n}" ${n===st.salaDur?'selected':''}>${n} hora${n>1?'s':''}</option>`).join('');
+  if(st.salaDur>maxDur && maxDur>=1) st.salaDur=maxDur;
+}
+
+// ══════════════ disponibilidad ══════════════
+function ocupado(recurso, rango){
+  if(!rango) return false;
+  return ocupacion.some(o=>{
+    if(o.recurso!==recurso || o.estado==='Cancelada') return false;
+    if(recurso==='SALA' && o.horaInicio && rango.horaInicio){
+      if(o.fechaInicio!==rango.fechaInicio) return false;
+      return aMin(o.horaInicio) < aMin(rango.horaFin) && aMin(rango.horaInicio) < aMin(o.horaFin);
+    }
+    return o.fechaInicio < finEf(rango) && rango.fechaInicio < finEf(o);
+  });
+}
+
+function botonEspacio(e, rango, extraClase=''){
+  const esSala = e.tipo==='sala';
+  const aplica = (st.plan==='hora') === esSala;
+  const oc = aplica && ocupado(e.id, rango);
+  let cls = 'desk '+extraClase, sub = 'Disponible';
+  if(!aplica){ cls+=' off'; sub = esSala ? 'Elige “Sala por horas”' : 'Solo día/semana/mes'; }
+  else if(esSala && !rango){ sub='Elige la hora'; }
+  else if(oc){ cls+=' busy'; sub='Ocupado'; }
+  if(st.recursos.has(e.id)) { cls+=' on'; sub='Seleccionado ✓'; }
+  const precio = esSala ? `${fmt(PLANES.hora.pp.sala)}/h` : (aplica ? fmt(PLANES[st.plan].pp[e.tipo]) : '');
+  return `<button class="${cls}" data-id="${e.id}" ${(!aplica||oc)?'disabled':''} aria-label="${e.nom}: ${sub}" aria-pressed="${st.recursos.has(e.id)}">${e.corto}<small>${sub}${precio&&aplica&&!oc?' · '+precio:''}</small></button>`;
+}
+
+function pintarPlano(){
+  const rango = rangoActual();
+  const perdidos=[...st.recursos].filter(id=>ocupado(id,rango));
+  if(perdidos.length){ perdidos.forEach(id=>st.recursos.delete(id)); toast('Algún espacio elegido ya no está libre en esas fechas', true); }
+  $('desks1').innerHTML = ESPACIOS.filter(e=>e.tipo==='puesto'&&e.piso===1).map(e=>botonEspacio(e,rango)).join('');
+  $('desks2').innerHTML = ESPACIOS.filter(e=>e.tipo==='puesto'&&e.piso===2).map(e=>botonEspacio(e,rango)).join('');
+  $('z-ger').innerHTML = botonEspacio(ESPACIOS.find(e=>e.id==='GER'),rango,'big');
+  $('z-sala').innerHTML = botonEspacio(ESPACIOS.find(e=>e.id==='SALA'),rango,'big');
+  document.querySelectorAll('.floor .desk:not([disabled])').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.id;
+    if(id==='SALA'){ st.recursos.has(id)?st.recursos.delete(id):(st.recursos.clear(),st.recursos.add(id)); }
+    else st.recursos.has(id)?st.recursos.delete(id):st.recursos.add(id);
+    pintarTodo();
+  });
+  // Oficina completa del piso 2
+  const ofi=ESPACIOS.filter(e=>e.piso===2&&e.tipo==='puesto');
+  const libres=ofi.filter(e=>!ocupado(e.id,rango));
+  const todas=ofi.every(e=>st.recursos.has(e.id));
+  const bo=$('btn-oficina');
+  bo.disabled = st.plan==='hora' || libres.length<ofi.length;
+  bo.textContent = st.plan==='hora' ? '🏢 Oficina completa: elige Día, Semana o Mes' : libres.length<ofi.length ? `🏢 Oficina completa no disponible (${libres.length} de 7 libres)` : todas ? '✕ Quitar la oficina completa' : '🏢 Tomar la oficina completa (7 puestos)';
+  bo.onclick=()=>{ ofi.forEach(e=>todas?st.recursos.delete(e.id):st.recursos.add(e.id)); pintarTodo(); };
+}
+
+function elegidos(){ return ESPACIOS.filter(e=>st.recursos.has(e.id)); }
+function precioDe(e){ return st.plan==='hora' ? PLANES.hora.pp.sala*st.salaDur : PLANES[st.plan].pp[e.tipo]; }
+function calcTotal(){ return elegidos().reduce((t,e)=>t+precioDe(e),0); }
+function nombreEspacios(lista){
+  const p2=lista.filter(e=>e.piso===2&&e.tipo==='puesto');
+  const partes=[];
+  const p1=lista.filter(e=>e.piso===1); if(p1.length) partes.push(p1.map(e=>e.corto).join(', ')+' (Piso 1)');
+  if(p2.length===7) partes.push('Oficina completa Piso 2 (7 puestos)'); else if(p2.length) partes.push(p2.map(e=>e.corto).join(', ')+' (Oficina Piso 2)');
+  lista.filter(e=>e.tipo!=='puesto').forEach(e=>partes.push(e.nom));
+  return partes.join(' + ');
+}
+
+function pintarResumen(){
+  const rango=rangoActual(); const lista=elegidos();
+  $('fechas-puesto').style.display = st.plan==='hora'?'none':'grid';
+  $('fechas-sala').style.display   = st.plan==='hora'?'grid':'none';
+  $('r-fin-txt').textContent = rango && st.plan!=='hora' ? (st.plan==='dia' ? 'El mismo día' : st.plan==='semana' ? fechaLarga(rango.fechaFin)+' (6 días, sin domingo)' : fechaLarga(rango.fechaFin)) : '—';
+  $('r-ini-txt').textContent = st.plan!=='hora' ? 'Empieza: '+parseISO(st.inicio).toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '';
+  if(!lista.length || !rango){ $('sum').innerHTML='<div class="l"><span>Elige el plan y uno o varios espacios disponibles</span></div>'; $('btn-reservar').disabled=true; return; }
+  const cuando = st.plan==='hora' ? `${fechaLarga(rango.fechaInicio)} · ${rango.horaInicio}–${rango.horaFin}` : st.plan==='dia' ? fechaLarga(rango.fechaInicio) : `${fechaLarga(rango.fechaInicio)} → ${fechaLarga(rango.fechaFin)}`;
+  const detalle = lista.length>1 ? lista.map(e=>`<div class="l" style="font-size:12.5px;padding:1px 0 1px 10px"><span>· ${e.nom}</span><span>${fmt(precioDe(e))}</span></div>`).join('') : '';
+  $('sum').innerHTML = `<div class="l"><span>${lista.length>1?lista.length+' espacios':'Espacio'}</span><b style="text-align:right">${nombreEspacios(lista)}</b></div>${detalle}
+    <div class="l"><span>Plan</span><b>${PLANES[st.plan].nom}${st.plan==='hora'?' · '+st.salaDur+' h':''}</b></div>
+    <div class="l"><span>Fechas</span><b>${cuando}</b></div>
+    <div class="l t"><span>Total</span><span>${fmt(calcTotal())}</span></div>`;
+  $('btn-reservar').disabled=false;
+}
+
+function pintarTodo(){ pintarPlanes(); if(st.plan==='hora') pintarHorasSala(); pintarPlano(); pintarResumen(); }
+
+onValue(ref(db,'coworking/ocupacion'), s=>{
+  ocupacion=[]; if(s.exists()) s.forEach(c=>ocupacion.push({id:c.key,...c.val()}));
+  pintarTodo(); pintarMias();
+}, e=>{ console.error(e); toast('No se pudo leer la disponibilidad. Recarga la página.', true); });
+
+// ══════════════ RESERVAR ══════════════
+$('btn-reservar').onclick = async ()=>{
+  const d = { nombre:$('c-nombre').value.trim(), telefono:telLimpio($('c-tel').value), documento:$('c-doc').value.trim(), email:$('c-email').value.trim(), empresa:$('c-emp').value.trim() };
+  if(d.nombre.length<3) return toast('Escribe tu nombre completo', true);
+  if(d.telefono.length<10) return toast('Escribe un WhatsApp válido de 10 dígitos', true);
+  if(!d.documento) return toast('Escribe tu cédula o NIT', true);
+  const rango=rangoActual(); const lista=elegidos();
+  if(!lista.length||!rango) return;
+  if(rango.fechaInicio < HOY) return toast('La fecha de inicio no puede ser anterior a hoy', true);
+  if(st.plan!=='hora' && parseISO(rango.fechaInicio).getDay()===0) return toast('Los domingos estamos cerrados: elige otro día de inicio', true);
+  const btn=$('btn-reservar'); btn.disabled=true; btn.textContent='Reservando…';
+  try{
+    // Verificación final contra la base de datos (por si alguien reservó hace un momento)
+    const snap=await get(ref(db,'coworking/ocupacion'));
+    ocupacion=[]; if(snap.exists()) snap.forEach(c=>ocupacion.push({id:c.key,...c.val()}));
+    if(lista.some(e=>ocupado(e.id,rango))){ pintarTodo(); throw new Error('ocupado'); }
+
+    const tx=await runTransaction(ref(db,'contadores/coworking'), n=>(n||0)+1);
+    const consecutivo='AVW-'+String(tx.snapshot.val()).padStart(4,'0');
+    const total=calcTotal();
+    const rRef=push(ref(db,'coworking/reservas'));
+    const id=rRef.key;
+    const recursos=lista.map(e=>e.id);
+    const reserva={ id, consecutivo, recurso:recursos[0], recursos, cantidad:recursos.length, recursoNom:nombreEspacios(lista), tipo:lista[0].tipo,
+      detalle: lista.map(e=>({id:e.id,nom:e.nom,valor:precioDe(e)})),
+      plan:st.plan, planNom:PLANES[st.plan].nom+(st.plan==='hora'?` (${st.salaDur} h)`:''),
+      ...rango, ...d, total, estado:'Pendiente', origen:'web', ts:Date.now(), fecha:new Date().toLocaleDateString('es-CO') };
+    await set(rRef, reserva);
+    // Ocupación pública (sin datos personales): una entrada por espacio
+    st.recursos.clear(); // evita el aviso de "ocupado" por la propia reserva
+    const occ={}; recursos.forEach(rc=>{ occ[`${id}-${rc}`]={ reservaId:id, recurso:rc, ...rango, estado:'Pendiente', ts:Date.now() }; });
+    await update(ref(db,'coworking/ocupacion'), occ);
+    const r={nom:reserva.recursoNom};
+    // Cliente en el CRM para seguimiento
+    try{
+      const cRef=push(ref(db,'clientes'));
+      await set(cRef,{ id:cRef.key, nombre:d.nombre, telefono:d.telefono, email:d.email, documento:d.documento, destino:'AVS Working · '+r.nom, linea:'Especiales',
+        fechaIda:rango.fechaInicio, fechaRegreso:rango.fechaFin, presupuesto:String(total), viajeros:recursos.length, estado:'Pre-reserva', origen:'AVS Working web', nuevoSinLeer:true,
+        notas:`${consecutivo} · ${reserva.planNom} · ${fmt(total)}${d.empresa?' · Empresa: '+d.empresa:''}`, createdAt:Date.now(),
+        interacciones:[{tipo:'Reserva coworking',nota:`${consecutivo}: ${r.nom}, ${reserva.planNom}, ${rango.fechaInicio}${rango.fechaFin!==rango.fechaInicio?' a '+rango.fechaFin:''}${rango.horaInicio?' '+rango.horaInicio+'-'+rango.horaFin:''}. Total ${fmt(total)}.`,fecha:new Date().toLocaleDateString('es-CO'),ts:Date.now()}],
+        cotizaciones:[], comentarios:[] });
+      await update(ref(db,'coworking/reservas/'+id),{clienteId:cRef.key});
+    }catch(e){ console.warn('CRM cliente:',e); }
+
+    guardarMia({id, consecutivo, recursos, recursoNom:r.nom, planNom:reserva.planNom, plan:st.plan, ...rango, total});
+    mostrarOkReserva(reserva);
+  }catch(e){
+    console.error(e);
+    toast(e.message==='ocupado' ? 'Uno de los espacios acaba de ser reservado. Revisa tu selección.' :
+          String(e.message).includes('PERMISSION_DENIED') ? 'La base de datos no permite guardar. Avísanos por WhatsApp.' : 'No se pudo reservar. Revisa tu conexión e intenta de nuevo.', true);
+  }finally{ btn.disabled=false; btn.textContent='Reservar ahora'; }
+};
+
+function mostrarOkReserva(r){
+  const cuando = textoFechas(r);
+  const msg = `Hola AVS Working, soy ${r.nombre}${r.empresa?' de '+r.empresa:''}. Hice la reserva *${r.consecutivo}*: ${r.recursoNom}, plan ${r.planNom}, ${cuando}. Total ${fmt(r.total)}. Quiero confirmar el pago.`;
+  $('res-form').style.display='none';
+  $('res-ok').style.display='block';
+  $('res-ok').innerHTML = `<div class="big">🎉</div><h3>¡Reserva recibida, ${esc(r.nombre.split(' ')[0])}!</h3>
+    <p>Tu número de reserva es</p><div class="code">${r.consecutivo}</div>
+    <p class="hint" style="margin-bottom:6px">${esc(r.recursoNom)} · ${esc(r.planNom)} · ${esc(cuando)}</p>
+    <p style="font-size:20px;font-weight:700;color:var(--navy)">${fmt(r.total)}</p>
+    <p class="hint">Queda <b>pendiente</b> hasta confirmar el pago.</p>
+    <a class="btn wa" style="display:block;text-decoration:none" href="https://wa.me/${WA_COWORK}?text=${encodeURIComponent(msg)}" target="_blank">💬 Confirmar por WhatsApp</a>
+    <div id="bold-cw" style="margin-top:12px"></div>
+    <button class="btn sec" id="btn-otra">Hacer otra reserva</button>`;
+  $('btn-otra').onclick=()=>{ try{ localStorage.removeItem('avw_pago'); }catch(e){} location.href=location.pathname; };
+  // Recordar esta reserva para cuando el cliente vuelva desde Bold
+  try{ localStorage.setItem('avw_pago', JSON.stringify({ id:r.id, consecutivo:r.consecutivo, nombre:r.nombre, empresa:r.empresa||'', recursoNom:r.recursoNom, planNom:r.planNom, cuando, total:r.total, ts:Date.now() })); }catch(e){}
+  montarBold($('bold-cw'), r.consecutivo, r.total, `AVS Working ${r.recursoNom} ${r.planNom}`);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Si la página se cierra o se va a Bold con un pago pendiente, se marca para preguntar al volver
+window.addEventListener('pagehide',()=>{ try{ const p=JSON.parse(localStorage.getItem('avw_pago')||'null'); if(p&&!p.salio){ p.salio=true; localStorage.setItem('avw_pago',JSON.stringify(p)); } }catch(e){} });
+
+// ══════════════ REGRESO DESDE BOLD ══════════════
+// Bold recarga esta página al terminar el pago. Aquí recuperamos la reserva y registramos el pago.
+async function revisarRegresoBold(){
+  const q=new URLSearchParams(location.search);
+  const tx=(q.get('bold-tx-status')||'').toLowerCase();
+  const boldId=q.get('bold-order-id')||'';
+  let pend=null; try{ pend=JSON.parse(localStorage.getItem('avw_pago')||'null'); }catch(e){}
+  if(!pend) return;
+  const reciente = Date.now()-pend.ts < 6*3600*1000;
+  if(!tx && !(reciente && pend.salio)){ if(!reciente) localStorage.removeItem('avw_pago'); return; }
+  if(tx) history.replaceState({},document.title,location.pathname);
+  const aprobado = tx==='approved';
+  const rechazado = tx==='rejected' || tx==='failed';
+  const msgWA = `Hola AVS Working, soy ${pend.nombre}. ${aprobado?'Ya pagué con Bold':'Quiero confirmar el pago de'} mi reserva *${pend.consecutivo}*: ${pend.recursoNom}, ${pend.planNom}, ${pend.cuando}. Total ${fmt(pend.total)}.${boldId?' Referencia Bold: '+boldId+'.':''}`;
+
+  if(tx){
+    try{
+      const pago={ pagoEstado: aprobado?'Aprobado Bold (verificar)':rechazado?'Rechazado Bold':'En proceso Bold', boldOrderId:boldId, boldTx:tx, pagoFecha:new Date().toLocaleString('es-CO'), pagoTs:Date.now() };
+      await update(ref(db,'coworking/reservas/'+pend.id), pago);
+      await actualizarOcupacion(pend.id, { pago: pago.pagoEstado });
+      const pRef=push(ref(db,'pagosBold'));
+      await set(pRef,{ orderId:boldId, reserva:pend.consecutivo, reservaId:pend.id, origen:'coworking', estado:tx, monto:pend.total, fecha:pago.pagoFecha, ts:Date.now(), verificado:false });
+    }catch(e){ console.warn('Registro de pago:',e); }
+  }
+  if(aprobado) localStorage.removeItem('avw_pago');
+
+  $('res-form').style.display='none';
+  $('res-ok').style.display='block';
+  if(aprobado){
+    $('res-ok').innerHTML=`<div class="big">✅</div><h3>¡Pago recibido, ${esc(pend.nombre.split(' ')[0])}!</h3>
+      <p>Tu reserva está activa</p><div class="code">${esc(pend.consecutivo)}</div>
+      <p class="hint" style="margin-bottom:6px">${esc(pend.recursoNom)} · ${esc(pend.planNom)} · ${esc(pend.cuando)}</p>
+      <p style="font-size:20px;font-weight:700;color:var(--navy)">${fmt(pend.total)}</p>
+      <p class="hint">El equipo verificará el pago en Bold y te enviará la confirmación por WhatsApp.</p>
+      <a class="btn wa" style="display:block;text-decoration:none" href="https://wa.me/${WA_COWORK}?text=${encodeURIComponent(msgWA)}" target="_blank">💬 Enviar comprobante por WhatsApp</a>
+      <button class="btn sec" onclick="location.href=location.pathname">Hacer otra reserva</button>`;
+  } else {
+    const titulo = rechazado ? 'El pago no fue aprobado' : tx ? 'Tu pago está en proceso' : '¿Ya pagaste tu reserva?';
+    const texto = rechazado ? 'Tu reserva sigue apartada. Puedes intentar el pago de nuevo o pagar por otro medio.'
+                : tx ? 'Bold aún no confirma el pago. Tu reserva sigue apartada; te avisaremos cuando se apruebe.'
+                : 'Tu reserva quedó guardada. Si ya pagaste en Bold, envíanos el comprobante; si no, puedes pagar ahora.';
+    $('res-ok').innerHTML=`<div class="big">${rechazado?'⚠️':'🧾'}</div><h3>${titulo}</h3>
+      <p>Reserva</p><div class="code">${esc(pend.consecutivo)}</div>
+      <p class="hint" style="margin-bottom:6px">${esc(pend.recursoNom)} · ${esc(pend.planNom)} · ${esc(pend.cuando)} · <b>${fmt(pend.total)}</b></p>
+      <p class="hint">${texto}</p>
+      <a class="btn wa" style="display:block;text-decoration:none" href="https://wa.me/${WA_COWORK}?text=${encodeURIComponent(msgWA)}" target="_blank">💬 ${tx?'Escribir por WhatsApp':'Ya pagué: enviar comprobante'}</a>
+      <div id="bold-cw" style="margin-top:12px"></div>
+      <button class="btn sec" id="btn-nueva">Hacer otra reserva</button>`;
+    montarBold($('bold-cw'), pend.consecutivo, pend.total, `AVS Working ${pend.recursoNom} ${pend.planNom}`);
+    $('btn-nueva').onclick=()=>{ localStorage.removeItem('avw_pago'); location.href=location.pathname; };
+  }
+}
+
+// Bold (misma lógica de la tienda: con firma = monto fijo; sin firma = el cliente digita el valor)
+async function montarBold(cont, orderId, monto, descripcion){
+  let firma=null;
+  if(BOLD_FIRMA_URL){ try{ const r=await fetch(BOLD_FIRMA_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderId,amount:Math.round(monto),currency:'COP'})}); if(r.ok) firma=(await r.json()).signature; }catch(e){} }
+  const sc=document.createElement('script');
+  sc.src='https://checkout.bold.co/library/boldPaymentButton.js';
+  sc.setAttribute('data-bold-button','dark-L');
+  sc.setAttribute('data-api-key',BOLD_API_KEY);
+  sc.setAttribute('data-description',(descripcion+' · '+orderId).slice(0,100));
+  sc.setAttribute('data-redirection-url',location.href.split('?')[0]);
+  if(firma){ sc.setAttribute('data-order-id',orderId); sc.setAttribute('data-currency','COP'); sc.setAttribute('data-amount',String(Math.round(monto))); sc.setAttribute('data-integrity-signature',firma); }
+  else cont.insertAdjacentHTML('beforeend',`<p class="hint" style="margin-bottom:6px">O paga en línea con Bold: digita <b>${fmt(monto)}</b> y la referencia <b>${orderId}</b>.</p>`);
+  sc.onerror=()=>{ cont.innerHTML=''; };
+  cont.appendChild(sc);
+}
+
+// Entradas de ocupación de una reserva (antiguas: clave = id; nuevas: id-RECURSO)
+function clavesOcupacion(id){ return ocupacion.filter(o=>o.id===id||o.reservaId===id).map(o=>o.id); }
+async function actualizarOcupacion(id, cambios){
+  let claves=clavesOcupacion(id);
+  if(!claves.length){ const sn=await get(ref(db,'coworking/ocupacion')); if(sn.exists()) sn.forEach(c=>{ const v=c.val(); if(c.key===id||v.reservaId===id) claves.push(c.key); }); }
+  const up={}; claves.forEach(k=>Object.entries(cambios).forEach(([f,v])=>up[`${k}/${f}`]=v));
+  if(Object.keys(up).length) await update(ref(db,'coworking/ocupacion'), up);
+}
+
+// ══════════════ MIS RESERVAS (autogestión) ══════════════
+function misReservas(){ try{ return JSON.parse(localStorage.getItem('avw_mias')||'[]'); }catch(e){ return []; } }
+function guardarMia(r){ try{ const a=misReservas(); a.unshift({...r,ts:Date.now()}); localStorage.setItem('avw_mias',JSON.stringify(a.slice(0,30))); }catch(e){} }
+// Si la reserva no aparece en la ocupación, se consulta su estado real (nunca se asume "Cancelada")
+const estadosLeidos={}; const leyendo={};
+async function leerEstado(id){
+  if(leyendo[id]) return; leyendo[id]=true;
+  try{
+    const sn=await get(ref(db,'coworking/reservas/'+id));
+    const v=sn.val();
+    estadosLeidos[id] = v ? { estado:v.estado||'Pendiente', pago:v.pagoEstado||'' } : { estado:'No encontrada' };
+    // Repara la ocupación si faltaba (así el puesto también se bloquea en el plano)
+    if(v && v.estado!=='Cancelada' && v.recurso){
+      const recs=v.recursos||[v.recurso]; const occ={};
+      recs.forEach(rc=>{ occ[v.recursos?`${id}-${rc}`:id]={ reservaId:id, recurso:rc, plan:v.plan||'', fechaInicio:v.fechaInicio, fechaFin:v.fechaFin, ...(v.horaInicio?{horaInicio:v.horaInicio,horaFin:v.horaFin}:{}), estado:v.estado, ...(v.pagoEstado?{pago:v.pagoEstado}:{}), ts:Date.now() }; });
+      await update(ref(db,'coworking/ocupacion'), occ);
+    }
+  }catch(e){ console.warn('Estado reserva:',e); estadosLeidos[id]={ estado:'Sin conexión' }; }
+  pintarMias();
+}
+function pintarMias(){
+  const a=misReservas();
+  if(!a.length){ $('mias').innerHTML='<p class="hint">Aún no tienes reservas en este equipo.</p>'; return; }
+  $('mias').innerHTML=a.map(r=>{
+    const o=ocupacion.find(x=>x.id===r.id||x.reservaId===r.id) || estadosLeidos[r.id]; const est=o?o.estado:'Consultando…';
+    if(!o) leerEstado(r.id);
+    const o2=ocupacion.find(x=>x.id===r.id||x.reservaId===r.id); const fechas=o2?{...r,fechaInicio:o2.fechaInicio,fechaFin:o2.fechaFin}:r;
+    const cuando = textoFechas(fechas);
+    const puedeCancelar = est==='Pendiente' && r.fechaInicio>=HOY && !(o&&o.pago&&o.pago.startsWith('Aprobado'));
+    return `<div class="mine"><div><b>${esc(r.consecutivo)}</b> · ${esc(r.recursoNom)}<br><span class="hint">${esc(r.planNom)} · ${esc(cuando)} · ${fmt(r.total)}</span></div>
+      <div>${o&&o.pago?`<span class="badge" style="background:#E6F1FB;color:#185FA5">💳 ${esc(o.pago.replace(' (verificar)',''))}</span> `:''}<span class="badge ${['Pendiente','Confirmada','Cancelada'].includes(est)?'b-'+est:'b-otro'}">${esc(est)}</span> ${puedeCancelar?`<button class="slot" style="padding:5px 10px;margin-left:6px" data-cancel="${esc(r.id)}">Cancelar</button>`:''}</div></div>`;
+  }).join('');
+  $('mias').querySelectorAll('[data-cancel]').forEach(b=>b.onclick=async()=>{
+    if(!confirm('¿Cancelar esta reserva? El espacio quedará libre para otras personas.')) return;
+    const id=b.dataset.cancel;
+    try{
+      await actualizarOcupacion(id,{estado:'Cancelada'});
+      await update(ref(db,'coworking/reservas/'+id),{estado:'Cancelada',canceladaPor:'cliente',actualizado:Date.now()});
+      toast('Reserva cancelada');
+    }catch(e){ toast('No se pudo cancelar. Escríbenos por WhatsApp.', true); }
+  });
+}
+
+// ══════════════ AGENDAR VISITA ══════════════
+let unsubHorarios=null;
+$('v-fecha').onchange = e => {
+  st.visFecha = e.target.value; st.visHora=null; $('btn-visita').disabled=true;
+  if(unsubHorarios) unsubHorarios();
+  if(!st.visFecha) return;
+  unsubHorarios = onValue(ref(db,'coworking/horarios/'+st.visFecha), s=>{ horariosTomados = s.val()||{}; pintarSlots(); });
+};
+function pintarSlots(){
+  const h=HORARIO[parseISO(st.visFecha).getDay()];
+  if(!h){ $('slots').innerHTML='<p class="hint">Ese día estamos cerrados. Elige otra fecha.</p>'; return; }
+  const ahora=new Date(); const minAhora = st.visFecha===HOY ? ahora.getHours()*60+ahora.getMinutes()+60 : -1;
+  const out=[];
+  for(let m=aMin(h[0]); m+30<=aMin(h[1]); m+=30){
+    const hh=deMin(m); const tomado = horariosTomados[hh.replace(':','')] || m<minAhora;
+    out.push(`<button class="slot ${st.visHora===hh?'on':''}" data-h="${hh}" ${tomado?'disabled':''}>${hh}</button>`);
+  }
+  $('slots').innerHTML=out.join('');
+  $('slots').querySelectorAll('.slot:not([disabled])').forEach(b=>b.onclick=()=>{ st.visHora=b.dataset.h; $('btn-visita').disabled=false; pintarSlots(); });
+}
+$('btn-visita').onclick = async ()=>{
+  const d={ nombre:$('v-nombre').value.trim(), telefono:telLimpio($('v-tel').value), empresa:$('v-emp').value.trim(), notas:$('v-notas').value.trim(), interes:$('v-interes').value };
+  if(d.nombre.length<3) return toast('Escribe tu nombre completo', true);
+  if(d.telefono.length<10) return toast('Escribe un WhatsApp válido de 10 dígitos', true);
+  if(!st.visFecha||!st.visHora) return toast('Elige fecha y hora', true);
+  const btn=$('btn-visita'); btn.disabled=true; btn.textContent='Agendando…';
+  try{
+    // Reserva el horario de forma atómica: si otra persona lo tomó, falla
+    const key=st.visHora.replace(':','');
+    const tx=await runTransaction(ref(db,`coworking/horarios/${st.visFecha}/${key}`), v=> v ? undefined : true);
+    if(!tx.committed) throw new Error('tomado');
+    const cRef=push(ref(db,'coworking/citas'));
+    const cita={ id:cRef.key, ...d, fecha:st.visFecha, hora:st.visHora, estado:'Pendiente', ts:Date.now(), origen:'web' };
+    await set(cRef,cita);
+    // Al CRM: cliente + cita en la Agenda
+    try{
+      const cl=push(ref(db,'clientes'));
+      await set(cl,{ id:cl.key, nombre:d.nombre, telefono:d.telefono, destino:'AVS Working · '+d.interes, linea:'Especiales', fechaIda:st.visFecha, presupuesto:'', viajeros:1,
+        estado:'Prospecto', origen:'AVS Working web', nuevoSinLeer:true, notas:`Visita ${st.visFecha} ${st.visHora}${d.empresa?' · '+d.empresa:''}${d.notas?' · '+d.notas:''}`, createdAt:Date.now(),
+        interacciones:[{tipo:'Cita coworking',nota:`Agendó visita a AVS Working el ${st.visFecha} a las ${st.visHora}. Interés: ${d.interes}.`,fecha:new Date().toLocaleDateString('es-CO'),ts:Date.now()}], cotizaciones:[], comentarios:[] });
+      const ag=push(ref(db,'agenda'));
+      await set(ag,{ id:ag.key, clienteId:cl.key, clienteNom:d.nombre, asesor:'', fecha:st.visFecha, hora:st.visHora, tipo:'Reunión presencial', prioridad:'normal',
+        notas:`Visita AVS Working · ${d.interes}${d.empresa?' · '+d.empresa:''}`, completada:false, createdAt:Date.now() });
+      await update(cRef,{clienteId:cl.key});
+    }catch(e){ console.warn('CRM:',e); }
+    const msg=`Hola AVS Working, soy ${d.nombre}. Agendé una visita para el ${fechaLarga(st.visFecha)} a las ${st.visHora}. Me interesa: ${d.interes}.`;
+    $('vis-form').style.display='none'; $('vis-ok').style.display='block';
+    $('vis-ok').innerHTML=`<div class="big">📅</div><h3>¡Te esperamos, ${esc(d.nombre.split(' ')[0])}!</h3>
+      <div class="code">${fechaLarga(st.visFecha)} · ${st.visHora}</div>
+      <p class="hint">Calle 3 #5A-16, Buenaventura. Un asesor te confirmará por WhatsApp.</p>
+      <a class="btn wa" style="display:block;text-decoration:none" href="https://wa.me/${WA_COWORK}?text=${encodeURIComponent(msg)}" target="_blank">💬 Avisar por WhatsApp</a>
+      <button class="btn sec" onclick="location.reload()">Volver</button>`;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){
+    console.error(e);
+    if(e.message==='tomado'){ toast('Ese horario acaba de ocuparse. Elige otro.', true); st.visHora=null; pintarSlots(); }
+    else toast(String(e.message).includes('PERMISSION_DENIED')?'La base de datos no permite guardar. Avísanos por WhatsApp.':'No se pudo agendar. Intenta de nuevo.', true);
+  }finally{ btn.textContent='Agendar visita'; btn.disabled=!st.visHora; }
+};
+
+pintarTodo();
+revisarRegresoBold();
+</script>
+</body>
+</html>
