@@ -1,0 +1,868 @@
+[
+ {
+  "nombre": "Pasadía Playa Dorada (Maguipi)",
+  "linea": "Pacífico",
+  "destino": "Playa Dorada",
+  "tipo": "pasadia",
+  "costo": 148333,
+  "margen": 20,
+  "precio_venta": 178000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Día de playa en Playa Dorada con ingreso al hotel Maguipi, en el Pacífico colombiano. Incluye: Ingreso a muelle turístico; transporte ida y regreso; tarde en playa; almuerzo; ingreso al hotel Maguipi; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/playa-dorada-1.jpg",
+   "img/planes/playa-dorada-2.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Pasadía San Cipriano",
+  "linea": "Pacífico",
+  "destino": "San Cipriano",
+  "tipo": "pasadia",
+  "costo": 130000,
+  "margen": 20,
+  "precio_venta": 156000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte terrestre",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Viaja en brujita por la línea férrea hasta la reserva natural de San Cipriano y disfruta sus aguas cristalinas. Incluye: transporte terrestre ida y regreso; transporte en brujitas; ingreso a la reserva natural; almuerzo; recorrido ecológico; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/san-cipriano-1.jpg",
+   "img/planes/san-cipriano-2.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Pasadía La Bocana",
+  "linea": "Pacífico",
+  "destino": "Bocana",
+  "tipo": "pasadia",
+  "costo": 112292,
+  "margen": 20,
+  "precio_venta": 134750,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Tarde de playa en La Bocana, a pocos minutos de Buenaventura en lancha. Incluye: Ingreso a muelle turístico; transporte ida y regreso; tarde en playa; almuerzo; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/bocana-1.jpg",
+   "img/planes/bocana-2.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Pasadía Piangüita",
+  "linea": "Pacífico",
+  "destino": "Piangüita",
+  "tipo": "pasadia",
+  "costo": 123875,
+  "margen": 20,
+  "precio_venta": 148650,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Playa, sol y gastronomía del Pacífico en Piangüita. Incluye: Ingreso a muelle turístico; transporte ida y regreso; tarde en playa; almuerzo; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/pianguita-1.jpg",
+   "img/planes/pianguita-2.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Pasadía Chucheros",
+  "linea": "Pacífico",
+  "destino": "Chucheros",
+  "tipo": "pasadia",
+  "costo": 195625,
+  "margen": 20,
+  "precio_venta": 234750,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Playa virgen de Chucheros, rodeada de selva, en Bahía Málaga. Incluye: Ingreso a muelle turístico; transporte ida y regreso; tarde en playa; almuerzo; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/chucheros-1.jpg",
+   "img/planes/chucheros-2.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Pasadía Ladrilleros",
+  "linea": "Pacífico",
+  "destino": "Ladrilleros",
+  "tipo": "pasadia",
+  "costo": 218750,
+  "margen": 20,
+  "precio_venta": 262500,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Transporte terrestre",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Acantilados, olas y playa en Ladrilleros, uno de los destinos más visitados del Pacífico. Incluye: Ingreso a muelle turístico; transporte marítimo; transporte terrestre; tarde en playa; almuerzo; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/ladrilleros-1.jpg",
+   "img/planes/ladrilleros-2.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Pasadía El Galeón",
+  "linea": "Pacífico",
+  "destino": "El Galeon",
+  "tipo": "pasadia",
+  "costo": 123875,
+  "margen": 20,
+  "precio_venta": 148650,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Tarde de playa en El Galeón con almuerzo típico. Incluye: Ingreso a muelle turístico; transporte ida y regreso; tarde en playa; almuerzo; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/galeon-1.jpg",
+   "img/planes/galeon-2.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Pasadía La Barra",
+  "linea": "Pacífico",
+  "destino": "La Barra",
+  "tipo": "pasadia",
+  "costo": 218750,
+  "margen": 20,
+  "precio_venta": 262500,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Transporte terrestre",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Playa amplia, formaciones rocosas y naturaleza en La Barra. Incluye: Ingreso a muelle turístico; transporte marítimo; transporte terrestre; tarde en playa; almuerzo; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/la-barra-1.jpg",
+   "img/planes/la-barra-2.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Avistamiento de Ballenas · Juanchaco",
+  "linea": "Pacífico",
+  "destino": "Juanchaco",
+  "tipo": "tour",
+  "costo": 240833,
+  "margen": 20,
+  "precio_venta": 289000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alimentación",
+   "Actividades",
+   "Seguro de viaje"
+  ],
+  "descripcion": "Temporada de ballenas: 15 de julio al 15 de octubre. Pasadía con avistamiento de ballenas jorobadas y tarde en Juanchaco. Incluye: transporte ida y regreso; avistamiento de ballenas; almuerzo; tarde en playa; seguro médico.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/ballenas-juanchaco-1.jpg",
+   "img/planes/ballenas-juanchaco-2.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Avistamiento de Ballenas · Maguipi",
+  "linea": "Pacífico",
+  "destino": "Maguipi",
+  "tipo": "tour",
+  "costo": 259167,
+  "margen": 20,
+  "precio_venta": 311000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alimentación",
+   "Actividades",
+   "Seguro de viaje"
+  ],
+  "descripcion": "Temporada de ballenas: 15 de julio al 15 de octubre. Pasadía con avistamiento de ballenas y tarde en el hotel Maguipi. Incluye: transporte ida y regreso; avistamiento de ballenas; almuerzo; tarde en playa; seguro médico.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/ballenas-maguipi-1.jpg",
+   "img/planes/ballenas-maguipi-2.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Avistamiento de Ballenas · Chucheros",
+  "linea": "Pacífico",
+  "destino": "Chucheros",
+  "tipo": "tour",
+  "costo": 268333,
+  "margen": 20,
+  "precio_venta": 322000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alimentación",
+   "Actividades",
+   "Seguro de viaje"
+  ],
+  "descripcion": "Temporada de ballenas: 15 de julio al 15 de octubre. Pasadía con avistamiento de ballenas y tarde en playa Chucheros. Incluye: transporte ida y regreso; avistamiento de ballenas; almuerzo; tarde en playa; seguro médico.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/ballenas-chucheros-1.jpg",
+   "img/planes/ballenas-chucheros-2.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Beach Tours Pacífico",
+  "linea": "Pacífico",
+  "destino": "Todos los destinos Pacífico",
+  "tipo": "tour",
+  "costo": 370833,
+  "margen": 20,
+  "precio_venta": 445000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Recorrido por las mejores playas y cascadas del Pacífico en un solo día. Incluye: Ingreso a muelle turístico; transporte marítimo ida y regreso; avistamiento de ballenas (en temporada); almuerzo en playa Chucheros; visita a playa Ladrilleros; visita a Juan de Dios; visita a las cascadas La Sierpe y Tres Marías; aperitivos (agua y cervezas); asistencia médica.",
+  "terminos": "Precio por persona, a partir de 7 personas. Avistamiento de ballenas solo del 15 de julio al 15 de octubre. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/beach-tours-1.jpg",
+   "img/planes/beach-tours-2.jpg",
+   "img/planes/beach-tours-3.jpg",
+   "img/planes/beach-tours-4.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Ballenas al Cosmos 2D/1N",
+  "linea": "Pacífico",
+  "destino": "Buenaventura",
+  "tipo": "paquete",
+  "costo": 370000,
+  "margen": 20,
+  "precio_venta": 444000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "2 días 1 noche",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades",
+   "Seguro de viaje"
+  ],
+  "descripcion": "Temporada de ballenas: 15 de julio al 15 de octubre. Escapada de 2 días con alojamiento en el hotel Cosmos y avistamiento de ballenas. Incluye: avistamiento de ballenas; alojamiento; alimentación; snacks e hidratación; seguro médico.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/ballenas-cosmos-1.jpg",
+   "img/planes/ballenas-cosmos-2.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Las Gigantes del Pacífico 2D/1N",
+  "linea": "Pacífico",
+  "destino": "Juanchaco",
+  "tipo": "paquete",
+  "costo": 382000,
+  "margen": 20,
+  "precio_venta": 458400,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "2 días 1 noche",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Temporada de ballenas: 15 de julio al 15 de octubre. Dos días para ver de cerca a las ballenas jorobadas con alojamiento en el hotel Tropical. Incluye: Ingreso a muelle turístico; transporte marítimo ida y regreso; avistamiento de ballenas; alojamiento hotel Tropical; alimentación; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/gigantes-pacifico-1.jpg",
+   "img/planes/gigantes-pacifico-2.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Gastronomía y Ballenas 3D/2N",
+  "linea": "Pacífico",
+  "destino": "Chucheros",
+  "tipo": "paquete",
+  "costo": 769708,
+  "margen": 20,
+  "precio_venta": 923650,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "3 días 2 noches",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Temporada de ballenas: 15 de julio al 15 de octubre. Sabores del Pacífico y avistamiento de ballenas en 3 días. Incluye: alojamiento en hotel Cosmos; cena del Pacífico en restaurante Kalunga; Ingreso a muelle turístico; transporte marítimo ida y regreso; avistamiento de ballenas; alojamiento en playa Chucheros; alimentación; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/gastronomia-ballenas-1.jpg",
+   "img/planes/gastronomia-ballenas-2.jpg",
+   "img/planes/gastronomia-ballenas-3.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Buenaventura & Ballenas 2D/1N",
+  "linea": "Pacífico",
+  "destino": "Buenaventura",
+  "tipo": "paquete",
+  "costo": 682417,
+  "margen": 20,
+  "precio_venta": 818900,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "2 días 1 noche",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Transporte terrestre",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Temporada de ballenas: 15 de julio al 15 de octubre. Ciudad, río y mar: Buenaventura, San Cipriano y ballenas en 2 días. Incluye: alojamiento en hotel de la ciudad; cena del Pacífico; visita a San Cipriano; caminata ecológica; Ingreso a muelle turístico; transporte marítimo ida y regreso; almuerzo en playa; avistamiento de ballenas; tarde en playa; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/buenaventura-ballenas-1.jpg",
+   "img/planes/buenaventura-ballenas-2.jpg",
+   "img/planes/buenaventura-ballenas-3.jpg",
+   "img/planes/buenaventura-ballenas-4.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Ruta Pacífica 5 días",
+  "linea": "Pacífico",
+  "destino": "Todos los destinos Pacífico",
+  "tipo": "paquete",
+  "costo": 1640833,
+  "margen": 20,
+  "precio_venta": 1969000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "5 días 4 noches",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Transporte terrestre",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica",
+   "Guía turístico"
+  ],
+  "descripcion": "El recorrido más completo por el Pacífico: cultura, río, selva y mar en 5 días. Itinerario AVSPA01. Incluye: transporte terrestre y marítimo; traslado en brujita en San Cipriano; 4 desayunos, 5 almuerzos y 4 cenas; alojamiento en hoteles seleccionados (Tequendama Buenaventura, Maguipi Playa, Ecomanglar La Plata); tours a Buenaventura, San Cipriano, Maguipi, La Plata y Ladrilleros; avistamiento de ballenas (julio a octubre); asistencia médica; guía coordinador.",
+  "terminos": "Precio por persona. Temporada baja $1.969.000 · Temporada alta $2.110.000. Avistamiento de ballenas de julio a octubre. No incluye traslado desde tu ciudad de origen hasta Buenaventura.",
+  "itinerario": [
+   {
+    "titulo": "Día 1: Buenaventura",
+    "desc": "Llegada y check-in en el hotel (8:00 a. m.), vuelta guiada en lancha por la isla de Buenaventura, almuerzo en casa taller con actividad recreativa (marimba, bebidas típicas o gastronomía del Pacífico) y experiencia gastronómica nocturna."
+   },
+   {
+    "titulo": "Día 2: San Cipriano",
+    "desc": "Desayuno, traslado a Córdoba y brujita hasta la reserva natural de San Cipriano, charco del Amor, tarde de río y almuerzo. Regreso a Buenaventura, cena y noche libre."
+   },
+   {
+    "titulo": "Día 3: Maguipi",
+    "desc": "Traslado a Maguipi, check-in, almuerzo, visita a Playa Dorada y charcos de agua dulce, caminata ecológica opcional, cena y show en el hotel."
+   },
+   {
+    "titulo": "Día 4: La Plata",
+    "desc": "Traslado Maguipi – Juanchaco – La Plata, recorrido por la comunidad, almuerzo, visita al Morro, Ostional y La Sierpe (según la marea), cena y actividad de plancton."
+   },
+   {
+    "titulo": "Día 5: Ladrilleros",
+    "desc": "Desayuno, traslado a Chucheros, tarde de playa, almuerzo y sendero de la Vainilla. Regreso a Buenaventura a las 5:00 p. m."
+   }
+  ],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/ruta-pacifica-1.jpg",
+   "img/planes/ruta-pacifica-2.jpg",
+   "img/planes/ruta-pacifica-3.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Crucero Pacífico 7 días",
+  "linea": "Cruceros",
+  "destino": "Pacífico colombiano",
+  "tipo": "paquete",
+  "costo": 3657500,
+  "margen": 20,
+  "precio_venta": 4389000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "7 días",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica",
+   "Guía turístico"
+  ],
+  "descripcion": "Navega 7 días por Gorgona, Bahía Málaga y Nuquí, con avistamiento de ballenas en temporada. Incluye: transporte marítimo y alojamiento en barco; desayuno, almuerzo y cena; snacks; recorridos por Gorgona, Bahía Málaga y Nuquí; asistencia médica; guía coordinador.",
+  "terminos": "Valor por persona. Requisitos: copia del documento de identidad, seguro de viaje en barco y formato de datos personales. Prohibida la pesca en parques naturales, el porte de armas y sustancias psicoactivas. El buceo tiene costo adicional.",
+  "itinerario": [
+   {
+    "titulo": "Día 1",
+    "desc": "3:00 p. m. recibimiento en el barco, entrega de camarotes, cena y zarpe hacia Gorgona."
+   },
+   {
+    "titulo": "Día 2: Gorgona",
+    "desc": "Visita a la casa Payán, el antiguo penal y sus playas, careteo, almuerzo a bordo, visita a Yundigua y al coral, y atardecer en Gorgona."
+   },
+   {
+    "titulo": "Día 3: Gorgona",
+    "desc": "Caminata, avistamiento de ballenas en temporada (julio-octubre), playa Palmeras y zarpe hacia Bahía Málaga."
+   },
+   {
+    "titulo": "Día 4: Bahía Málaga",
+    "desc": "Recorridos en lancha por Juanchaco y Ladrilleros, almuerzo en Chucheros, visita a Maguipi, La Sierpe, Ostional y Tres Marías. Navegación hacia Nuquí."
+   },
+   {
+    "titulo": "Día 5: Nuquí",
+    "desc": "Caminata ecológica y visita a los lugares turísticos de Nuquí."
+   },
+   {
+    "titulo": "Día 6: Utría",
+    "desc": "Parque Natural Utría, Tribugá y Cabo Corrientes. Salida hacia Buenaventura."
+   },
+   {
+    "titulo": "Día 7",
+    "desc": "6:00 a. m. llegada a Buenaventura, fin de las vacaciones."
+   }
+  ],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/crucero-pacifico-1.jpg",
+   "img/planes/crucero-pacifico-2.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "La Plata · Saberes ancestrales 3D/2N",
+  "linea": "Pacífico",
+  "destino": "La Plata",
+  "tipo": "paquete",
+  "costo": 1328333,
+  "margen": 20,
+  "precio_venta": 1594000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "3 días 2 noches",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Saboreando saberes ancestrales en el archipiélago de La Plata: manglar, cultura y gastronomía tradicional. Incluye: alojamiento 2 noches en Ecomanglar; 3 desayunos, 2 almuerzos y 2 cenas; transporte marítimo ida y regreso Buenaventura – La Plata; visita al Morro y La Sierpe; ruta de la Piangua; lampareo fotográfico; charla ancestral y pedagógica; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [
+   {
+    "titulo": "Día 1",
+    "desc": "10:00 a. m. recibimiento en Buenaventura y traslado a La Plata, almuerzo, visita al Morro (piscina natural) y noche cultural con músicos y cantaoras del territorio."
+   },
+   {
+    "titulo": "Día 2",
+    "desc": "Ruta de la Piangua en remo por el manglar, preparación de la piangua con cocineras tradicionales, recorrido a La Sierpe y lampareo fotográfico nocturno."
+   },
+   {
+    "titulo": "Día 3",
+    "desc": "Desayuno, charla pedagógica y ancestral (turismo de bienestar) y regreso a Buenaventura."
+   }
+  ],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/la-plata-1.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Ruta de los Ríos 3D/2N",
+  "linea": "Pacífico",
+  "destino": "Ruta de los Ríos",
+  "tipo": "paquete",
+  "costo": 582500,
+  "margen": 20,
+  "precio_venta": 699000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "3 días 2 noches",
+  "cupos": 20,
+  "incluye": [
+   "Transporte terrestre",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica",
+   "Guía turístico"
+  ],
+  "descripcion": "Ríos cristalinos, selva y descanso: San Cipriano y Palomar en 3 días. Itinerario AVSRS02. Incluye: alojamiento 3 días 2 noches (Hotel Tau San Cipriano y Hotel Palomar Sabaletas); traslado en brujita Córdoba – San Cipriano; traslados terrestres Córdoba – Buenaventura – Sabaletas; traslado fluvial Sabaletas – Palomar; desayuno, almuerzo y cena; caminata a ríos y a la Chorrera; ingreso a la reserva natural San Cipriano; asistencia médica; guía coordinador.",
+  "terminos": "Precio por persona. Temporada baja $699.000 · Temporada alta $751.000. No incluye gastos no especificados en el plan.",
+  "itinerario": [
+   {
+    "titulo": "Día 1: San Cipriano",
+    "desc": "Recibimiento en Córdoba, brujita hasta la reserva natural, check-in en el hotel, bebidas típicas, almuerzo y tarde de río por los charcos."
+   },
+   {
+    "titulo": "Día 2: Sabaletas – Palomar",
+    "desc": "Traslado a Córdoba y Sabaletas, traslado fluvial a Palomar, almuerzo, tarde libre y fogata si el clima lo permite."
+   },
+   {
+    "titulo": "Día 3: La Chorrera",
+    "desc": "Caminata ecológica a la Chorrera Ramírez con hidratación, almuerzo y regreso a Buenaventura."
+   }
+  ],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/ruta-rios-1.jpg",
+   "img/planes/ruta-rios-2.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Plan Reyes en La Bocana 3D/2N",
+  "linea": "Pacífico",
+  "destino": "Bocana",
+  "tipo": "paquete",
+  "costo": 532500,
+  "margen": 20,
+  "precio_venta": 639000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "3 días 2 noches",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Recibe la llegada de los Reyes en la playa de La Bocana con fiesta, fogata y alimentación completa. Incluye: transporte marítimo; ingreso a muelle turístico; alojamiento; alimentación completa; fiesta en caseta y playa; cervezas; fogata en playa; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/plan-reyes-1.jpg"
+  ],
+  "activo": true,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Plan Amigas 2D/1N",
+  "linea": "Pacífico",
+  "destino": "Maguipi",
+  "tipo": "paquete",
+  "costo": 555000,
+  "margen": 20,
+  "precio_venta": 666000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "2 días 1 noche",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades"
+  ],
+  "descripcion": "Celebra el Día de la Mujer con tus amigas en Maguipi y Playa Dorada. Incluye: transporte marítimo; ingreso a muelle turístico; alojamiento; alimentación completa; visita a Playa Dorada; fiesta en el hotel Maguipi.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/plan-amigas-1.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Plan Secretarias · Día de spa",
+  "linea": "Pacífico",
+  "destino": "Buenaventura",
+  "tipo": "pasadia",
+  "costo": 231667,
+  "margen": 20,
+  "precio_venta": 278000,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Alimentación",
+   "Actividades"
+  ],
+  "descripcion": "Un día de spa y descanso para celebrar el Día de la Secretaria. Incluye: día de spa; snacks; vino; cena.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/plan-secretarias-1.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Plan Madres 2D/1N",
+  "linea": "Pacífico",
+  "destino": "Piangüita",
+  "tipo": "paquete",
+  "costo": 373917,
+  "margen": 20,
+  "precio_venta": 448700,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "2 días 1 noche",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alojamiento",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Celebra el Día de la Madre con una escapada al mar y fiesta blanca en Piangüita. Incluye: transporte marítimo; ingreso al muelle; alojamiento; alimentación completa; fiesta blanca en Piangüita; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/plan-madres-1.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ },
+ {
+  "nombre": "Plan Padres",
+  "linea": "Pacífico",
+  "destino": "Bocana",
+  "tipo": "pasadia",
+  "costo": 277083,
+  "margen": 20,
+  "precio_venta": 332500,
+  "costo_menor": 0,
+  "precio_venta_menor": 0,
+  "edad_menor": "Niños de 3 a 11 años",
+  "duracion": "1 día",
+  "cupos": 20,
+  "incluye": [
+   "Transporte marítimo",
+   "Alimentación",
+   "Actividades",
+   "Asistencia médica"
+  ],
+  "descripcion": "Celebra el Día del Padre con playa, fútbol y cerveza en el Pacífico. Incluye: transporte marítimo; ingreso al muelle; snacks; cerveza; almuerzo; fútbol playa; asistencia médica.",
+  "terminos": "Precio por persona, sujeto a disponibilidad y temporada. No incluye gastos no especificados en el plan.",
+  "itinerario": [],
+  "fechasEspecificas": [],
+  "soloFechasEspecificas": false,
+  "fotos": [
+   "img/planes/plan-padres-1.jpg"
+  ],
+  "activo": false,
+  "origen": "portafolio-2025"
+ }
+]
