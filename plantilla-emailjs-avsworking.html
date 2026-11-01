@@ -1,0 +1,33 @@
+<!-- Plantilla de EmailJS para AVS Working: mensaje del lunes y encuestas.
+     En EmailJS → Email Templates → Create New Template:
+       Subject:  {{asunto}}
+       To Email: {{to_email}}
+       From Name: AVS Working
+       Reply To: el correo de AVSTRAVEL
+     En Content abre el editor de código (<>) y pega todo lo que está debajo de esta línea. -->
+<div style="margin:0;padding:24px 12px;background:#EEF4F8;font-family:Arial,Helvetica,sans-serif;color:#0D1B2A">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden">
+    <tr>
+      <td style="background:#0A2A4A;padding:22px 24px;text-align:center">
+        <img src="https://jhonlerma2024.github.io/AVSTRAVEL-CRM/logo-avs.png" alt="AVSTRAVEL" height="44" style="height:44px;background:#ffffff;border-radius:8px;padding:5px 10px">
+        <div style="color:#F2A922;font-size:12px;letter-spacing:2px;margin-top:10px;font-weight:bold">AVS WORKING · COWORKING</div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:26px 26px 8px">
+        <h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0A2A4A">{{titulo}}</h1>
+        <div style="font-size:15px;line-height:1.6;color:#0D1B2A">{{{mensaje}}}</div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:18px 26px 26px;text-align:center">
+        <a href="{{boton_url}}" target="_blank" style="display:inline-block;background:#5BA829;color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px;padding:13px 26px;border-radius:30px">{{boton_texto}}</a>
+      </td>
+    </tr>
+    <tr>
+      <td style="background:#F5F8FA;padding:14px 26px;font-size:12px;line-height:1.5;color:#5E7889;text-align:center">
+        {{pie}}<br>AVSTRAVEL · RNT 47142 · Buenaventura
+      </td>
+    </tr>
+  </table>
+</div>
