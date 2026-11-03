@@ -108,7 +108,8 @@ window.cwEsperaAvisar = id => {
 window.cwEsperaCompleto = v => {
   const val = v==='si' ? true : v==='no' ? false : null;
   window._set(window._ref(window._db,'coworking/config/espera/completo'), val)
-    .then(()=>toast(v==='si'?'La página muestra "Estamos completos"':v==='no'?'Aviso de completos apagado':'Aviso automático (si no hay puestos libres)'));
+    .then(()=>toast(v==='si'?'La página muestra "Estamos completos"':v==='no'?'Aviso de completos apagado':'Aviso automático (si no hay puestos libres)'))
+    .catch(e=>{ console.error(e); toast(String(e&&e.message).includes('PERMISSION_DENIED')?'Firebase no deja guardar: falta permiso para coworking/config/espera':'No se pudo guardar: '+((e&&e.message)||e),'err'); pintar(); });
 };
 window.cwEsperaCopiarEnlace = () => {
   const url='https://jhonlerma2024.github.io/AVSTRAVEL-CRM/coworking.html#espera';

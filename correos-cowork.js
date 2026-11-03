@@ -35,6 +35,9 @@ const DIAS_MOTIVACION = 3;     // lunes, martes y miércoles
 const MAX_INTENTOS = 3;
 const MIN_RESPUESTAS = 2;      // respuestas mínimas para mostrar resultados del equipo al empresario (privacidad)
 const PRIORIDAD = { lunes:0, renovacion:1, mitad:2 };
+// Plantilla de EmailJS de AVS Working (copia de la de la tienda). Queda fija aquí para no tener
+// que escribirla en el CRM; si en el panel se guarda otra, se usa esa.
+const TEMPLATE_POR_DEFECTO = 'template_zdz4euq';
 
 // ── Frases del lunes: una por semana del año, no se repiten en 52 semanas ──
 const FRASES = [
@@ -46,7 +49,7 @@ const FRASES = [
   'Una semana nueva es una oportunidad nueva. Aprovéchala a tu manera.',
   'Haz una pausa, respira y sigue: el buen trabajo también necesita descanso.',
   'Rodéate de personas que suman y suma tú también.',
-  'Las metas se cumplen paso a paso. Que este lunes sea el primero de una gran semana.',
+  'Las metas se cumplen paso a paso. Que este sea el primero de una gran semana.',
   'El éxito es la suma de pequeños esfuerzos repetidos día tras día.',
   'No tienes que hacerlo todo hoy; solo tienes que empezar.',
   'La disciplina es elegir entre lo que quieres ahora y lo que más quieres.',
@@ -54,7 +57,7 @@ const FRASES = [
   'Hacer las cosas bien también es hacerlas con calma.',
   'Lo que hoy parece difícil, mañana será parte de tu experiencia.',
   'Confía en lo que sabes y atrévete con lo que aún no.',
-  'Un buen comienzo es la mitad del camino. Feliz lunes.',
+  'Un buen comienzo es la mitad del camino.',
   'El talento abre puertas; la constancia las mantiene abiertas.',
   'Celebra los avances pequeños: también son avances.',
   'Organiza tu semana como organizas tu escritorio: lo importante, a la mano.',
@@ -64,7 +67,7 @@ const FRASES = [
   'Equivocarse es parte del proceso; rendirse no tiene por qué serlo.',
   'Una sonrisa al empezar el día también es productividad.',
   'Enfócate en lo que puedes controlar y suelta lo demás.',
-  'Cada lunes es una página en blanco. Escríbela con ganas.',
+  'Cada semana es una página en blanco. Escríbela con ganas.',
   'La paciencia y el trabajo bien hecho siempre encuentran su recompensa.',
   'Lo que haces con dedicación deja huella, aunque nadie lo vea de inmediato.',
   'Pide ayuda cuando la necesites: nadie construye solo.',
@@ -88,7 +91,7 @@ const FRASES = [
   'Cumplir lo que prometes construye confianza, contigo y con los demás.',
   'Hay días para correr y días para pensar. Los dos cuentan.',
   'Que tu trabajo de esta semana te haga sentir orgulloso.',
-  'Termina el año con la misma fuerza con la que empezaste.',
+  'Lo que hoy decides empezar, mañana te lo vas a agradecer.',
   'Gracias por cada semana compartida. Que la próxima sea aún mejor.'
 ];
 
@@ -106,7 +109,7 @@ const esc = t => String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 const html = t => esc(t).replace(/\n/g,'<br>');
 const dec = n => n.toFixed(1).replace('.',',');
 const C = () => window.VOUCHER_COWORK_CFG || {};
-const cfg = () => window.cwCorreosCfg || {};
+const cfg = () => { const c=window.cwCorreosCfg||{}; return {...c, templateId:(c.templateId||'').trim()||TEMPLATE_POR_DEFECTO}; };
 const reservas = () => (typeof cwReservas!=='undefined' ? cwReservas : window.cwReservas) || [];
 const opiniones = () => (typeof cwOpiniones!=='undefined' ? cwOpiniones : window.cwOpiniones) || [];
 const usuario = () => (typeof currentUser!=='undefined' ? currentUser : null);
@@ -206,19 +209,48 @@ function estado(g, hoyUsados){
 }
 
 // ── Contenido de cada correo ────────────────────────────────────────
-function frase(lunes){
-  const n=Math.round((new Date(lunes+'T12:00:00') - new Date('2026-01-05T12:00:00'))/604800000);
-  return FRASES[((n % FRASES.length)+FRASES.length) % FRASES.length];
+// Cada persona recibe una frase distinta la misma semana, y la misma persona
+// no repite frase en 52 semanas. También varían el saludo, el asunto y el cierre.
+const SALUDOS = [n=>`¡Feliz inicio de semana${n?', '+n:''}!`, n=>`¡Buena semana${n?', '+n:''}!`, n=>`${n?n+', a':'A'}rrancamos una nueva semana`,
+  n=>`¡Hola${n?', '+n:''}! Comienza una nueva semana`, n=>`${n?n+', e':'E'}sta semana es tuya`, n=>`¡Ánimo con esta semana${n?', '+n:''}!`];
+const ASUNTOS = [n=>`☀️ Tu frase de la semana${n?', '+n:''}`, n=>`☀️ Un mensaje para tu semana${n?', '+n:''}`, n=>`☀️ Para empezar la semana${n?', '+n:''}`,
+  n=>`☀️ ${n?n+', b':'B'}uena semana`, n=>`☀️ Una idea para esta semana${n?', '+n:''}`];
+const CIERRES = ['Te deseamos una excelente semana de trabajo.','Que sea una semana productiva y tranquila.','Aquí estamos para que trabajes a gusto.',
+  '¡Mucho éxito en lo que te propongas esta semana!','Que esta semana te traiga buenas noticias.','Gracias por ser parte de AVS Working.',
+  'Un saludo cordial del equipo de AVS Working.','Que disfrutes cada logro de esta semana.'];
+const semanaN = lunes => Math.round((new Date(lunes+'T12:00:00') - new Date('2026-01-05T12:00:00'))/604800000);
+const mod = (a,b) => ((a%b)+b)%b;
+function hashTxt(t){ let h=5381; for(const ch of String(t)) h=((h*33) ^ ch.charCodeAt(0))>>>0; return h; }
+const clavePersona = g => correoOk(g.p.email) ? norm(g.p.email) : `${g.items&&g.items[0]?g.items[0].r.id:g.r.id}/${g.p.id}`;
+// Reparte las frases de la semana: punto de partida propio por persona (+1 cada semana);
+// si dos personas coinciden, la segunda toma la siguiente libre.
+let _reparto={semana:null, firma:'', mapa:new Map()};
+function repartoFrases(lunes){
+  // Ordenadas por empresa (dominio del correo) para que compañeros de oficina queden juntos
+  const orden=k=>{ const [u,d]=String(k).split('@'); return (d||'~')+'|'+u; };
+  const claves=[...new Set(todas().filter(g=>g.tipo==='lunes' && g.semana===lunes).map(clavePersona))].sort((a,b)=>orden(a).localeCompare(orden(b)));
+  const firma=claves.join('|');
+  if(_reparto.semana===lunes && _reparto.firma===firma) return _reparto.mapa;
+  const n=semanaN(lunes), usados=new Set(), mapa=new Map();
+  claves.forEach((k,pos)=>{ let i=mod(hashTxt(k)+n, FRASES.length), v=0; while(usados.has(i) && v++<FRASES.length) i=mod(i+1,FRASES.length); usados.add(i); mapa.set(k,{i,pos}); });
+  _reparto={semana:lunes, firma, mapa};
+  return mapa;
+}
+function frasePara(g){
+  const k=clavePersona(g), n=semanaN(g.semana), mapa=repartoFrases(g.semana);
+  const a = mapa.get(k) || {i:mod(hashTxt(k)+n, FRASES.length), pos:hashTxt(k)};
+  // Posiciones seguidas (compañeros de la misma empresa) reciben saludo, asunto y cierre distintos; rotan cada semana
+  return { frase:FRASES[a.i], saludo:SALUDOS[mod(a.pos+n,SALUDOS.length)], asunto:ASUNTOS[mod(a.pos+2*n,ASUNTOS.length)], cierre:CIERRES[mod(a.pos+3*n,CIERRES.length)] };
 }
 function notaSemana(lunes){ const c=cfg(); return c.nota && c.notaSemana===lunes ? String(c.nota).trim() : ''; }
 
 function textoLunes(g){
-  const n=primerNombre(g.p.nombre), nota=notaSemana(g.semana);
-  let m = `${frase(g.semana)}\n\nTe deseamos una excelente semana de trabajo.`;
+  const n=primerNombre(g.p.nombre), nota=notaSemana(g.semana), f=frasePara(g);
+  let m = `${f.frase}\n\n${f.cierre}`;
   if(nota) m += `\n\n📌 ${nota}`;
   return {
-    asunto: `☀️ Tu frase de la semana${n?', '+n:''}`,
-    titulo: `¡Feliz inicio de semana${n?', '+n:''}!`,
+    asunto: f.asunto(n),
+    titulo: f.saludo(n),
     mensaje: m,
     boton_texto: 'Estamos para ayudarte',
     boton_url: waLink('Hola AVS Working, '),
@@ -368,7 +400,7 @@ function pintar(){
   if(est) est.innerHTML = !c.templateId ? '<span style="color:#9B2525">⚪ Inactivo: falta el ID de la plantilla</span>'
     : (c.encuestas===false && c.motivacion===false) ? '<span style="color:#9B2525">⚪ Inactivo: los dos envíos están apagados</span>'
     : '<span style="color:#0B6E4F">🟢 Activo</span>';
-  const fr=document.getElementById('cwm-frase'); if(fr) fr.textContent=`“${frase(lunes)}”`;
+  const fr=document.getElementById('cwm-frase'); if(fr) fr.textContent='cada persona recibe una frase, un saludo y un cierre distintos (abajo ves la de cada uno).';
 
   _grupos=todas();
   const usados=correosDeHoy();
@@ -396,6 +428,7 @@ function pintar(){
       <div style="min-width:0">
         <div style="font-size:12.5px"><b>${escH(g.p.nombre||'(sin nombre)')}</b> <span style="color:var(--muted)">· ${escH(empresa)}${g.p.puesto&&g.tipo!=='renovacion'?' · '+escH(g.p.puesto):''}</span></div>
         <div style="font-size:11px;color:var(--muted)">${TIPO[g.tipo]} · ${correoOk(g.p.email)?escH(g.p.email):'<span style="color:#9B2525">sin correo registrado</span>'}${g.items.length>1?` · <b>1 solo correo por ${g.items.length} reservas</b>`:''}${e.m&&e.m.error&&(e.k==='error'||e.k==='reintento')?' · '+escH(e.m.error):''}</div>
+        ${g.tipo==='lunes'?`<div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:2px">“${escH(frasePara(g).frase)}”</div>`:''}
       </div>
       <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
         <span style="font-size:11px;font-weight:600;color:${col};background:${bg};border-radius:20px;padding:3px 9px;white-space:nowrap">${txt}${cuando?' '+cuando:''}</span>${btns.join('')}
@@ -432,9 +465,17 @@ window.cwCorreosGuardar = async ()=>{
     nota:(document.getElementById('cwm-nota').value||'').trim().slice(0,300), notaSemana:lunes
   };
   if(datos.templateId && !/^template_/.test(datos.templateId)){ toast('El ID de la plantilla empieza por template_','warn'); return; }
-  document.querySelectorAll('#cwm-tpl,#cwm-nota').forEach(x=>delete x.dataset.editando);
-  await window._set(window._ref(window._db,'coworking/config/correos'), datos);
-  toast('✓ Configuración de correos guardada');
+  if(!datos.templateId) datos.templateId=TEMPLATE_POR_DEFECTO;
+  try{
+    await window._set(window._ref(window._db,'coworking/config/correos'), datos);
+    document.querySelectorAll('#cwm-tpl,#cwm-nota').forEach(x=>delete x.dataset.editando);
+    toast('✓ Configuración de correos guardada');
+  }catch(e){
+    console.error(e);
+    toast(String(e&&e.message).includes('PERMISSION_DENIED')
+      ? 'Firebase no deja guardar: falta permiso para coworking/config/correos. Los correos igual salen con la plantilla fija.'
+      : 'No se pudo guardar: '+((e&&e.message)||e), 'err');
+  }
 };
 
 // Grupo de ejemplo para la prueba y la vista previa (usa una reserva real si hay)
@@ -449,8 +490,7 @@ function ejemplo(tipo, email, nombre){
 window.cwCorreosPrueba = async ()=>{
   const para=(document.getElementById('cwm-prueba').value||'').trim();
   if(!correoOk(para)){ toast('Escribe un correo válido para la prueba','warn'); return; }
-  const tpl=(document.getElementById('cwm-tpl').value||'').trim();
-  if(!tpl){ toast('Pega primero el ID de la plantilla','warn'); return; }
+  const tpl=(document.getElementById('cwm-tpl').value||'').trim() || cfg().templateId;
   const g=ejemplo(document.getElementById('cwm-prueba-tipo').value, para, usuario()?usuario().nombre:'Equipo AVS');
   const ant=window.cwCorreosCfg; window.cwCorreosCfg={...(ant||{}), templateId:tpl};
   try{ await enviarCorreo(para, g.p.nombre, contenido(g)); toast('📧 Prueba enviada a '+para); }
